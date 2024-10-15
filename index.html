@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Server Party Time! 🎉</title>
+    <style>
+        body {
+            font-family: Comic Sans MS, cursive;
+            background-color: #ff69b4;
+            color: #00ff00;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 3em;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        #dance-floor {
+            font-size: 5em;
+            margin: 30px 0;
+        }
+        button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            background-color: #ffff00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Woohoo! Your Server is Groovin'! 🕺💃</h1>
+    <div id="dance-floor">🦄🌈🍕🚀</div>
+    <p>If you see this page, your server is ready to boogie all night long!</p>
+    <button onclick="alert('You\'re awesome! 🌟')">Click for Awesomeness</button>
+    <script>
+        setInterval(() => {
+            const dancers = ['🕺', '💃', '🦙', '🐸', '🤖', '👽'];
+            document.getElementById('dance-floor').textContent = dancers[Math.floor(Math.random() * dancers.length)].repeat(4);
+        }, 500);
+    </script>
+</body>
+</html>
