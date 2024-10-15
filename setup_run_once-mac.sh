@@ -19,21 +19,35 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
-# Check if the current directory is a git repository
-if [ ! -d .git ]; then
-    echo "Initializing git repository..."
-    git init
-fi
+# Initialize git repository
+echo "Initializing git repository..."
+git init
 
 # Add the remote repository
 echo "Adding remote repository..."
 git remote add origin https://MattiaTraverso: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@github.com/MattiaTraverso/rive.git
 
-# Pull and merge with the remote repository
-echo "Pulling from remote repository..."
-git pull origin main
+# Fetch the remote repository
+echo "Fetching from remote repository..."
+git fetch origin
+
+# Create a backup of local files
+echo "Creating backup of local files..."
+mkdir ../temp_backup
+cp -r . ../temp_backup
+
+# Reset the local repository to match the remote main branch
+echo "Resetting local repository to match remote..."
+git reset --hard origin/main
+
+# Copy back the local files, overwriting any conflicts
+echo "Restoring local files..."
+cp -rf ../temp_backup/. .
+
+# Remove the backup
+rm -rf ../temp_backup
 
 # Create the flag file to indicate the script has been run
 touch "$flag_file"
 
-echo "Script completed successfully."
+echo "Repository setup completed successfully."
