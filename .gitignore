@@ -1,3 +1,4 @@
 push_to_git-osx.sh
 push_to_git-win.bat
 .script_run_flag
+.DS_Store
