@@ -13,8 +13,7 @@ import Rive, {
     StateMachineInstance,
     OpenUrlEvent,
     RiveEvent,
-    Alignment,
-    Vec2D
+    Alignment
   } from "@rive-app/canvas-advanced";
 
 let canvas : HTMLCanvasElement;
@@ -29,6 +28,8 @@ async function initiate(): Promise<RiveCanvas> {
   (document.getElementById('y') as HTMLInputElement).valueAsNumber = 200;
   (document.getElementById('w') as HTMLInputElement).valueAsNumber = 250;
   (document.getElementById('h') as HTMLInputElement).valueAsNumber = 500;
+  (document.getElementById('bx') as HTMLInputElement).valueAsNumber = scale;
+  (document.getElementById('by') as HTMLInputElement).valueAsNumber = debug_offset;
 
 
 
@@ -44,7 +45,7 @@ async function initiate(): Promise<RiveCanvas> {
 
   renderer = rive.makeRenderer(canvas);
 
-  fit = rive.Fit.scaleDown;
+  fit = rive.Fit.fill;
   alignment = rive.Alignment.center;
 
   let d = readValues();
@@ -147,7 +148,8 @@ const debug_string : HTMLElement = document.getElementById('debug-string-content
 function loop(time : number) : void {
   let d = readValues();
   frame.x = d.x; frame.y = d.y; frame.width = d.w; frame.height = d.h;
-
+  scale = d.bx;
+debug_offset = d.by;
  debug_string.textContent = "";
 
 
@@ -194,7 +196,6 @@ class Rect {
   height: number;
 
   _canvas : HTMLCanvasElement;
-  _originalRatio : Vec2D;
   
 
   constructor(x: number, y: number, width: number, height: number, canvas : HTMLCanvasElement) {
@@ -204,15 +205,14 @@ class Rect {
     this.height = height;
 
     this._canvas = canvas;
-    this._originalRatio = new Vec2D(canvas.width, canvas.height);
   }
 
   ToRiveBoundaries(): AABB {
     return {
       minX : this.x,
       minY :this.y,
-      maxX : this.x + this.width,
-      maxY : this.y + this.height
+      maxX : this.x + this.width * scale,
+      maxY : this.y + this.height * scale
     };
   }
 }
@@ -223,7 +223,8 @@ let frame : Rect;
 let content : AABB;
 
 
-
+let scale = 2;
+let debug_offset = 500;
 
 function render(time:Number): void {
   renderer.clear();
@@ -233,11 +234,11 @@ function render(time:Number): void {
   {
     let aabb : AABB = frame.ToRiveBoundaries();
 
-    let offset = i * 250;
+    let offset = i * debug_offset;
     aabb.minX += offset;
     aabb.maxX += offset;
 
-    queueRect(frame.x + offset, frame.y, frame.width, frame.height, "orange");
+    queueRect(frame.x + offset, frame.y, frame.width * scale, frame.height * scale, "orange");
       
     //debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
@@ -434,7 +435,6 @@ async function main() : Promise<void> {
 
     artboard.frameOrigin = true;
 
-
     //Why do I get no fucking bone
     let bone = artboard.rootBone("Root");
 
@@ -524,7 +524,7 @@ function updateMousePosition(event: MouseEvent) {
     if (!artboards || artboards.length == 0)
       return
 
-    let mouseCoords = mouseToArtboardSpace(artboards[0], 0 * 250);
+    let mouseCoords = mouseToArtboardSpace(artboards[0], 0 * debug_offset);
   
   //Debug mouse coords
     let mousePos = getMousePosition(canvas);
@@ -545,7 +545,7 @@ window.addEventListener("click", function (e) {
   let i = 0;
   for (let artboard of artboards)
   {
-    let mouseCoords = mouseToArtboardSpace(artboard, i * 250);
+    let mouseCoords = mouseToArtboardSpace(artboard, i * debug_offset);
 
     stateMachines[i].pointerDown(mouseCoords.x, mouseCoords.y);
 
