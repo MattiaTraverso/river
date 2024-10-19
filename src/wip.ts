@@ -3,6 +3,8 @@ import Rive, {
     SMIInput,
     WrappedRenderer,
     RiveCanvas,
+    AABB,
+    Fit,
     File,
     RiveEventCustomProperties,
     LinearAnimation,
@@ -11,6 +13,7 @@ import Rive, {
     StateMachineInstance,
     OpenUrlEvent,
     RiveEvent,
+    Alignment
   } from "@rive-app/canvas-advanced";
 
 let canvas : HTMLCanvasElement;
@@ -20,6 +23,14 @@ let renderer : WrappedRenderer;
 let loadedFiles : File[] = [];
 
 async function initiate(): Promise<RiveCanvas> {
+
+  (document.getElementById('x') as HTMLInputElement).valueAsNumber = 250;
+  (document.getElementById('y') as HTMLInputElement).valueAsNumber = 200;
+  (document.getElementById('w') as HTMLInputElement).valueAsNumber = 250;
+  (document.getElementById('h') as HTMLInputElement).valueAsNumber = 500;
+
+
+
   const instance = await Rive({
     locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
   });
@@ -31,6 +42,15 @@ async function initiate(): Promise<RiveCanvas> {
   resizeCanvas();
 
   renderer = rive.makeRenderer(canvas);
+
+  fit = rive.Fit.none;
+  alignment = rive.Alignment.bottomLeft;
+  frame = {	
+    minX: 0,
+    minY: 0,
+    maxX: canvas.width,
+    maxY: canvas.height
+  };
 
   return rive;
 }
@@ -119,7 +139,20 @@ interface LoopCallBack {
 
 let loopCallbacks : LoopCallBack[] = [];
 
+const debug_string : HTMLElement = document.getElementById('debug-string-content') as HTMLElement;
+
 function loop(time : number) : void {
+ debug_string.textContent = "";
+
+  let d = readValues();
+  frame.minX = d.x;
+  frame.minY = d.y;
+  frame.maxX = d.x + d.w;
+  frame.maxY = d.y + d.h;
+
+
+  queueRect(d.x, d.y, d.w, d.h, "orange");
+
   deltaTime = (time - elapsed) / 1000;
 
   elapsed = time;
@@ -145,66 +178,39 @@ function loop(time : number) : void {
   
   rive.resolveAnimationFrame();
 
-  //queueRect(0, 0, canvas.width, canvas.height, "yellow");
+  queueRect(0, 0, canvas.width, canvas.height, "yellow");
 
   executeDrawings(canvas);
 
   requestAnimationFrame(loop);
 }
 
+let fit : Fit;
+let alignment : Alignment;
+let frame : AABB;
+let content : AABB;
+
 
 
 function render(time:Number): void {
   renderer.clear();
 
-  
-  let d : Dimensions = readValues();
-
-  let i = 0;
   for (let artboard of artboards)
   {
-    //console.log(artboard.bounds.maxX);
-
-    let bounds = artboard.bounds;
-
-    
-    /*
-    bounds.minX = d.bx;
-    bounds.minY = d.by;
-    bounds.maxX = d.bw;
-    bounds.maxY = d.bh;*/
-
-    //console.log(bounds.minX - artboard.bounds.minX, bounds.maxX - artboard.bounds.maxX, bounds.minY - artboard.bounds.minY, bounds.maxY - artboard.bounds.maxY);
-
-    
-    d.w = canvas.width; d.h = canvas.height;
-    
-    let mousePos = getMousePosition(canvas);
-
-    //queueRect(d.x, d.y, d.w, d.h, "yellow");
-    
-    //mousePos.x -= d.w * .5;     mousePos.y -= d.h * .5;
-    //d.x = mousePos.x;  d.y = mousePos.y; queueRect(d.x, d.y, d.w, d.h, "yellow");
+    debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
     renderer.save();
 
     renderer.align(
-      rive.Fit.none,
-      rive.Alignment.center,
-      {	
-        minX: d.x, // mousePos.x, //0,	
-        minY: d.y, //mousePos.y, //0,
-        maxX: d.x + d.w, //mousePos.x + d.w, //canvas.width, //d.x + d.w // d.w
-        maxY: d.y + d.h //mousePos.y + d.h //canvas.height // d.y + d.h  // d.h
-      },
-      bounds,
+      fit,
+      alignment,
+      frame,
+      content,
     );
 
     artboard.draw(renderer);
 
     renderer.restore();
-
-    i++;
   }
 }
 
@@ -383,8 +389,10 @@ async function main() : Promise<void> {
   {
     let artboard : Artboard = fashion.artboards[0];
 
-    artboard.frameOrigin = false;
+    artboard.frameOrigin = true;
 
+
+    //Why do I get no fucking bone
     let bone = artboard.rootBone("Root");
 
     console.log(bone);
@@ -396,8 +404,12 @@ async function main() : Promise<void> {
 
     artboards.push(artboard);
 
+    content = artboard.bounds;
+
     stateMachines.push(new rive.StateMachineInstance(artboard.stateMachineByIndex(0), artboard));
   }
+  
+
   
 
 
@@ -465,6 +477,22 @@ let mouseY: number = 0;
 function updateMousePosition(event: MouseEvent) {
     mouseX = event.clientX;
     mouseY = event.clientY;
+
+    if (!artboards || artboards.length == 0)
+      return
+
+    let mouseCoords = mouseToArtboardSpace(artboards[0]);
+  
+  //Debug mouse coords
+    let mousePos = getMousePosition(canvas);
+
+    document.getElementById('mx-value')!.textContent = mouseX.toString();
+    document.getElementById('my-value')!.textContent = mouseY.toString();
+    document.getElementById('mcx-value')!.textContent = mousePos.x.toString();
+    document.getElementById('mcy-value')!.textContent = mousePos.y.toString();
+    document.getElementById('max-value')!.textContent = mouseCoords.x.toString();
+    document.getElementById('may-value')!.textContent = mouseCoords.y.toString();
+
 }
 
 // Add a single event listener to the window
@@ -474,7 +502,7 @@ window.addEventListener("click", function (e) {
   let i = 0;
   for (let artboard of artboards)
   {
-    let mouseCoords = mouseToArtboardSpace(artboard, i);
+    let mouseCoords = mouseToArtboardSpace(artboard);
   
     console.log(mouseCoords, i);
     stateMachines[i].pointerDown(mouseCoords.x, mouseCoords.y);
@@ -493,22 +521,14 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
     };
 }
 
-function mouseToArtboardSpace(artboard : Artboard, i : number = 0) : {x : number, y : number} {
+function mouseToArtboardSpace(artboard : Artboard) : {x : number, y : number} {
   let mousePos = getMousePosition(canvas);
 
-
-  let d : Dimensions = readValues();
-
   let fwdMatrix = rive.computeAlignment(
-    rive.Fit.none,
-    rive.Alignment.center,
-    {
-      minX: d.x,
-      minY: d.y,
-      maxX: d.x + d.w,
-      maxY: d.y + d.h,
-    },
-    artboard.bounds
+    fit,
+    alignment,
+    frame,
+    content,
   );
 
   let inverseViewMatrix = new rive.Mat2D();
