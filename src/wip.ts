@@ -45,18 +45,11 @@ async function initiate(): Promise<RiveCanvas> {
 
   fit = rive.Fit.none;
   alignment = rive.Alignment.bottomLeft;
-  frame = {	
-    minX: 0,
-    minY: 0,
-    maxX: canvas.width,
-    maxY: canvas.height
-  };
 
   let d = readValues();
-  frame.minX = d.x;
-  frame.minY = d.y;
-  frame.maxX = d.x + d.w;
-  frame.maxY = d.y + d.h;
+  frame = new Rect(d.x, d.y, d.w, d.h);
+
+  
 
   return rive;
 }
@@ -153,7 +146,7 @@ const debug_string : HTMLElement = document.getElementById('debug-string-content
 function loop(time : number) : void {
  debug_string.textContent = "";
 
- debug_string.textContent += `Frame: ${frame.minX} ${frame.minY} ${frame.maxX} ${frame.maxY}`
+ debug_string.textContent += `Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
 
   deltaTime = (time - elapsed) / 1000;
 
@@ -187,9 +180,32 @@ function loop(time : number) : void {
   requestAnimationFrame(loop);
 }
 
+class Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+
+  constructor(x: number, y: number, width: number, height: number) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+  }
+
+  ToRiveBoundaries(): AABB {
+    return {
+      minX : this.x,
+      minY :this.y,
+      maxX : this.x + this.width,
+      maxY : this.y + this.height
+    };
+  }
+}
+
 let fit : Fit;
 let alignment : Alignment;
-let frame : AABB;
+let frame : Rect;
 let content : AABB;
 
 
@@ -201,11 +217,13 @@ function render(time:Number): void {
   let i = 0;
   for (let artboard of artboards)
   {
-    if (i != 0) {
-      frame.minX += 250;
-    }
+    let aabb : AABB = frame.ToRiveBoundaries();
 
-    queueRect(frame.minX, frame.minY, frame.maxX, frame.maxY - 200, "orange");
+    let offset = i * 250;
+    aabb.minX += offset;
+    aabb.maxX += offset;
+
+    queueRect(frame.x + offset, frame.y, frame.width, frame.height, "orange");
       
     debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
@@ -214,7 +232,7 @@ function render(time:Number): void {
     renderer.align(
       fit,
       alignment,
-      frame,
+      aabb,
       content,
     );
 
@@ -223,8 +241,6 @@ function render(time:Number): void {
     renderer.restore();
     i++;
   }
-
-  frame.minX = readValues().x;
 }
 
 //#endregion
@@ -466,7 +482,6 @@ type DrawOperation = {
 let drawQueue: DrawOperation[] = [];
 
 function queueRect(x: number, y: number, width: number, height: number, color: string) {
-console.log(width);
     drawQueue.push({ x, y, width, height, color });
 }
 
@@ -537,12 +552,14 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
 function mouseToArtboardSpace(artboard : Artboard, HACK : number) : {x : number, y : number} {
   let mousePos = getMousePosition(canvas);
 
-  frame.minX += HACK;
+  let aabb = frame.ToRiveBoundaries();
+  aabb.minX += HACK;
+  aabb.maxX += HACK;
 
   let fwdMatrix = rive.computeAlignment(
     fit,
     alignment,
-    frame,
+    aabb,
     content,
   );
 
@@ -562,7 +579,6 @@ function mouseToArtboardSpace(artboard : Artboard, HACK : number) : {x : number,
       inverseViewMatrix.ty;
   }
 
-  frame.minX -= HACK;
 
   return {x, y};
 }
