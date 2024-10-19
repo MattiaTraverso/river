@@ -113,11 +113,11 @@ let animations : LinearAnimationInstance[] = [];
 let artboards : Artboard[] = [];
 let stateMachines : StateMachineInstance[] = [];
 
-interface loopCallBack {
+interface LoopCallBack {
   () : void
 }
 
-let loopCallbacks : loopCallBack[] = [];
+let loopCallbacks : LoopCallBack[] = [];
 
 function loop(time : number) : void {
   deltaTime = (time - elapsed) / 1000;
@@ -137,6 +137,9 @@ function loop(time : number) : void {
   for (let artboard of artboards){
     artboard.advance(deltaTime);
   }
+
+  for (let loopCallBack of loopCallbacks)
+    loopCallBack();
 
   render(time);
   
@@ -166,14 +169,17 @@ function render(time:Number): void {
     let bounds = artboard.bounds;
 
     
-    
+    /*
     bounds.minX = d.bx;
     bounds.minY = d.by;
     bounds.maxX = d.bw;
-    bounds.maxY = d.bh;
+    bounds.maxY = d.bh;*/
 
     //console.log(bounds.minX - artboard.bounds.minX, bounds.maxX - artboard.bounds.maxX, bounds.minY - artboard.bounds.minY, bounds.maxY - artboard.bounds.maxY);
 
+    
+    d.w = canvas.width; d.h = canvas.height;
+    
     let mousePos = getMousePosition(canvas);
 
     //queueRect(d.x, d.y, d.w, d.h, "yellow");
@@ -211,6 +217,8 @@ function resizeCanvas() : void {
 async function main() : Promise<void> {
   await initiate();
 
+
+  //#region  examples
   //How to write this all in one go with an array and map?
 
 
@@ -362,6 +370,30 @@ async function main() : Promise<void> {
   );
 */
 
+//#endregion
+
+  let fashion : RiveFile = await loadFile("fashion_app.riv");
+
+  logUnpackedRiveFile(fashion);
+
+  artboards.push(fashion.artboards[0]);
+
+  stateMachines.push(new rive.StateMachineInstance(artboards[0].stateMachineByIndex(0), artboards[0]));
+
+  loopCallbacks.push( () => {
+    let d = readValues();
+
+    console.log(stateMachines[0].inputCount());
+
+    let selector = stateMachines[0].input(1).asNumber();
+
+    if (d.x in [0,1,2,3,4]) {
+      selector.value = d.x;
+
+      console.log("Set Selector to:", d.x);
+
+    }
+  })
   requestAnimationFrame(loop);
   
 
@@ -433,6 +465,11 @@ function updateMousePosition(event: MouseEvent) {
 // Add a single event listener to the window
 window.addEventListener('mousemove', updateMousePosition);
 
+window.addEventListener("click", function (e) {
+  let mouseCoords = mouseToArtboardSpace(artboards[0]);
+  stateMachines[0].pointerDown(mouseCoords.x, mouseCoords.y);
+});
+
 // Function to get the current mouse position relative to a canvas
 function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
     const rect = canvas.getBoundingClientRect();
@@ -440,6 +477,40 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
         x: mouseX - rect.left,
         y: mouseY - rect.top
     };
+}
+
+function mouseToArtboardSpace(artboard : Artboard) : {x : number, y : number} {
+  let mousePos = getMousePosition(canvas);
+
+  let fwdMatrix = rive.computeAlignment(
+    rive.Fit.contain,
+    rive.Alignment.bottomCenter,
+    {
+      minX: 0,
+      minY: 0,
+      maxX: canvas.width,
+      maxY: canvas.height
+    },
+    artboard.bounds
+  );
+
+  let inverseViewMatrix = new rive.Mat2D();
+
+  let x = 0;
+  let y = 0;
+  // Invert the view matrix in order to go from cursor to artboard space.
+  if (fwdMatrix.invert(inverseViewMatrix)) {
+    x =
+      inverseViewMatrix.xx * mousePos.x +
+      inverseViewMatrix.yx * mousePos.y +
+      inverseViewMatrix.tx;
+    y =
+      inverseViewMatrix.xy * mousePos.x +
+      inverseViewMatrix.yy * mousePos.y +
+      inverseViewMatrix.ty;
+  }
+
+  return {x, y};
 }
 
 main();
