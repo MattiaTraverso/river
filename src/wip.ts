@@ -13,7 +13,8 @@ import Rive, {
     StateMachineInstance,
     OpenUrlEvent,
     RiveEvent,
-    Alignment
+    Alignment,
+    Vec2D
   } from "@rive-app/canvas-advanced";
 
 let canvas : HTMLCanvasElement;
@@ -47,7 +48,7 @@ async function initiate(): Promise<RiveCanvas> {
   alignment = rive.Alignment.center;
 
   let d = readValues();
-  frame = new Rect(d.x, d.y, d.w, d.h);
+  frame = new Rect(d.x, d.y, d.w, d.h, canvas);
 
   
 
@@ -149,9 +150,12 @@ function loop(time : number) : void {
 
  debug_string.textContent = "";
 
- debug_string.textContent += `Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
 
   deltaTime = (time - elapsed) / 1000;
+
+
+  debug_string.textContent = "" + deltaTime;
+  //debug_string.textContent += `        Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
 
   elapsed = time;
 
@@ -189,11 +193,18 @@ class Rect {
   width: number;
   height: number;
 
-  constructor(x: number, y: number, width: number, height: number) {
+  _canvas : HTMLCanvasElement;
+  _originalRatio : Vec2D;
+  
+
+  constructor(x: number, y: number, width: number, height: number, canvas : HTMLCanvasElement) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+
+    this._canvas = canvas;
+    this._originalRatio = new Vec2D(canvas.width, canvas.height);
   }
 
   ToRiveBoundaries(): AABB {
@@ -228,7 +239,7 @@ function render(time:Number): void {
 
     queueRect(frame.x + offset, frame.y, frame.width, frame.height, "orange");
       
-    debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
+    //debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
     renderer.save();
 
