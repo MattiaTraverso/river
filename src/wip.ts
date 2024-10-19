@@ -4,10 +4,13 @@ import Rive, {
     WrappedRenderer,
     RiveCanvas,
     File,
+    RiveEventCustomProperties,
     LinearAnimation,
     LinearAnimationInstance,
     StateMachine,
     StateMachineInstance,
+    OpenUrlEvent,
+    RiveEvent,
   } from "@rive-app/canvas-advanced";
 
 let canvas : HTMLCanvasElement;
@@ -110,6 +113,12 @@ let animations : LinearAnimationInstance[] = [];
 let artboards : Artboard[] = [];
 let stateMachines : StateMachineInstance[] = [];
 
+interface loopCallBack {
+  () : void
+}
+
+let loopCallbacks : loopCallBack[] = [];
+
 function loop(time : number) : void {
   deltaTime = (time - elapsed) / 1000;
 
@@ -152,7 +161,7 @@ function render(time:Number): void {
   
   for (let artboard of artboards)
   {
-    console.log(artboard.bounds.maxX);
+    //console.log(artboard.bounds.maxX);
 
     let bounds = artboard.bounds;
 
@@ -163,14 +172,14 @@ function render(time:Number): void {
     bounds.maxX = d.bw;
     bounds.maxY = d.bh;
 
-    console.log(bounds.minX - artboard.bounds.minX, bounds.maxX - artboard.bounds.maxX, bounds.minY - artboard.bounds.minY, bounds.maxY - artboard.bounds.maxY);
+    //console.log(bounds.minX - artboard.bounds.minX, bounds.maxX - artboard.bounds.maxX, bounds.minY - artboard.bounds.minY, bounds.maxY - artboard.bounds.maxY);
 
     let mousePos = getMousePosition(canvas);
 
     //queueRect(d.x, d.y, d.w, d.h, "yellow");
     
-    mousePos.x -= d.w * .5;     mousePos.y -= d.h * .5;
-    d.x = mousePos.x;  d.y = mousePos.y; queueRect(d.x, d.y, d.w, d.h, "yellow");
+    //mousePos.x -= d.w * .5;     mousePos.y -= d.h * .5;
+    //d.x = mousePos.x;  d.y = mousePos.y; queueRect(d.x, d.y, d.w, d.h, "yellow");
     
     renderer.align(
       rive.Fit.contain,
@@ -256,6 +265,7 @@ async function main() : Promise<void> {
   });
   */
 
+  /*
   let characterFile : RiveFile = await loadFile("ch.riv");
 
 
@@ -278,8 +288,82 @@ async function main() : Promise<void> {
   });
 
   logUnpackedRiveFile(characterFile);
+  */
+
+  /*
+  let events : RiveFile = await loadFile("events.riv");
+
+  artboards.push(events.artboards[0]);
+
+  stateMachines.push(new rive.StateMachineInstance(events.artboards[0].stateMachineByIndex(0), events.artboards[0]));
+
+
+
+  loopCallbacks.push(() => {
+    for (let stateMachine of stateMachines)
+      {
+        for (let i = 0; i < stateMachine.reportedEventCount(); i++)
+        {
+          let event : OpenUrlEvent | RiveEvent | undefined = stateMachine.reportedEventAt(i);
+          
+          if (event === undefined) {
+            console.log("Wtf. Event is undefined")
+            continue;
+          }
+    
+          console.log("Event: ", event.name);
+    
+          if (event.delay)
+          {
+            console.log("---Delay of ", event.delay);
+          }
+    
+          if (event as OpenUrlEvent)
+          {
+            console.log("---URL: ", (event as OpenUrlEvent).url, " Target:", (event as OpenUrlEvent).target);
+          }
+    
+          if (event.type)
+          {
+            console.log("---Type:", event.type);
+          }
+    
+          if (event.properties)
+          {
+            let properties : RiveEventCustomProperties = event.properties;
+    
+            for (const key in properties) {
+              if (properties.hasOwnProperty(key)) {
+                  const value = properties[key];
+                  const type = typeof value;
+                  console.log(`-----$${key}: ${value} (Type: ${type})`);
+              }
+            }
+          }
+          
+          //[Log] Event:  – "URL TYPE" (index.cfee688b.js, line 659)
+          //[Log] ---Delay of  – 0.01400265097618103 (index.cfee688b.js, line 660)
+          //[Log] ---Type: – 131 (index.cfee688b.js, line 661)
+         // [Log] ---Properties: (index.cfee688b.js, line 664)
+         // [Log] -----NUMBER: 0 (index.cfee688b.js, line 665)
+         // [Log] -----BOOLEAN: false (index.cfee688b.js, line 665)
+         // [Log] -----STRING: awdawdwa (index.cfee688b.js, line 665)
+          //[Log] Event:  – "GENERAL TYPE" (index.cfee688b.js, line 659)
+         // [Log] ---Delay of  – 0.014002561569213867 (index.cfee688b.js, line 660)
+         // [Log] ---Type: – 128 (index.cfee688b.js, line 661)
+         // [Log] ---Properties: (index.cfee688b.js, line 664)
+          //[Log] -----NUMBER: 25 (index.cfee688b.js, line 665)
+         // [Log] -----BOOLEAN: false (index.cfee688b.js, line 665)
+         // [Log] -----STRING: Bella pe te! (index.cfee688b.js, line 665)
+         // [Log] -----NUMBER AGAIN: 0 (index.cfee688b.js, line 665)
+        }
+      }
+    }
+  );
+*/
 
   requestAnimationFrame(loop);
+  
 
 }
 
