@@ -2,17 +2,26 @@
   margin: 0;
   padding: 0;
 }
+
+
+
 canvas {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-canvas-test {
+canvas-half {
   position: absolute;
   width: 50%;
   height: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+canvas-fixed {
+  position: absolute;
+  width: 1280px;
+  height: 720px;
 }

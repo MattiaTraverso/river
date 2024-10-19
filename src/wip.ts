@@ -16,16 +16,28 @@ import Rive, {
     Alignment
   } from "@rive-app/canvas-advanced";
 
+
+class Vec2D {
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
 let canvas : HTMLCanvasElement;
 let rive : RiveCanvas;
 let renderer : WrappedRenderer;
 
+let mainRes = new Vec2D(1280, 720);
+
 let loadedFiles : File[] = [];
 
 async function initiate(): Promise<RiveCanvas> {
-
-  (document.getElementById('x') as HTMLInputElement).valueAsNumber = 0;
-  (document.getElementById('y') as HTMLInputElement).valueAsNumber = 200;
+  (document.getElementById('x') as HTMLInputElement).valueAsNumber = 100;
+  (document.getElementById('y') as HTMLInputElement).valueAsNumber = 100;
   (document.getElementById('w') as HTMLInputElement).valueAsNumber = 250;
   (document.getElementById('h') as HTMLInputElement).valueAsNumber = 500;
   (document.getElementById('bx') as HTMLInputElement).valueAsNumber = scale;
@@ -45,7 +57,7 @@ async function initiate(): Promise<RiveCanvas> {
 
   renderer = rive.makeRenderer(canvas);
 
-  fit = rive.Fit.fill;
+  fit = rive.Fit.contain;
   alignment = rive.Alignment.center;
 
   let d = readValues();
@@ -156,9 +168,11 @@ debug_offset = d.by;
   deltaTime = (time - elapsed) / 1000;
 
 
-  debug_string.textContent = "" + deltaTime;
+  debug_string.innerHTML += "<br>" + deltaTime;
+
   //debug_string.textContent += `        Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
 
+  debug_string.innerHTML += "<br>Window" + window.innerWidth + " "+window.innerHeight;
   elapsed = time;
 
   for (let stateMachine of stateMachines)
@@ -173,6 +187,7 @@ debug_offset = d.by;
 
   for (let artboard of artboards){
     artboard.advance(deltaTime);
+   //debug_string.innerHTML += `<br> ${artboard.bounds.maxY - artboard.bounds.minY}`;
   }
 
   for (let loopCallBack of loopCallbacks)
@@ -189,11 +204,30 @@ debug_offset = d.by;
   requestAnimationFrame(loop);
 }
 
+let scaleX = 1;
+let scaleY = 1;
+
 class Rect {
   x: number;
   y: number;
-  width: number;
-  height: number;
+  _width : number;
+  _height: number;
+
+  get width(): number {
+    return this._width * scaleX;
+  }
+  
+  set width(width: number) {
+    this._width = width;
+  }
+  
+  get height(): number {
+    return this._height * scaleY;
+  }
+  
+  set height(height: number) {
+    this._height = height;
+  }
 
   _canvas : HTMLCanvasElement;
   
@@ -201,8 +235,8 @@ class Rect {
   constructor(x: number, y: number, width: number, height: number, canvas : HTMLCanvasElement) {
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
+    this._width = width;
+    this._height = height;
 
     this._canvas = canvas;
   }
@@ -211,8 +245,8 @@ class Rect {
     return {
       minX : this.x,
       minY :this.y,
-      maxX : this.x + this.width * scale,
-      maxY : this.y + this.height * scale
+      maxX : this.x + this.width,
+      maxY : this.y + this.height,
     };
   }
 }
@@ -223,8 +257,8 @@ let frame : Rect;
 let content : AABB;
 
 
-let scale = 2;
-let debug_offset = 500;
+let scale = 1;
+let debug_offset = 60;
 
 function render(time:Number): void {
   renderer.clear();
@@ -265,12 +299,20 @@ function resizeCanvas() : void {
   //console.log("Resizing to", canvas.width, canvas.height);
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
+  return;
+  scaleY = canvas.height / mainRes.y;
+
+  let aspectRatio = mainRes.x / mainRes.y;
+
+  scaleX = scaleY * aspectRatio;
 }
 
 async function main() : Promise<void> {
   await initiate();
 
-
+  mainRes.x = window.innerWidth;
+  mainRes.y = window.innerHeight;
   //#region  examples
   //How to write this all in one go with an array and map?
 
@@ -429,7 +471,7 @@ async function main() : Promise<void> {
 
   //logUnpackedRiveFile(fashion);
 
-  for (let i = 0; i < 7; i++)
+  for (let i = 0; i < 1; i++)
   {
     let artboard : Artboard = fashion.file.artboardByIndex(0);
 
@@ -570,6 +612,7 @@ function mouseToArtboardSpace(artboard : Artboard, HACK : number) : {x : number,
   aabb.minX += HACK;
   aabb.maxX += HACK;
 
+  //todo: not working if the canvas isn't full sized
   let fwdMatrix = rive.computeAlignment(
     fit,
     alignment,
