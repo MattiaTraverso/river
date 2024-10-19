@@ -43,8 +43,8 @@ async function initiate(): Promise<RiveCanvas> {
 
   renderer = rive.makeRenderer(canvas);
 
-  fit = rive.Fit.none;
-  alignment = rive.Alignment.bottomLeft;
+  fit = rive.Fit.scaleDown;
+  alignment = rive.Alignment.center;
 
   let d = readValues();
   frame = new Rect(d.x, d.y, d.w, d.h);
@@ -144,6 +144,9 @@ let loopCallbacks : LoopCallBack[] = [];
 const debug_string : HTMLElement = document.getElementById('debug-string-content') as HTMLElement;
 
 function loop(time : number) : void {
+  let d = readValues();
+  frame.x = d.x; frame.y = d.y; frame.width = d.w; frame.height = d.h;
+
  debug_string.textContent = "";
 
  debug_string.textContent += `Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
