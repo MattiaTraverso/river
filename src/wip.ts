@@ -24,7 +24,7 @@ let loadedFiles : File[] = [];
 
 async function initiate(): Promise<RiveCanvas> {
 
-  (document.getElementById('x') as HTMLInputElement).valueAsNumber = 250;
+  (document.getElementById('x') as HTMLInputElement).valueAsNumber = 0;
   (document.getElementById('y') as HTMLInputElement).valueAsNumber = 200;
   (document.getElementById('w') as HTMLInputElement).valueAsNumber = 250;
   (document.getElementById('h') as HTMLInputElement).valueAsNumber = 500;
@@ -52,6 +52,12 @@ async function initiate(): Promise<RiveCanvas> {
     maxY: canvas.height
   };
 
+  let d = readValues();
+  frame.minX = d.x;
+  frame.minY = d.y;
+  frame.maxX = d.x + d.w;
+  frame.maxY = d.y + d.h;
+
   return rive;
 }
 
@@ -60,6 +66,8 @@ async function initiate(): Promise<RiveCanvas> {
 interface RiveFile {
   name: string;
   artboards: Artboard[];
+
+  file : File;
 }
 
 function logUnpackedRiveFile(file: RiveFile): void {
@@ -117,7 +125,8 @@ async function loadFile(url: string): Promise<RiveFile> {
   // Create and return our custom RiveFileData object
   return {
     name,
-    artboards
+    artboards,
+    file
   };
 }
   
@@ -144,14 +153,7 @@ const debug_string : HTMLElement = document.getElementById('debug-string-content
 function loop(time : number) : void {
  debug_string.textContent = "";
 
-  let d = readValues();
-  frame.minX = d.x;
-  frame.minY = d.y;
-  frame.maxX = d.x + d.w;
-  frame.maxY = d.y + d.h;
-
-
-  queueRect(d.x, d.y, d.w, d.h, "orange");
+ debug_string.textContent += `Frame: ${frame.minX} ${frame.minY} ${frame.maxX} ${frame.maxY}`
 
   deltaTime = (time - elapsed) / 1000;
 
@@ -192,11 +194,19 @@ let content : AABB;
 
 
 
+
 function render(time:Number): void {
   renderer.clear();
 
+  let i = 0;
   for (let artboard of artboards)
   {
+    if (i != 0) {
+      frame.minX += 250;
+    }
+
+    queueRect(frame.minX, frame.minY, frame.maxX, frame.maxY - 200, "orange");
+      
     debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
     renderer.save();
@@ -211,7 +221,10 @@ function render(time:Number): void {
     artboard.draw(renderer);
 
     renderer.restore();
+    i++;
   }
+
+  frame.minX = readValues().x;
 }
 
 //#endregion
@@ -385,9 +398,9 @@ async function main() : Promise<void> {
 
   //logUnpackedRiveFile(fashion);
 
-  for (let i = 0; i < 1; i++)
+  for (let i = 0; i < 7; i++)
   {
-    let artboard : Artboard = fashion.artboards[0];
+    let artboard : Artboard = fashion.file.artboardByIndex(0);
 
     artboard.frameOrigin = true;
 
@@ -395,7 +408,7 @@ async function main() : Promise<void> {
     //Why do I get no fucking bone
     let bone = artboard.rootBone("Root");
 
-    console.log(bone);
+    //console.log(bone);
     if (bone)
     {
       bone.x = 0;
@@ -453,6 +466,7 @@ type DrawOperation = {
 let drawQueue: DrawOperation[] = [];
 
 function queueRect(x: number, y: number, width: number, height: number, color: string) {
+console.log(width);
     drawQueue.push({ x, y, width, height, color });
 }
 
@@ -481,7 +495,7 @@ function updateMousePosition(event: MouseEvent) {
     if (!artboards || artboards.length == 0)
       return
 
-    let mouseCoords = mouseToArtboardSpace(artboards[0]);
+    let mouseCoords = mouseToArtboardSpace(artboards[0], 0 * 250);
   
   //Debug mouse coords
     let mousePos = getMousePosition(canvas);
@@ -502,9 +516,8 @@ window.addEventListener("click", function (e) {
   let i = 0;
   for (let artboard of artboards)
   {
-    let mouseCoords = mouseToArtboardSpace(artboard);
-  
-    console.log(mouseCoords, i);
+    let mouseCoords = mouseToArtboardSpace(artboard, i * 250);
+
     stateMachines[i].pointerDown(mouseCoords.x, mouseCoords.y);
 
     i++;
@@ -521,8 +534,10 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
     };
 }
 
-function mouseToArtboardSpace(artboard : Artboard) : {x : number, y : number} {
+function mouseToArtboardSpace(artboard : Artboard, HACK : number) : {x : number, y : number} {
   let mousePos = getMousePosition(canvas);
+
+  frame.minX += HACK;
 
   let fwdMatrix = rive.computeAlignment(
     fit,
@@ -546,6 +561,8 @@ function mouseToArtboardSpace(artboard : Artboard) : {x : number, y : number} {
       inverseViewMatrix.yy * mousePos.y +
       inverseViewMatrix.ty;
   }
+
+  frame.minX -= HACK;
 
   return {x, y};
 }
