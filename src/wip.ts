@@ -122,8 +122,6 @@ let loopCallbacks : LoopCallBack[] = [];
 function loop(time : number) : void {
   deltaTime = (time - elapsed) / 1000;
 
-  console.log(deltaTime);
-  
   elapsed = time;
 
   for (let stateMachine of stateMachines)
@@ -159,11 +157,10 @@ function loop(time : number) : void {
 function render(time:Number): void {
   renderer.clear();
 
-  renderer.save();
-
+  
   let d : Dimensions = readValues();
 
-  
+  let i = 0;
   for (let artboard of artboards)
   {
     //console.log(artboard.bounds.maxX);
@@ -184,35 +181,38 @@ function render(time:Number): void {
     
     let mousePos = getMousePosition(canvas);
 
-    queueRect(d.x, d.y, d.w, d.h, "yellow");
+    //queueRect(d.x, d.y, d.w, d.h, "yellow");
     
     //mousePos.x -= d.w * .5;     mousePos.y -= d.h * .5;
     //d.x = mousePos.x;  d.y = mousePos.y; queueRect(d.x, d.y, d.w, d.h, "yellow");
-    
+
+    renderer.save();
+
     renderer.align(
-      rive.Fit.contain,
+      rive.Fit.none,
       rive.Alignment.center,
       {	
         minX: d.x, // mousePos.x, //0,	
         minY: d.y, //mousePos.y, //0,
-        maxX: d.w, //mousePos.x + d.w, //canvas.width, //d.x + d.w
-        maxY: d.h //mousePos.y + d.h //canvas.height // d.y + d.h
+        maxX: d.x + d.w, //mousePos.x + d.w, //canvas.width, //d.x + d.w // d.w
+        maxY: d.y + d.h //mousePos.y + d.h //canvas.height // d.y + d.h  // d.h
       },
       bounds,
     );
 
     artboard.draw(renderer);
+
+    renderer.restore();
+
+    i++;
   }
-  
-  
-  renderer.restore();
 }
 
 //#endregion
 
 
 function resizeCanvas() : void {
-  console.log("Resizing to", canvas.width, canvas.height);
+  //console.log("Resizing to", canvas.width, canvas.height);
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
@@ -377,11 +377,29 @@ async function main() : Promise<void> {
 
   let fashion : RiveFile = await loadFile("fashion_app.riv");
 
-  logUnpackedRiveFile(fashion);
+  //logUnpackedRiveFile(fashion);
 
-  artboards.push(fashion.artboards[0]);
+  for (let i = 0; i < 1; i++)
+  {
+    let artboard : Artboard = fashion.artboards[0];
 
-  stateMachines.push(new rive.StateMachineInstance(artboards[0].stateMachineByIndex(0), artboards[0]));
+    artboard.frameOrigin = false;
+
+    let bone = artboard.rootBone("Root");
+
+    console.log(bone);
+    if (bone)
+    {
+      bone.x = 0;
+      bone.y = 0;
+    }
+
+    artboards.push(artboard);
+
+    stateMachines.push(new rive.StateMachineInstance(artboard.stateMachineByIndex(0), artboard));
+  }
+  
+
 
   requestAnimationFrame(loop);
 }
@@ -453,8 +471,17 @@ function updateMousePosition(event: MouseEvent) {
 window.addEventListener('mousemove', updateMousePosition);
 
 window.addEventListener("click", function (e) {
-  let mouseCoords = mouseToArtboardSpace(artboards[0]);
-  stateMachines[0].pointerDown(mouseCoords.x, mouseCoords.y);
+  let i = 0;
+  for (let artboard of artboards)
+  {
+    let mouseCoords = mouseToArtboardSpace(artboard, i);
+  
+    console.log(mouseCoords, i);
+    stateMachines[i].pointerDown(mouseCoords.x, mouseCoords.y);
+
+    i++;
+  }
+  
 });
 
 // Function to get the current mouse position relative to a canvas
@@ -466,17 +493,20 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
     };
 }
 
-function mouseToArtboardSpace(artboard : Artboard) : {x : number, y : number} {
+function mouseToArtboardSpace(artboard : Artboard, i : number = 0) : {x : number, y : number} {
   let mousePos = getMousePosition(canvas);
 
+
+  let d : Dimensions = readValues();
+
   let fwdMatrix = rive.computeAlignment(
-    rive.Fit.contain,
-    rive.Alignment.bottomCenter,
+    rive.Fit.none,
+    rive.Alignment.center,
     {
-      minX: 0,
-      minY: 0,
-      maxX: canvas.width,
-      maxY: canvas.height
+      minX: d.x,
+      minY: d.y,
+      maxX: d.x + d.w,
+      maxY: d.y + d.h,
     },
     artboard.bounds
   );
