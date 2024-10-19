@@ -122,6 +122,8 @@ let loopCallbacks : LoopCallBack[] = [];
 function loop(time : number) : void {
   deltaTime = (time - elapsed) / 1000;
 
+  console.log(deltaTime);
+  
   elapsed = time;
 
   for (let stateMachine of stateMachines)
@@ -145,7 +147,7 @@ function loop(time : number) : void {
   
   rive.resolveAnimationFrame();
 
-  queueRect(0, 0, canvas.width, canvas.height, "yellow");
+  //queueRect(0, 0, canvas.width, canvas.height, "yellow");
 
   executeDrawings(canvas);
 
@@ -182,7 +184,7 @@ function render(time:Number): void {
     
     let mousePos = getMousePosition(canvas);
 
-    //queueRect(d.x, d.y, d.w, d.h, "yellow");
+    queueRect(d.x, d.y, d.w, d.h, "yellow");
     
     //mousePos.x -= d.w * .5;     mousePos.y -= d.h * .5;
     //d.x = mousePos.x;  d.y = mousePos.y; queueRect(d.x, d.y, d.w, d.h, "yellow");
@@ -193,8 +195,8 @@ function render(time:Number): void {
       {	
         minX: d.x, // mousePos.x, //0,	
         minY: d.y, //mousePos.y, //0,
-        maxX: d.x + d.w, //mousePos.x + d.w, //canvas.width,
-        maxY: d.y + d.h //mousePos.y + d.h //canvas.height
+        maxX: d.w, //mousePos.x + d.w, //canvas.width, //d.x + d.w
+        maxY: d.h //mousePos.y + d.h //canvas.height // d.y + d.h
       },
       bounds,
     );
@@ -210,6 +212,7 @@ function render(time:Number): void {
 
 
 function resizeCanvas() : void {
+  console.log("Resizing to", canvas.width, canvas.height);
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
@@ -380,23 +383,7 @@ async function main() : Promise<void> {
 
   stateMachines.push(new rive.StateMachineInstance(artboards[0].stateMachineByIndex(0), artboards[0]));
 
-  loopCallbacks.push( () => {
-    let d = readValues();
-
-    console.log(stateMachines[0].inputCount());
-
-    let selector = stateMachines[0].input(1).asNumber();
-
-    if (d.x in [0,1,2,3,4]) {
-      selector.value = d.x;
-
-      console.log("Set Selector to:", d.x);
-
-    }
-  })
   requestAnimationFrame(loop);
-  
-
 }
 
 type Dimensions = {
