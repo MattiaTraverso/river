@@ -31,7 +31,7 @@ let canvas : HTMLCanvasElement;
 let rive : RiveCanvas;
 let renderer : WrappedRenderer;
 
-let mainRes = new Vec2D(2400, 1600);
+let mainRes = new Vec2D(1000, 1000);
 
 
 let loadedFiles : File[] = [];
@@ -61,7 +61,7 @@ async function initiate(): Promise<RiveCanvas> {
 
   renderer = rive.makeRenderer(canvas);
 
-  fit = rive.Fit.fill;
+  fit = rive.Fit.none;
   alignment = rive.Alignment.bottomLeft;
 
   let d = readValues();
@@ -117,6 +117,7 @@ function logUnpackedRiveFile(file: RiveFile): void {
 }
 
 async function loadFile(url: string): Promise<RiveFile> {
+  console.log("Loading: ", url);
   const bytes = await (await fetch(new Request(url))).arrayBuffer();
   
   // import File as a named import from the Rive dependency
@@ -165,7 +166,13 @@ let timer = 1;
 
 let fps : number[] = [];
 
+const slider1 = document.getElementById('slider1') as HTMLInputElement;
+const slider2 = document.getElementById('slider2') as HTMLInputElement;
+
+
+
 function loop(time : number) : void {
+
   let d = readValues();
   frame.x = d.x; frame.y = d.y; frame.width = d.w; frame.height = d.h;
   scale = d.bx;
@@ -181,6 +188,7 @@ debug_vertical_offset = d.bw;
 
   timer -= deltaTime;
 
+  /*
   if (timer <= 0)
   {
     timer = 1;
@@ -189,7 +197,7 @@ debug_vertical_offset = d.bw;
     {
       sm.input(1).asNumber().value = Math.floor(Math.random() * (4 - 1 + 1) + 1);
     }
-  }
+  }*/
   debug_string.innerHTML += "<br>" + deltaTime + " ms";
   debug_string.innerHTML += "<br>" + 1/deltaTime + " FPS";
 
@@ -220,9 +228,25 @@ debug_vertical_offset = d.bw;
     stateMachine.advance(deltaTime);
   }
 
+  let i = 0;
+
+  // Get the current value of slider1
+  const value1 = parseFloat(slider1.value);
+
+  // Get the current value of slider2
+  const value2 = parseFloat(slider2.value);
+
   for (let animation of animations){
+
+    //animation.time -= deltaTime;
+
     animation.advance(deltaTime);
-    animation.apply(1);
+
+    animation.apply(i == 0 ? value1 : value2);
+
+    debug_string.innerHTML += "<br> "+ (i == 0 ? value1 : value2);
+
+    i++;
   }
 
   for (let artboard of artboards){
@@ -390,19 +414,28 @@ async function main() : Promise<void> {
   //let car : RiveFile = await loadFile("clean_the_car.riv");
   //let centaur : RiveFile = await loadFile("centaur.riv");
 
-/*
+
   //basket test
   //This .riv only has one animation, no state machine.
   //We add the animation and let it be updated.
   
-  async function basketTest() : void {
-    let basket : RiveFile = await loadFile("basketball.riv");
+  async function basketTest() {
+    let basket : RiveFile = await loadFile("walk_cycle.riv");
     artboards.push(basket.artboards[0]);
-    animations.push(new rive.LinearAnimationInstance(basket.artboards[0].animationByName('idle'), basket.artboards[0]));
+    content = artboards[0].bounds;
+    logUnpackedRiveFile(basket);
+    animations.push(new rive.LinearAnimationInstance(artboards[0].animationByIndex(4), artboards[0]));
+    animations.push(new rive.LinearAnimationInstance(artboards[0].animationByIndex(5), artboards[0]));
   }
   
   basketTest();
-*/
+
+  document.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.code === 'Space') {
+      animations[0].time = 2;
+    }
+  });
+
 
 /*
   //walk cycle .riv test
@@ -537,7 +570,7 @@ async function main() : Promise<void> {
 
 //#endregion
 
-
+/*
 const button = document.getElementById("btn");
   
   if (button) {
@@ -572,7 +605,7 @@ const button = document.getElementById("btn");
 
     stateMachines.push(new rive.StateMachineInstance(artboard.stateMachineByIndex(0), artboard));
   }
-  
+  */
 
 
   requestAnimationFrame(loop);
@@ -697,6 +730,8 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
 }
 
 function mouseToArtboardSpace(artboard : Artboard, HACK : number, HACK2 : number) : {x : number, y : number} {
+  return {x :0 , y: 0};
+
   let mousePos = getMousePosition(canvas);
 
   let aabb = frame.ToRiveBoundaries();

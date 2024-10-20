@@ -5,6 +5,25 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="src/styles.css" />
     <style>
+        #slider-container {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+        #slider-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        #slider-container input {
+            width: 200px;
+        }
         #overlay-controls {
             display : none;
             position: fixed;
@@ -92,6 +111,14 @@
         </form>
     </div>
     
+    <div id="slider-container">
+        <label for="slider1">Stop:</label>
+        <input type="range" id="slider1" min="0" max="1" step="0.01" value="0.0">
+        <label for="slider2">Walk:</label>
+        <input type="range" id="slider2" min="0" max="1" step="0.01" value="1.0">
+    </div>
+
+
     <div id="debug-values">
         <div class="group">
             <div class="group-title">Window Mouse Coords</div>
@@ -120,7 +147,7 @@
         <b>Debug:</b> <span id="debug-string-content"></span>
     </div>
     <div>
-    <h1>Performance Test</h1><button id="btn">!!!ADD FIVE ANIMATED ELEMENTS!!!</button>
+    <h1>Animation Blend Test</h1>
 </div>
     <canvas id="gameCanvas"></canvas>
     <script type="module" src="src/wip.ts"></script>
