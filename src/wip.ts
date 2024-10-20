@@ -163,6 +163,8 @@ const debug_string : HTMLElement = document.getElementById('debug-string-content
 
 let timer = 1;
 
+let fps : number[] = [];
+
 function loop(time : number) : void {
   let d = readValues();
   frame.x = d.x; frame.y = d.y; frame.width = d.w; frame.height = d.h;
@@ -188,11 +190,29 @@ debug_vertical_offset = d.bw;
       sm.input(1).asNumber().value = Math.floor(Math.random() * (4 - 1 + 1) + 1);
     }
   }
-  debug_string.innerHTML += "<br>" + deltaTime;
+  debug_string.innerHTML += "<br>" + deltaTime + " ms";
+  debug_string.innerHTML += "<br>" + 1/deltaTime + " FPS";
+
+   fps.push(1/deltaTime);
+
+  if (fps.length > 100) fps = fps.slice(1);
+
+  let sum : number = 0;
+  for (let value of fps)
+  {
+    sum += value;
+  }
+
+  let average = sum / fps.length;
+
+  average = Math.trunc(average);
+
+  debug_string.innerHTML += "<br>" + average + " Average";
+
 
   //debug_string.textContent += `        Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
 
-  debug_string.innerHTML += "<br>Window" + window.innerWidth + " "+window.innerHeight;
+  //debug_string.innerHTML += "<br>Window" + window.innerWidth + " "+window.innerHeight;
   elapsed = time;
 
   for (let stateMachine of stateMachines)
@@ -323,6 +343,7 @@ function render(time:Number): void {
 
 //#endregion
 
+let fashion : RiveFile;
 
 function resizeCanvas() : void {
   //console.log("Resizing to", canvas.width, canvas.height);
@@ -516,11 +537,20 @@ async function main() : Promise<void> {
 
 //#endregion
 
-  let fashion : RiveFile = await loadFile("fashion_app.riv");
+
+const button = document.getElementById("btn");
+  
+  if (button) {
+    button.addEventListener("click", () => {
+      addTenArtboards();
+    });
+  }
+    
+  fashion = await loadFile("fashion_app.riv");
 
   //logUnpackedRiveFile(fashion);
 
-  for (let i = 0; i < 10; i++)
+  for (let i = 0; i < 5; i++)
   {
     let artboard : Artboard = fashion.file.artboardByIndex(0);
 
@@ -544,10 +574,22 @@ async function main() : Promise<void> {
   }
   
 
-  
-
 
   requestAnimationFrame(loop);
+}
+
+
+
+
+async function addTenArtboards() 
+{
+  for (let i = 0; i < 5; i++)
+  {
+    let artboard : Artboard = fashion.file.artboardByIndex(0);
+    artboard.frameOrigin = true;
+    artboards.push(artboard);
+    stateMachines.push(new rive.StateMachineInstance(artboard.stateMachineByIndex(0), artboard));
+  }
 }
 
 type Dimensions = {
