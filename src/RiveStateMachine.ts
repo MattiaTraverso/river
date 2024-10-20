@@ -9,6 +9,7 @@ import {
 import { RiveSMInput } from "./RiveSMInput";
 import RiveRenderer from "./RiveRenderer";
 import Game from "./Game";
+import { Input } from "./Input";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;
@@ -39,6 +40,13 @@ export class RiveSMRenderer extends RiveRenderer {
   advance(deltaTime: number): void {
     this._reportedEvents = [];
     this._changedStates = [];
+
+    let mouseCoords = Input.MouseToArtboardSpace(this);
+
+    if (Input.IsMouseClicked) this.smInstance.pointerDown(mouseCoords.x, mouseCoords.y);
+    if (Input.IsMouseUp) this.smInstance.pointerUp(mouseCoords.x, mouseCoords.y);
+    if (Input.HasMouseMoved) this.smInstance.pointerMove(mouseCoords.x, mouseCoords.y);
+    
     this.smInstance.advance(deltaTime);
 
     const reportedEventCount = this.smInstance.reportedEventCount();

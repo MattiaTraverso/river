@@ -13,7 +13,7 @@ async function main()
 {
     await Game.Initiate();
 
-    
+    fashionTestScene();
 } 
 
 
@@ -103,5 +103,54 @@ async function eventsTestScene() {
     });
 }
 
+async function fashionTestScene() {
+    let file : File = await Game.LoadFile("test/fashion_app.riv");
 
+    let artboard : Artboard = file.artboardByIndex(0);
+
+    let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+
+    Game.Add(ro);
+}
 main();
+
+
+import { StateMachine } from "@rive-app/canvas-advanced";
+import { SMIInput } from "@rive-app/canvas-advanced";
+function LogUnpackedRiveFile(file: File): void {
+    let log: string = ""
+  
+    
+    for (let i = 0; i < file.artboardCount(); i++) {
+      let artboard : Artboard = file.artboardByIndex(i);
+  
+      log += `\n Artboard: ${artboard.name}`;
+  
+      log += `\n     ${artboard.stateMachineCount()} State Machines`;
+      for (let i = 0; i < artboard.stateMachineCount(); i++) {
+        let sm : StateMachine = artboard.stateMachineByIndex(i);
+        
+        log += `\n ----SM: ${sm.name}`;
+  
+        let sm_instance = new Game.RiveInstance.StateMachineInstance(sm, artboard);
+  
+        for (let i = 0; i < sm_instance.inputCount(); i++) {
+          let smi : SMIInput = sm_instance.input(i);
+  
+          log += `\n -------SMI: ${smi.name} | ${smi.type} | ${smi.value}`;
+        }
+  
+        sm_instance.delete();
+        
+      }
+  
+      log += `\n     ${artboard.animationCount()} Animations`;
+      for (let i = 0; i < artboard.animationCount(); i++) {
+        log += `\n ----AN: ${artboard.animationByIndex(i).name}`;
+      }
+  
+      
+    }
+  
+    console.log(log);
+  }

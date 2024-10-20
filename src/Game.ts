@@ -7,7 +7,7 @@ import Rive, {
 
 import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils"; 
-
+import { Input } from "./Input";
 
 export interface LoopCallback {
    () : void 
@@ -32,14 +32,25 @@ export class Game{
     });
   
     Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+
+    Input.Initiate(Game.Canvas);
   
     window.addEventListener('resize', Game.ResizeCanvas);
+    Game.ResizeCanvas();
+    
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
     requestAnimationFrame(Game.Loop);
   }
 
   private static ResizeCanvas() : void{
+    Game.Canvas.width = window.innerWidth;
+    Game.Canvas.height = window.innerHeight;
+
+    return;
+
+    //For now skipping this as it takes some time
+
     const aspectRatio = Game.TargetResolution.x / Game.TargetResolution.y;
 
     console.log("Aspect Ratio:", aspectRatio);
@@ -94,6 +105,8 @@ export class Game{
     Game.RiveInstance.resolveAnimationFrame();
 
     requestAnimationFrame(Game.Loop);
+
+    Input.Clear();
   }
 
   private static Render(deltaTime : number) {
@@ -112,7 +125,7 @@ export class Game{
           maxX: Game.Canvas.width,
           maxY: Game.Canvas.height
         },
-        riveRenderer.artboard.bounds
+        riveRenderer.bounds
       );
 
       riveRenderer.artboard.draw(Game.Renderer);

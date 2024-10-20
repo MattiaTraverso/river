@@ -1,9 +1,10 @@
 import Rive, {
     Artboard,
     Fit,
-    Alignment
+    Alignment,
+    AABB
   } from "@rive-app/canvas-advanced";
-import Game, { Loopable } from "./Game";
+import Game from "./Game";
 
 
 export class RiveRenderer {
@@ -11,6 +12,7 @@ export class RiveRenderer {
 
   fit : Fit = Game.RiveInstance.Fit.contain;
   alignment : Alignment = Game.RiveInstance.Alignment.bottomLeft;
+  get bounds() : AABB { return this.artboard.bounds; }
 
   constructor(artboard : Artboard)
   {
