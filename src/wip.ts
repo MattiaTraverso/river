@@ -520,7 +520,7 @@ async function main() : Promise<void> {
 
   //logUnpackedRiveFile(fashion);
 
-  for (let i = 0; i < 30; i++)
+  for (let i = 0; i < 10; i++)
   {
     let artboard : Artboard = fashion.file.artboardByIndex(0);
 
@@ -615,7 +615,7 @@ function updateMousePosition(event: MouseEvent) {
     if (!artboards || artboards.length == 0)
       return
 
-    let mouseCoords = mouseToArtboardSpace(artboards[0], 0 * debug_offset);
+    let mouseCoords = mouseToArtboardSpace(artboards[0], 0 * debug_offset, 0);
   
   //Debug mouse coords
     let mousePos = getMousePosition(canvas);
