@@ -419,6 +419,7 @@ async function main() : Promise<void> {
   //This .riv only has one animation, no state machine.
   //We add the animation and let it be updated.
   
+  
   async function basketTest() {
     let basket : RiveFile = await loadFile("walk_cycle.riv");
     artboards.push(basket.artboards[0]);
@@ -430,12 +431,14 @@ async function main() : Promise<void> {
   
   basketTest();
 
+  /*
   document.addEventListener('keydown', (event: KeyboardEvent) => {
     if (event.code === 'Space') {
       animations[0].time = 2;
     }
   });
 
+  */
 
 /*
   //walk cycle .riv test
@@ -501,8 +504,10 @@ async function main() : Promise<void> {
 
   artboards.push(events.artboards[0]);
 
-  stateMachines.push(new rive.StateMachineInstance(events.artboards[0].stateMachineByIndex(0), events.artboards[0]));
+  content = artboards[0].bounds;
 
+  stateMachines.push(new rive.StateMachineInstance(events.artboards[0].stateMachineByIndex(0), events.artboards[0]));
+  */
 
 
   loopCallbacks.push(() => {
@@ -547,6 +552,7 @@ async function main() : Promise<void> {
             }
           }
           
+          /*
           //[Log] Event:  – "URL TYPE" (index.cfee688b.js, line 659)
           //[Log] ---Delay of  – 0.01400265097618103 (index.cfee688b.js, line 660)
           //[Log] ---Type: – 131 (index.cfee688b.js, line 661)
@@ -562,11 +568,12 @@ async function main() : Promise<void> {
          // [Log] -----BOOLEAN: false (index.cfee688b.js, line 665)
          // [Log] -----STRING: Bella pe te! (index.cfee688b.js, line 665)
          // [Log] -----NUMBER AGAIN: 0 (index.cfee688b.js, line 665)
-        }
+        */
+         }
       }
     }
   );
-*/
+
 
 //#endregion
 

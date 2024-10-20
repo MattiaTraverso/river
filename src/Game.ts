@@ -5,12 +5,12 @@ import Rive, {
     Artboard
 } from "@rive-app/canvas-advanced";
 
-import RiveObject from "./RiveObject";
+import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils"; 
 
 
-export interface Loopable {
-   Loop(time : number) : void 
+export interface LoopCallback {
+   () : void 
 }
 
 export class Game{
@@ -22,25 +22,25 @@ export class Game{
   private static _hasInitiated : boolean = false;
 
   public static async Initiate(): Promise<void> {
-    if (this._hasInitiated) {
+    if (Game._hasInitiated) {
       throw console.error("Has already been initiated");
     }
-    this._hasInitiated = true
+    Game._hasInitiated = true
 
-    this.RiveInstance = await Rive({
+    Game.RiveInstance = await Rive({
       locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
     });
   
-    this.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+    Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   
-    window.addEventListener('resize', this.ResizeCanvas);
-    this.Renderer = this.RiveInstance.makeRenderer(this.Canvas);
+    window.addEventListener('resize', Game.ResizeCanvas);
+    Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
-    requestAnimationFrame(this.Loop);
+    requestAnimationFrame(Game.Loop);
   }
 
   private static ResizeCanvas() : void{
-    const aspectRatio = this.TargetResolution.x / this.TargetResolution.y;
+    const aspectRatio = Game.TargetResolution.x / Game.TargetResolution.y;
 
     console.log("Aspect Ratio:", aspectRatio);
     
@@ -56,47 +56,72 @@ export class Game{
     }
 
     // Update canvas dimensions
-    this.Canvas.width = newWidth;
-    this.Canvas.height = newHeight;
+    Game.Canvas.width = newWidth;
+    Game.Canvas.height = newHeight;
   }
 
-  private static _riveObjects : RiveObject[] = [];
+  private static riveObjects : RiveRenderer[] = [];
   
+  private static elapsedTime : number = 0;
+
+  static Add(object : RiveRenderer) {
+    Game.riveObjects.push(object);
+  }
+
+  static PreLoop : LoopCallback[] = [];
+  static PostLoop : LoopCallback[] = []
+
+  static TimeScale = 1.0;
+
   private static Loop(time : number) {
-    /*
-    for (let stateMachine of stateMachines)
-    {
-      stateMachine.advance(deltaTime);
-    }
-  
-    for (let animation of animations){
-      animation.advance(deltaTime);
-      animation.apply(1);
-    }
-  
-    for (let artboard of artboards){
-      artboard.advance(deltaTime);
-     //debug_string.innerHTML += `<br> ${artboard.bounds.maxY - artboard.bounds.minY}`;
-    }
-     */
-  
-    for (let loopCallBack of loopCallbacks)
-      loopCallBack();
-  
-    this.Render(time);
-
-    this.DebugRender(time);
+    let deltaTime = (time - Game.elapsedTime) / 1000;
+    deltaTime *= Game.TimeScale;
     
-    this.RiveInstance.resolveAnimationFrame();
+    Game.elapsedTime = time;
 
-    requestAnimationFrame(this.Loop);
+    for (let callback of Game.PreLoop) callback();
+
+    for (let riveRenderer of Game.riveObjects)
+    {
+      if (riveRenderer.enabled)
+        riveRenderer.advance(deltaTime);
+    }
+    
+    Game.Render(deltaTime);
+
+    Game.DebugRender(deltaTime);
+    
+    Game.RiveInstance.resolveAnimationFrame();
+
+    requestAnimationFrame(Game.Loop);
   }
 
-  private static Render(time : number) {
+  private static Render(deltaTime : number) {
+    Game.Renderer.clear();
 
+    for (let riveRenderer of Game.riveObjects)
+    {
+      Game.Renderer.save();
+
+      Game.Renderer.align(
+        riveRenderer.fit,
+        riveRenderer.alignment,
+        {	
+          minX: 0,	
+          minY: 0,
+          maxX: Game.Canvas.width,
+          maxY: Game.Canvas.height
+        },
+        riveRenderer.artboard.bounds
+      );
+
+      riveRenderer.artboard.draw(Game.Renderer);
+
+      Game.Renderer.restore();
+    }
   }
 
-  private static DebugRender(time : number) {
+  private static DebugRender(deltaTime : number) {
 
   }
 
@@ -105,7 +130,7 @@ export class Game{
     const bytes = await (await fetch(new Request(url))).arrayBuffer();
     
     // import File as a named import from the Rive dependency
-    const file = (await this.RiveInstance.load(new Uint8Array(bytes))) as File;
+    const file = (await Game.RiveInstance.load(new Uint8Array(bytes))) as File;
     
     // Extract the file name from the URL
     const name = url.split('/').pop()?.split('?')[0] || 'unknown';

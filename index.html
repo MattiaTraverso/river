@@ -5,74 +5,6 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="src/styles.css" />
     <style>
-        #slider-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: sans-serif;
-            font-size: 12px;
-        }
-        #slider-container label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        #slider-container input {
-            width: 200px;
-        }
-        #overlay-controls {
-            display : none;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: sans-serif;
-            font-size: 12px;
-        }
-        #overlay-controls form {
-            display: grid;
-            grid-template-columns: auto auto;
-            gap: 5px;
-        }
-        #overlay-controls label {
-            text-align: right;
-            padding-right: 5px;
-        }
-        #overlay-controls input {
-            width: 50px;
-        }
-        #debug-values {
-            display : none;
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: monospace;
-            font-size: 12px;
-        }
-        #debug-values .group {
-            margin-bottom: 10px;
-        }
-        #debug-values .group-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        #debug-values .value-pair {
-            display: flex;
-            justify-content: space-between;
-        }
         #debug-string {
             position: fixed;
             bottom: 10px;
@@ -90,66 +22,12 @@
     </style>
 </head>
 <body>
-    <div id="overlay-controls">
-        <form id="numberForm">
-            <label for="x">X:</label>
-            <input type="number" id="x" name="x" value="0" required>
-            <label for="y">Y:</label>
-            <input type="number" id="y" name="y" value="0" required>
-            <label for="w">W:</label>
-            <input type="number" id="w" name="w" value="500" required>
-            <label for="h">H:</label>
-            <input type="number" id="h" name="h" value="500" required>
-            <label for="bx">BX:</label>
-            <input type="number" id="bx" name="bx" value="0" required>
-            <label for="by">BY:</label>
-            <input type="number" id="by" name="by" value="0" required>
-            <label for="bw">BW:</label>
-            <input type="number" id="bw" name="bw" value="500" required>
-            <label for="bh">BH:</label>
-            <input type="number" id="bh" name="bh" value="500" required>
-        </form>
-    </div>
-    
-    <div id="slider-container">
-        <label for="slider1">Stop:</label>
-        <input type="range" id="slider1" min="0" max="1" step="0.01" value="0.0">
-        <label for="slider2">Walk:</label>
-        <input type="range" id="slider2" min="0" max="1" step="0.01" value="1.0">
-    </div>
-
-
-    <div id="debug-values">
-        <div class="group">
-            <div class="group-title">Window Mouse Coords</div>
-            <div class="value-pair">
-                <span>mx: <span id="mx-value">0</span></span>
-                <span>my: <span id="my-value">0</span></span>
-            </div>
-        </div>
-        <div class="group">
-            <div class="group-title">Canvas Mouse Coords</div>
-            <div class="value-pair">
-                <span>mcx: <span id="mcx-value">0</span></span>
-                <span>mcy: <span id="mcy-value">0</span></span>
-            </div>
-        </div>
-        <div class="group">
-            <div class="group-title">Artboard 0 Mouse Coords</div>
-            <div class="value-pair">
-                <span>max: <span id="max-value">0</span></span>
-                <span>may: <span id="may-value">0</span></span>
-            </div>
-        </div>
-    </div>
-
     <div id="debug-string">
         <b>Debug:</b> <span id="debug-string-content"></span>
     </div>
     <div>
-    <h1>Animation Blend Test</h1>
 </div>
     <canvas id="gameCanvas"></canvas>
-    <script type="module" src="src/wip.ts"></script>
+    <script type="module" src="src/Pegaso.ts"></script>
 </body>
 </html>
