@@ -31,7 +31,8 @@ let canvas : HTMLCanvasElement;
 let rive : RiveCanvas;
 let renderer : WrappedRenderer;
 
-let mainRes = new Vec2D(1280, 720);
+let mainRes = new Vec2D(2400, 1600);
+
 
 let loadedFiles : File[] = [];
 
@@ -51,14 +52,17 @@ async function initiate(): Promise<RiveCanvas> {
 
   rive = instance;
   canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-  
+
+  canvas.width = mainRes.x;
+  canvas.height = mainRes.y;
+
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
   renderer = rive.makeRenderer(canvas);
 
-  fit = rive.Fit.contain;
-  alignment = rive.Alignment.center;
+  fit = rive.Fit.fill;
+  alignment = rive.Alignment.bottomLeft;
 
   let d = readValues();
   frame = new Rect(d.x, d.y, d.w, d.h, canvas);
@@ -157,17 +161,33 @@ let loopCallbacks : LoopCallBack[] = [];
 
 const debug_string : HTMLElement = document.getElementById('debug-string-content') as HTMLElement;
 
+let timer = 1;
+
 function loop(time : number) : void {
   let d = readValues();
   frame.x = d.x; frame.y = d.y; frame.width = d.w; frame.height = d.h;
   scale = d.bx;
-debug_offset = d.by;
+
+
+
+debug_offset = 150;//d.by;
+debug_vertical_offset = d.bw;
  debug_string.textContent = "";
 
 
   deltaTime = (time - elapsed) / 1000;
 
+  timer -= deltaTime;
 
+  if (timer <= 0)
+  {
+    timer = 1;
+
+    for (let sm of stateMachines)
+    {
+      sm.input(1).asNumber().value = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+    }
+  }
   debug_string.innerHTML += "<br>" + deltaTime;
 
   //debug_string.textContent += `        Frame: ${frame.x} ${frame.y} ${frame.width} ${frame.height}`
@@ -199,7 +219,7 @@ debug_offset = d.by;
 
   queueRect(0, 0, canvas.width, canvas.height, "yellow");
 
-  executeDrawings(canvas);
+  //executeDrawings(canvas);
 
   requestAnimationFrame(loop);
 }
@@ -259,6 +279,7 @@ let content : AABB;
 
 let scale = 1;
 let debug_offset = 60;
+let debug_vertical_offset = 100;
 
 function render(time:Number): void {
   renderer.clear();
@@ -268,11 +289,19 @@ function render(time:Number): void {
   {
     let aabb : AABB = frame.ToRiveBoundaries();
 
-    let offset = i * debug_offset;
+    let offset = (i % 10) * debug_offset;
+   // console.log( Math.round(i / 5) );
+    let verticalOffset =  Math.floor(i / 10) * debug_vertical_offset;
     aabb.minX += offset;
     aabb.maxX += offset;
 
-    queueRect(frame.x + offset, frame.y, frame.width * scale, frame.height * scale, "orange");
+    aabb.minY += verticalOffset;
+    aabb.maxY += verticalOffset;
+
+    aabb.minX *= scaleX;  aabb.maxX *= scaleX;
+    aabb.minY *= scaleY; aabb.maxY *= scaleY;
+
+    queueRect((frame.x + offset) * scaleX, (frame.y +verticalOffset) * scaleY, frame.width * scaleX, frame.height * scaleY, "orange");
       
     //debug_string.textContent = "" + artboard.bounds.minX + "," + artboard.bounds.minY + "," + artboard.bounds.maxX + "," + artboard.bounds.maxY;
 
@@ -297,22 +326,42 @@ function render(time:Number): void {
 
 function resizeCanvas() : void {
   //console.log("Resizing to", canvas.width, canvas.height);
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+
+  console.log("Previous Canvas:", canvas.width, canvas.height);
+  
+  const aspectRatio = mainRes.x / mainRes.y;
+
+  console.log("Aspect Ratio:", aspectRatio);
+  
+  let newWidth = window.innerWidth;
+  let newHeight = window.innerHeight;
+
+  if (newWidth / newHeight > aspectRatio) {
+      // Window is wider than canvas aspect ratio
+      newWidth = Math.floor(newHeight * aspectRatio);
+  } else {
+      // Window is taller than canvas aspect ratio
+      newHeight = Math.floor(newWidth / aspectRatio);
+  }
+
+  // Update canvas dimensions
+  canvas.width = newWidth;
+  canvas.height = newHeight;
+
+  console.log("Canvas:",canvas.width, canvas.height);
+
+
+  scaleY = scaleX = canvas.height / mainRes.y;
 
   return;
-  scaleY = canvas.height / mainRes.y;
-
-  let aspectRatio = mainRes.x / mainRes.y;
-
   scaleX = scaleY * aspectRatio;
+
+  console.log("Scale: ", scaleX, scaleY);
 }
 
 async function main() : Promise<void> {
   await initiate();
 
-  mainRes.x = window.innerWidth;
-  mainRes.y = window.innerHeight;
   //#region  examples
   //How to write this all in one go with an array and map?
 
@@ -471,7 +520,7 @@ async function main() : Promise<void> {
 
   //logUnpackedRiveFile(fashion);
 
-  for (let i = 0; i < 1; i++)
+  for (let i = 0; i < 30; i++)
   {
     let artboard : Artboard = fashion.file.artboardByIndex(0);
 
@@ -544,7 +593,7 @@ function queueRect(x: number, y: number, width: number, height: number, color: s
 function executeDrawings(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 10 * scaleX;
         drawQueue.forEach(op => {
             ctx.strokeStyle = op.color;
             ctx.strokeRect(op.x, op.y, op.width, op.height);
@@ -587,7 +636,7 @@ window.addEventListener("click", function (e) {
   let i = 0;
   for (let artboard of artboards)
   {
-    let mouseCoords = mouseToArtboardSpace(artboard, i * debug_offset);
+    let mouseCoords = mouseToArtboardSpace(artboard, i * debug_offset, Math.round(i /5) * 0);
 
     stateMachines[i].pointerDown(mouseCoords.x, mouseCoords.y);
 
@@ -605,12 +654,18 @@ function getMousePosition(canvas: HTMLCanvasElement): { x: number, y: number } {
     };
 }
 
-function mouseToArtboardSpace(artboard : Artboard, HACK : number) : {x : number, y : number} {
+function mouseToArtboardSpace(artboard : Artboard, HACK : number, HACK2 : number) : {x : number, y : number} {
   let mousePos = getMousePosition(canvas);
 
   let aabb = frame.ToRiveBoundaries();
   aabb.minX += HACK;
   aabb.maxX += HACK;
+
+  aabb.minY += HACK2;
+  aabb.maxY += HACK2;
+
+  aabb.minX *= scaleX;  aabb.maxX *= scaleX;
+  aabb.minY *= scaleY; aabb.maxY *= scaleY;
 
   //todo: not working if the canvas isn't full sized
   let fwdMatrix = rive.computeAlignment(
