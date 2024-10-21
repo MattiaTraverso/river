@@ -7,7 +7,7 @@ import Rive, {
 
 import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils"; 
-import { Input } from "./Input";
+import { Input, KeyCode } from "./Input";
 import { Debug } from "./Debug";
 
 export interface LoopCallback {
@@ -15,8 +15,17 @@ export interface LoopCallback {
 }
 
 export class Game{
-  static TargetResolution : Vec2D = new Vec2D(1280, 720);
+  static TargetResolution : Vec2D = new Vec2D(400, 400);
+  static get ResScale() : Vec2D {
+    return new Vec2D(Game.Canvas.width / Game.TargetResolution.x, Game.Canvas.height / Game.TargetResolution.y);
+  }
+  
   static RiveInstance: RiveCanvas;
+
+  //====
+  // Remember: Y positive is DOWN, Y negative is UP
+  // Remember: [0,0] is top left
+  //=====
   static Canvas : HTMLCanvasElement;
   static Renderer : WrappedRenderer;
 
@@ -40,23 +49,27 @@ export class Game{
     window.addEventListener('resize', Game.ResizeCanvas);
     Game.ResizeCanvas();
 
+    window.addEventListener('onvisibilitychange', Game.Destroy);
+
+    const button = document.getElementById('btn');
+    
+    if (button) {
+        // Add click event listener to the button
+        button.addEventListener('click', () => {
+          Debug.Add("YOOOO");
+        });
+    }
+
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
     requestAnimationFrame(Game.Loop);
   }
 
-  private static ResizeCanvas() : void{
-    Game.Canvas.width = window.innerWidth;
-    Game.Canvas.height = window.innerHeight;
-
-    return;
-
+  private static ResizeCanvas() : void {
     //For now skipping this as it takes some time
 
     const aspectRatio = Game.TargetResolution.x / Game.TargetResolution.y;
 
-    console.log("Aspect Ratio:", aspectRatio);
-    
     let newWidth = window.innerWidth;
     let newHeight = window.innerHeight;
 
@@ -77,8 +90,31 @@ export class Game{
   
   private static elapsedTime : number = 0;
 
-  static Add(object : RiveRenderer) {
+  static Add(object : RiveRenderer) : RiveRenderer {
     Game.riveObjects.push(object);
+    return object;
+  }
+
+  static Remove(object: RiveRenderer) {
+    const index = Game.riveObjects.indexOf(object);
+    Game.RemoveAtIndex(index);
+  }
+
+  static RemoveAtIndex(index : number) {
+    if (index > 0) {
+      Game.riveObjects[index].destroy();
+      Game.riveObjects = Game.riveObjects.splice(index, 1);
+    }
+  }
+
+  static Destroy(event : Event) {
+    event.preventDefault();
+    event.returnValue = true;
+    
+    window.alert("Being Destroyed");
+
+    while (Game.riveObjects.length > 0)
+      Game.RemoveAtIndex(0);
   }
 
   static PreLoop : LoopCallback[] = [];
@@ -86,14 +122,42 @@ export class Game{
 
   static TimeScale = 1.0;
 
+
   private static Loop(time : number) {
     Debug.Clear();
+
+    Debug.Add(`Taget Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
+    Debug.Add(`Canvas: [${Game.Canvas.width},${Game.Canvas.height}] -> [${Game.ResScale.x}x, ${Game.ResScale.y}x]`);
+    Debug.Add(`Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
 
     let deltaTime = (time - Game.elapsedTime) / 1000;
     deltaTime *= Game.TimeScale;
 
+    if (Game.riveObjects.length > 0) {
+      let artboard : Artboard = Game.riveObjects[0].artboard;
+
+      let movement = deltaTime * 200;
+
+      if (Input.IsKeyDown(KeyCode.A))
+        artboard.frameOrigin = !artboard.frameOrigin;
+      if (Input.IsKey(KeyCode.LeftArrow))
+        Game.riveObjects[0].position.x -= movement;
+      if (Input.IsKey(KeyCode.RightArrow))
+        Game.riveObjects[0].position.x += movement;
+      if (Input.IsKey(KeyCode.UpArrow)) {
+        Game.riveObjects[0].position.y -= movement;
+      }
+      if (Input.IsKey(KeyCode.DownArrow)) {
+        Game.riveObjects[0].position.y += movement;
+      }
+
+      Debug.Add(`Artboard Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
+      Debug.Add(`Artboard Size: [${Math.abs(Game.riveObjects[0].frame.maxX - Game.riveObjects[0].frame.minX)},${Math.abs(Game.riveObjects[0].frame.maxY - Game.riveObjects[0].frame.minY)}]`);
+      Debug.Add(`Position: [${Game.riveObjects[0].position.x}, ${Game.riveObjects[0].position.y}]`)
+    }
+
     let fps = 1 / deltaTime;
-    Debug.Add(Math.trunc(fps*100)/100 + " fps");
+    //Debug.Add(Math.trunc(fps*100)/100 + " fps");
 
     Game.elapsedTime = time;
 
@@ -123,18 +187,11 @@ export class Game{
     {
       Game.Renderer.save();
 
-      Game.Renderer.translate(riveRenderer.position.x, riveRenderer.position.y);
-
       Game.Renderer.align(
         riveRenderer.fit,
         riveRenderer.alignment,
-        {	
-          minX: 0,	
-          minY: 0,
-          maxX: Game.Canvas.width,
-          maxY: Game.Canvas.height
-        },
-        riveRenderer.bounds
+        riveRenderer.frame,
+        riveRenderer.artboard.bounds
       );
 
       riveRenderer.artboard.draw(Game.Renderer);
@@ -144,7 +201,6 @@ export class Game{
   }
 
   private static DebugRender(deltaTime : number) {
-
   }
 
 

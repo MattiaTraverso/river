@@ -4,29 +4,18 @@
     <title>Parcel Sandbox</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="src/styles.css" />
-    <style>
-        #debug {
-            position: fixed;
-            bottom: 10px;
-            left: 10px;
-            z-index: 1000;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-family: monospace;
-            font-size: 12px;
-            max-width: 300px;
-            word-wrap: break-word;
-        }
-    </style>
 </head>
 <body>
     <div id="debug">
         <b>Debug:</b> <span id="debug-content"></span>
     </div>
 
-    <canvas id="gameCanvas"></canvas>
+    <div class="canvas-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="crosshair-h"></div>
+        <div class="crosshair-v"></div>
+    </div>
+   
     <script type="module" src="src/Pegaso.ts"></script>
 </body>
 </html>

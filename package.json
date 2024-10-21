@@ -1,7 +1,7 @@
 {
-  "name": "rive-canvas-advanced-api-centaur-example",
+  "name": "rive-game",
   "version": "1.0.0",
-  "description": "Originated from https://codesandbox.io/s/centaur-u734l?file=/src/index.js",
+  "description": "crazy enough to make a game",
   "scripts": {
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
@@ -9,6 +9,7 @@
   "dependencies": {
     "@rive-app/canvas-advanced": "2.21.6",
     "@rive-app/canvas-advanced-single": "2.21.6",
+    "@tweenjs/tween.js": "^25.0.0",
     "parcel": "^2.10.3"
   },
   "devDependencies": {
@@ -19,4 +20,4 @@
     "@babel/preset-env": "latest"
   },
   "keywords": []
-}
+ }

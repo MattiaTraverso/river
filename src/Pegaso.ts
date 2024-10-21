@@ -3,11 +3,10 @@ import { RiveSMRenderer } from "./RiveStateMachine";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import { RiveAnimatorRenderer } from "./RiveAnimator";
 import RiveRenderer from "./RiveRenderer";
+import { Vec2D } from "./Utils";
+import {Tween, Easing} from "@tweenjs/tween.js";
 
 
-//Todo:
-//Proper scaling logic for objects, canvas, game. Rotation and Self Scale?
-//better logic for sm like animator?
 async function main()
 {
     await Game.Initiate();
@@ -15,6 +14,23 @@ async function main()
     fashionTestScene();
 } 
 
+async function scalingScene() {
+    let file : File = await Game.LoadFile("test/scaling.riv");
+
+    let ro = Game.Add(new RiveRenderer(file.artboardByIndex(2)));
+
+    return;
+
+    //tween example:
+    const tween = new Tween(ro.position)
+    .to(new Vec2D(100, 100), 2500)
+    .easing(Easing.Bounce.InOut)
+    .start();
+
+    Game.PreLoop.push((deltaTime : number, time:number)=> {
+        tween.update(time);
+    })
+}
 
 async function basketBallTestScene(){
     let basket : File = await Game.LoadFile("test/basketball.riv");
@@ -108,12 +124,29 @@ async function fashionTestScene() {
     let artboard : Artboard = file.artboardByIndex(0);
     let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
 
-    let artboard2 : Artboard = file.artboardByIndex(0);
-    let ro2 : RiveSMRenderer = new RiveSMRenderer(artboard2, artboard2.stateMachineByIndex(0));
-    ro2.position.x = 150;
+    for (let i = 0; i < 2; i++)
+    {
+        let x = i % 8;
+        let y = Math.floor(i / 8);
 
-    //Game.Add(ro);
-    Game.Add(ro2);
+        artboard = file.artboardByIndex(0);
+        ro = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+
+        ro.position.x = x * 250;
+        ro.position.y =  y * 400;
+        Game.Add(ro);
+
+        //continue
+        
+        //rotation test
+        if (i == 1)
+        {
+            ro.position.x += 100;
+            ro.position.y += 200;
+            ro.artboard.transformComponent("Root").rotation = 1;
+        }
+    }
+    
 }
 main();
 
