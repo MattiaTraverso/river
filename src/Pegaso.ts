@@ -6,8 +6,7 @@ import RiveRenderer from "./RiveRenderer";
 
 
 //Todo:
-//Proper scaling logic for objects, canvas, game.
-//Pointer down, up, move, events.
+//Proper scaling logic for objects, canvas, game. Rotation and Self Scale?
 //better logic for sm like animator?
 async function main()
 {
@@ -107,10 +106,14 @@ async function fashionTestScene() {
     let file : File = await Game.LoadFile("test/fashion_app.riv");
 
     let artboard : Artboard = file.artboardByIndex(0);
-
     let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
 
-    Game.Add(ro);
+    let artboard2 : Artboard = file.artboardByIndex(0);
+    let ro2 : RiveSMRenderer = new RiveSMRenderer(artboard2, artboard2.stateMachineByIndex(0));
+    ro2.position.x = 150;
+
+    //Game.Add(ro);
+    Game.Add(ro2);
 }
 main();
 

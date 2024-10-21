@@ -5,7 +5,7 @@ import Rive, {
     AABB
   } from "@rive-app/canvas-advanced";
 import Game from "./Game";
-
+import { Vec2D } from "./Utils";
 
 export class RiveRenderer {
   public readonly artboard : Artboard;
@@ -13,6 +13,8 @@ export class RiveRenderer {
   fit : Fit = Game.RiveInstance.Fit.contain;
   alignment : Alignment = Game.RiveInstance.Alignment.bottomLeft;
   get bounds() : AABB { return this.artboard.bounds; }
+  position : Vec2D = new Vec2D(0,0);
+
 
   constructor(artboard : Artboard)
   {

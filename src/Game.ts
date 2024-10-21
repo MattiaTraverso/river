@@ -8,9 +8,10 @@ import Rive, {
 import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils"; 
 import { Input } from "./Input";
+import { Debug } from "./Debug";
 
 export interface LoopCallback {
-   () : void 
+   (deltaTime : number, time : number) : void 
 }
 
 export class Game{
@@ -34,10 +35,11 @@ export class Game{
     Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 
     Input.Initiate(Game.Canvas);
+    Debug.Initiate();
   
     window.addEventListener('resize', Game.ResizeCanvas);
     Game.ResizeCanvas();
-    
+
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
     requestAnimationFrame(Game.Loop);
@@ -85,12 +87,17 @@ export class Game{
   static TimeScale = 1.0;
 
   private static Loop(time : number) {
+    Debug.Clear();
+
     let deltaTime = (time - Game.elapsedTime) / 1000;
     deltaTime *= Game.TimeScale;
-    
+
+    let fps = 1 / deltaTime;
+    Debug.Add(Math.trunc(fps*100)/100 + " fps");
+
     Game.elapsedTime = time;
 
-    for (let callback of Game.PreLoop) callback();
+    for (let callback of Game.PreLoop) callback(deltaTime, time);
 
     for (let riveRenderer of Game.riveObjects)
     {
@@ -115,6 +122,8 @@ export class Game{
     for (let riveRenderer of Game.riveObjects)
     {
       Game.Renderer.save();
+
+      Game.Renderer.translate(riveRenderer.position.x, riveRenderer.position.y);
 
       Game.Renderer.align(
         riveRenderer.fit,

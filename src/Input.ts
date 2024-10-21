@@ -59,7 +59,7 @@ export class Input {
     }
   
     private static handleClick(event: MouseEvent | TouchEvent): void {
-      console.log('Click or tap detected', event);
+      //console.log('Click or tap detected', event);
       // Your click/tap logic here
     }
   
@@ -106,20 +106,24 @@ export class Input {
       
         let inverseViewMatrix = new Game.RiveInstance.Mat2D();
       
+        let mouseCoords = { x : this.CanvasMouseX, y : this.CanvasMouseY };
+        mouseCoords.x -= riveRenderer.position.x;
+        mouseCoords.y -= riveRenderer.position.y;
+
         let x = 0;
         let y = 0;
         // Invert the view matrix in order to go from cursor to artboard space.
         if (fwdMatrix.invert(inverseViewMatrix)) {
           x =
-            inverseViewMatrix.xx * this.CanvasMouseX +
-            inverseViewMatrix.yx * this.CanvasMouseY +
+            inverseViewMatrix.xx * mouseCoords.x +
+            inverseViewMatrix.yx * mouseCoords.y +
             inverseViewMatrix.tx;
           y =
-            inverseViewMatrix.xy * this.CanvasMouseX +
-            inverseViewMatrix.yy * this.CanvasMouseY +
+            inverseViewMatrix.xy * mouseCoords.x +
+            inverseViewMatrix.yy * mouseCoords.y +
             inverseViewMatrix.ty;
         }
-    
+
         return {x, y};
       }
       
