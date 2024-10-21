@@ -4,8 +4,6 @@
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -24,55 +22,6 @@ canvas {
   height: auto;
   object-fit: contain;
 }
-.crosshair-h, .crosshair-v {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: black;
-}
-.crosshair-h {
-  width: 100%;
-  height: 1px;
-}
-.crosshair-v {
-  width: 1px;
-  height: 100%;
-}
-
-canvas-do-not-scale {
-  background-color: yellow;
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-canvas-scale-maintain-ar {
-  background-color: yellow;
-  position: absolute;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  max-width: 100vw;
-  max-height: 100vh;
-
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-canvas-half {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 #debug {
   position: fixed;
@@ -87,12 +36,4 @@ canvas-half {
   font-size: 12px;
   max-width: 300px;
   word-wrap: break-word;
-}
-
-
-
-canvas-old {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 }

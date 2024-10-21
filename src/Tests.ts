@@ -5,16 +5,38 @@ import { RiveAnimatorRenderer } from "./RiveAnimator";
 import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils";
 import {Tween, Easing} from "@tweenjs/tween.js";
+import { Debug } from "./Debug";
 
 
 async function main()
 {
-    await Game.Initiate();
-
-    fashionTestScene();
+    
 } 
 
+async function turtleScene() {
+    await Game.Initiate(1600, 1200);
+
+    let file : File = await Game.LoadFile("test/angry_turtle.riv");
+
+    let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+
+    Game.Add(ro);
+}
+
+async function bigRivFile () {
+    await Game.Initiate(1280, 720);
+
+    let file : File = await Game.LoadFile("test/shroom_gloom_game.riv");
+
+    let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+   
+    Game.Add(ro);
+}
+
 async function scalingScene() {
+
+    await Game.Initiate(400, 400);
+
     let file : File = await Game.LoadFile("test/scaling.riv");
 
     let ro = Game.Add(new RiveRenderer(file.artboardByIndex(2)));
@@ -33,13 +55,21 @@ async function scalingScene() {
 }
 
 async function basketBallTestScene(){
+    await Game.Initiate(1280, 720);
+
     let basket : File = await Game.LoadFile("test/basketball.riv");
     let basketRiveObject : RiveAnimatorRenderer = new RiveAnimatorRenderer(basket.artboardByIndex(0));
     basketRiveObject.add(basketRiveObject.artboard.animationByIndex(0));
+
+    basketRiveObject.position.x = Game.TargetResolution.x * .5 - basketRiveObject.width * .5;
+    basketRiveObject.position.y = Game.TargetResolution.y * .5 - basketRiveObject.height * .5;
+
     Game.Add(basketRiveObject);
 }
 
 async function animationBlendingTestScene() {
+    await Game.Initiate(1280, 720);
+
     let html = ` 
     <style>
          #slider-container {
@@ -81,6 +111,9 @@ async function animationBlendingTestScene() {
     let character : File = await Game.LoadFile("test/walk_cycle.riv");
     let characterRive : RiveAnimatorRenderer = new RiveAnimatorRenderer(character.artboardByIndex(0));
 
+    characterRive.position.x = Game.TargetResolution.x * .5 - characterRive.width * .5;
+    characterRive.position.y = Game.TargetResolution.y * .5 - characterRive.height * .5;
+
     //characterRive.addByName("Walk");
     //characterRive.addByName("Stop");
 
@@ -101,12 +134,18 @@ async function animationBlendingTestScene() {
     });
 }
 
+//TODO: Check why this isn't centered
 async function eventsTestScene() {
+    await Game.Initiate(1000, 1000);
+
     let events : File = await Game.LoadFile("test/events.riv");
     
     let artboard : Artboard = events.artboardByIndex(0);
 
     let riveObject : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+
+    riveObject.position.x = Game.Canvas.width * .5 - riveObject.width * .5;
+    riveObject.position.y = Game.Canvas.height * .5 - riveObject.height * .5;
 
     Game.Add(riveObject);
 
@@ -119,12 +158,14 @@ async function eventsTestScene() {
 }
 
 async function fashionTestScene() {
+    await Game.Initiate(1280, 720);
+
     let file : File = await Game.LoadFile("test/fashion_app.riv");
 
     let artboard : Artboard = file.artboardByIndex(0);
     let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
 
-    for (let i = 0; i < 2; i++)
+    for (let i = 0; i < 1; i++)
     {
         let x = i % 8;
         let y = Math.floor(i / 8);
@@ -136,8 +177,8 @@ async function fashionTestScene() {
         ro.position.y =  y * 400;
         Game.Add(ro);
 
-        //continue
-        
+        continue;
+
         //rotation test
         if (i == 1)
         {
@@ -145,48 +186,19 @@ async function fashionTestScene() {
             ro.position.y += 200;
             ro.artboard.transformComponent("Root").rotation = 1;
         }
-    }
-    
-}
-main();
 
-
-import { StateMachine } from "@rive-app/canvas-advanced";
-import { SMIInput } from "@rive-app/canvas-advanced";
-function LogUnpackedRiveFile(file: File): void {
-    let log: string = ""
-  
-    
-    for (let i = 0; i < file.artboardCount(); i++) {
-      let artboard : Artboard = file.artboardByIndex(i);
-  
-      log += `\n Artboard: ${artboard.name}`;
-  
-      log += `\n     ${artboard.stateMachineCount()} State Machines`;
-      for (let i = 0; i < artboard.stateMachineCount(); i++) {
-        let sm : StateMachine = artboard.stateMachineByIndex(i);
-        
-        log += `\n ----SM: ${sm.name}`;
-  
-        let sm_instance = new Game.RiveInstance.StateMachineInstance(sm, artboard);
-  
-        for (let i = 0; i < sm_instance.inputCount(); i++) {
-          let smi : SMIInput = sm_instance.input(i);
-  
-          log += `\n -------SMI: ${smi.name} | ${smi.type} | ${smi.value}`;
+        if (i == 0)
+        {
+            ro.position.x += 200;
+            ro.position.y += 200;
+            Game.PreLoop.push((deltaTime : number) => {
+                ro.artboard.transformComponent("Root").rotation += deltaTime;
+            });
+            
         }
-  
-        sm_instance.delete();
-        
-      }
-  
-      log += `\n     ${artboard.animationCount()} Animations`;
-      for (let i = 0; i < artboard.animationCount(); i++) {
-        log += `\n ----AN: ${artboard.animationByIndex(i).name}`;
-      }
-  
-      
     }
-  
-    console.log(log);
-  }
+
+   
+}
+
+main();

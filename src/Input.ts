@@ -1,6 +1,7 @@
 import Game from "./Game";
 import RiveRenderer from "./RiveRenderer";
 
+//TODO: keyboard events are not well thought out.
 export class Input {
     static MouseX: number = 0;
     static MouseY: number = 0;
@@ -130,7 +131,6 @@ export class Input {
     }
 
     static MouseToArtboardSpace(riveRenderer : RiveRenderer) : {x : number, y : number} {
-        //todo: not working if the canvas isn't full sized
         let fwdMatrix = Game.RiveInstance.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,

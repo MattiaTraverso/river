@@ -43,7 +43,7 @@ export class RiveSMRenderer extends RiveRenderer {
 
     let mouseCoords = Input.MouseToArtboardSpace(this);
 
-    //TODO: This is super slow. Only call this shit if within bounding box.
+    //TODO: This is super slow. Only call this shit if within bounding box?
     if (Input.IsMouseClicked) this.smInstance.pointerDown(mouseCoords.x, mouseCoords.y);
     if (Input.IsMouseUp) this.smInstance.pointerUp(mouseCoords.x, mouseCoords.y);
     if (Input.HasMouseMoved) this.smInstance.pointerMove(mouseCoords.x, mouseCoords.y);

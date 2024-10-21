@@ -6,7 +6,7 @@ import Rive, {
   } from "@rive-app/canvas-advanced";
 import Game from "./Game";
 import { Vec2D } from "./Utils";
-import { Destroyable } from "./Destroyable";
+import { Destroyable } from "./Interfaces";
 import { Debug } from "./Debug";
 
 export class RiveRenderer implements Destroyable {
@@ -33,8 +33,14 @@ export class RiveRenderer implements Destroyable {
     aabb.maxY *= this.scale.y * Game.ResScale.y;
     return aabb;
   }
+  get width() : number {
+    return this.artboard.bounds.maxX - this.artboard.bounds.minX;
+  }
+  get height() : number {
+    return this.artboard.bounds.maxY - this.artboard.bounds.minY;
+  }
   position : Vec2D = new Vec2D(0,0);
-  scale : Vec2D = new Vec2D(.5, .5);
+  scale : Vec2D = new Vec2D(1, 1);
 
 
   constructor(artboard : Artboard)

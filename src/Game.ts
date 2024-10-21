@@ -31,11 +31,13 @@ export class Game{
 
   private static _hasInitiated : boolean = false;
 
-  public static async Initiate(): Promise<void> {
+  public static async Initiate(width : number, height : number): Promise<void> {
     if (Game._hasInitiated) {
       throw console.error("Has already been initiated");
     }
     Game._hasInitiated = true
+
+    Game.TargetResolution.x = width; Game.TargetResolution.y = height;
 
     Game.RiveInstance = await Rive({
       locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
@@ -50,15 +52,6 @@ export class Game{
     Game.ResizeCanvas();
 
     window.addEventListener('onvisibilitychange', Game.Destroy);
-
-    const button = document.getElementById('btn');
-    
-    if (button) {
-        // Add click event listener to the button
-        button.addEventListener('click', () => {
-          Debug.Add("YOOOO");
-        });
-    }
 
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
@@ -122,13 +115,16 @@ export class Game{
 
   static TimeScale = 1.0;
 
+  static FPSArray : number[] = [];
 
   private static Loop(time : number) {
     Debug.Clear();
 
-    Debug.Add(`Taget Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
+    Debug.Add(`Canvas Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
+
+    Debug.Add(`<br>Target Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
     Debug.Add(`Canvas: [${Game.Canvas.width},${Game.Canvas.height}] -> [${Game.ResScale.x}x, ${Game.ResScale.y}x]`);
-    Debug.Add(`Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
+   
 
     let deltaTime = (time - Game.elapsedTime) / 1000;
     deltaTime *= Game.TimeScale;
@@ -151,12 +147,20 @@ export class Game{
         Game.riveObjects[0].position.y += movement;
       }
 
-      Debug.Add(`Artboard Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
+      Debug.Add(`<br>Artboard Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
       Debug.Add(`Artboard Size: [${Math.abs(Game.riveObjects[0].frame.maxX - Game.riveObjects[0].frame.minX)},${Math.abs(Game.riveObjects[0].frame.maxY - Game.riveObjects[0].frame.minY)}]`);
       Debug.Add(`Position: [${Game.riveObjects[0].position.x}, ${Game.riveObjects[0].position.y}]`)
     }
 
     let fps = 1 / deltaTime;
+
+    //Calculate average FPS
+    //TODO: This should go somewhere else.
+    Game.FPSArray.push(fps);
+    if (Game.FPSArray.length > 100) Game.FPSArray = Game.FPSArray.slice(1);
+    let sum = 0; for (let n of Game.FPSArray) sum+=n;
+    Debug.Add(`Average FPS: ${Math.trunc(sum / Game.FPSArray.length)}`);
+
     //Debug.Add(Math.trunc(fps*100)/100 + " fps");
 
     Game.elapsedTime = time;
