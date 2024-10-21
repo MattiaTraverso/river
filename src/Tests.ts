@@ -6,12 +6,31 @@ import RiveRenderer from "./RiveRenderer";
 import { Vec2D } from "./Utils";
 import {Tween, Easing} from "@tweenjs/tween.js";
 import { Debug } from "./Debug";
+import { Input, KeyCode } from "./Input";
+import { FPSChart } from "../FPSChart";
 
 
 async function main()
 {
-    
+    Game.PreLoop.push((deltaTime : number) => {
+        if (Input.IsKeyDown(KeyCode.C))
+        {
+            Debug.ToggleCrosshair();
+        }
+    });
+
+    pokeypokey();   
 } 
+
+async function pokeypokey() {
+    await Game.Initiate(1080, 1350);
+
+    let file : File = await Game.LoadFile("test/pokey_pokey.riv");
+
+    Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
+
+    Debug.LogUnpackedRiveFile(file);
+}
 
 async function turtleScene() {
     await Game.Initiate(1600, 1200);

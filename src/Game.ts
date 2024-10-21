@@ -154,6 +154,7 @@ export class Game{
 
     let fps = 1 / deltaTime;
 
+
     //Calculate average FPS
     //TODO: This should go somewhere else.
     Game.FPSArray.push(fps);

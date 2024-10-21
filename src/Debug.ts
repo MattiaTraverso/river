@@ -20,8 +20,7 @@ export class Debug {
 
     static LogUnpackedRiveFile(file: File): void {
         let log: string = ""
-      
-        
+    
         for (let i = 0; i < file.artboardCount(); i++) {
           let artboard : Artboard = file.artboardByIndex(i);
       
