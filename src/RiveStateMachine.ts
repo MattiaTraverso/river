@@ -47,7 +47,7 @@ export class RiveSMRenderer extends RiveRenderer {
     if (Input.IsMouseClicked) this.smInstance.pointerDown(mouseCoords.x, mouseCoords.y);
     if (Input.IsMouseUp) this.smInstance.pointerUp(mouseCoords.x, mouseCoords.y);
     if (Input.HasMouseMoved) this.smInstance.pointerMove(mouseCoords.x, mouseCoords.y);
-    
+  
     this.smInstance.advance(deltaTime);
 
     const reportedEventCount = this.smInstance.reportedEventCount();

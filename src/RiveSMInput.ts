@@ -8,7 +8,9 @@ import {
  * replacing magic numbers with meaningful enums and adding runtime type checks.
  */
 export class RiveSMInput {
-    private readonly smiInput: SMIInput;
+  //todo: make it private
+    //private readonly 
+    smiInput: SMIInput;
     
     static readonly InputType = {
       Boolean: 'BOOLEAN',

@@ -3,7 +3,7 @@ import { RiveSMRenderer } from "./RiveStateMachine";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import { RiveAnimatorRenderer } from "./RiveAnimator";
 import RiveRenderer from "./RiveRenderer";
-import { Vec2D } from "./Utils";
+import { Vec2D } from "./Vec2D";
 import {Tween, Easing} from "@tweenjs/tween.js";
 import { Debug } from "./Debug";
 import { Input, KeyCode } from "./Input";
@@ -19,8 +19,42 @@ async function main()
         }
     });
 
-    pokeypokey();   
+    CityOrCountry(); 
 } 
+
+//SUPER LOW FRAMERATE. Probaly lots of nested artboards
+async function CityOrCountry() {
+    await Game.Initiate(960, 456);
+
+    let file : File = await Game.LoadFile("cityorcountry.riv");
+
+    let ro : RiveSMRenderer = Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0))) as RiveSMRenderer;
+
+    Debug.LogUnpackedRiveFile(file);
+
+    Game.PreLoop.push(() => {
+        //isClickedR fire
+        //isHovered R bool
+        //isClicked L fire
+        //isHovered L bool
+        if (Input.IsKeyDown(KeyCode.A)) ro.inputs[1].smiInput.asBool().value = !(ro.inputs[1].smiInput.asBool().value as boolean) ;
+        if (Input.IsKeyDown(KeyCode.S)) ro.inputs[3].smiInput.asBool().value = !(ro.inputs[1].smiInput.asBool().value as boolean) ;
+        if (Input.IsKeyDown(KeyCode.D)) ro.inputs[0].smiInput.asTrigger().fire();
+        if (Input.IsKeyDown(KeyCode.F)) ro.inputs[2].smiInput.asTrigger().fire();
+
+
+    })
+    
+}
+
+//SUPER LOW FRAMERATE. Probaly lots of nested artboards
+async function ENI_Step3() {
+    await Game.Initiate(500, 500);
+
+    let file : File = await Game.LoadFile("eni_pitch_step_3.riv");
+
+    Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
+}
 
 async function pokeypokey() {
     await Game.Initiate(1080, 1350);

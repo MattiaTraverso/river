@@ -6,7 +6,7 @@ import Rive, {
 } from "@rive-app/canvas-advanced";
 
 import RiveRenderer from "./RiveRenderer";
-import { Vec2D } from "./Utils"; 
+import { Vec2D } from "./Vec2D"; 
 import { Input, KeyCode } from "./Input";
 import { Debug } from "./Debug";
 
@@ -37,12 +37,13 @@ export class Game{
     }
     Game._hasInitiated = true
 
-    Game.TargetResolution.x = width; Game.TargetResolution.y = height;
 
     Game.RiveInstance = await Rive({
       locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
     });
   
+    Game.TargetResolution.x = width; Game.TargetResolution.y = height;
+
     Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 
     Input.Initiate(Game.Canvas);
@@ -146,9 +147,12 @@ export class Game{
       if (Input.IsKey(KeyCode.DownArrow)) {
         Game.riveObjects[0].position.y += movement;
       }
+      
+      Debug.Add(`<br>Artboard Bounds: [${Game.riveObjects[0].artboard.bounds.minX},${Game.riveObjects[0].artboard.bounds.minY},${Game.riveObjects[0].artboard.bounds.maxX},${Game.riveObjects[0].artboard.bounds.maxY},${artboard.frameOrigin}]`)
+      Debug.Add(`Artboard Size: [${Math.abs(Game.riveObjects[0].artboard.bounds.maxX - Game.riveObjects[0].artboard.bounds.minX)},${Math.abs(Game.riveObjects[0].artboard.bounds.maxY - Game.riveObjects[0].artboard.bounds.minY)}]`);
 
-      Debug.Add(`<br>Artboard Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
-      Debug.Add(`Artboard Size: [${Math.abs(Game.riveObjects[0].frame.maxX - Game.riveObjects[0].frame.minX)},${Math.abs(Game.riveObjects[0].frame.maxY - Game.riveObjects[0].frame.minY)}]`);
+      Debug.Add(`<br>RiveObj Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
+      Debug.Add(`RiveObj Size: [${Math.abs(Game.riveObjects[0].frame.maxX - Game.riveObjects[0].frame.minX)},${Math.abs(Game.riveObjects[0].frame.maxY - Game.riveObjects[0].frame.minY)}]`);
       Debug.Add(`Position: [${Game.riveObjects[0].position.x}, ${Game.riveObjects[0].position.y}]`)
     }
 

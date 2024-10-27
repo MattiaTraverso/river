@@ -5,7 +5,7 @@ import Rive, {
     AABB
   } from "@rive-app/canvas-advanced";
 import Game from "./Game";
-import { Vec2D } from "./Utils";
+import { Vec2D } from "./Vec2D";
 import { Destroyable } from "./Interfaces";
 import { Debug } from "./Debug";
 
