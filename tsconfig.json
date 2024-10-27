@@ -15,5 +15,8 @@
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": [
+    "rive-file-manager/**/*"
+  ]
 }
