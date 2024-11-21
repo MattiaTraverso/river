@@ -2,7 +2,7 @@ import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canva
 
 import Game from "../Game";
 import Vec2D from "../Utils/Vec2D";
-import GameObject from "../GameObject";
+import GameObject from "../Core/GameObject";
 
 export class RiveGameObject extends GameObject {
     //====

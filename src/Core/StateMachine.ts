@@ -28,7 +28,7 @@
  * Neat Features:
  * - Debug visualization support via Mermaid diagrams (call DebugRenderStateTransitionsAsMermaidGraph() to get a string)
  */
-import { ConditionFunction, UpdateFunction } from "./Utils/Interfaces";
+import { ConditionFunction, UpdateFunction } from "../Utils/Interfaces";
 
 interface StateDefinition<TState extends string> {
     update: UpdateFunction;
@@ -151,7 +151,7 @@ export class StateMachine<TState extends string, TContext = any> {
         }
 
         const currentDef = this.states.get(this._currentState);
-        currentDef?.update.call(this.context, deltaTime, time);
+        currentDef?.update.call(this.context, deltaTime);
     }
 
     DebugRenderStateTransitionsAsMermaidGraph(): string {

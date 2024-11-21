@@ -3,7 +3,7 @@ import Rive, { RiveCanvas, WrappedRenderer, File, Artboard } from "@rive-app/can
 import Vec2D from "./Utils/Vec2D"; 
 import Input from "./Systems/Input";
 import Debug from "./Systems/Debug";
-import Scene from "./Scene";
+import Scene from "./Core/Scene";
 
 //Local WASM loads faster. Remote WASM might be updated if I'm lazy.
 const USE_LOCAL_WASM: boolean = true;
@@ -50,6 +50,7 @@ export class Game {
     window.addEventListener('resize', Game.ResizeCanvas);
     Game.ResizeCanvas();
 
+    //TODO: figure out what's the best event for this?
     window.addEventListener('onvisibilitychange', Game.Destroy);
 
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
@@ -156,18 +157,6 @@ export class Game {
       scene.Destroy();
     }
     Game.#scenes.clear();
-  }
-
-  static async LoadFile(url: string): Promise<File> {
-    const bytes = await (await fetch(new Request(url))).arrayBuffer();
-
-    // import File as a named import from the Rive dependency
-    const file = (await Game.RiveInstance.load(new Uint8Array(bytes))) as File;
-    
-    // Extract the file name from the URL
-    const name = url.split('/').pop()?.split('?')[0] || 'unknown';
-    
-    return file;
   }
 }
 

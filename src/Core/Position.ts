@@ -1,5 +1,5 @@
 import Game from "../Game";
-import { Vec2D } from "./Vec2D";
+import Vec2D from "../Utils/Vec2D";
 
 export enum PositionMode {
     Coordinates,

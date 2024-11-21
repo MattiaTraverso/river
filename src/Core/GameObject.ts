@@ -1,5 +1,5 @@
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
-import { Destroyable } from "./Utils/Interfaces";
+import { Destroyable } from "../Utils/Interfaces";
 
 export class GameObject implements Destroyable {
     enabled: boolean = true;

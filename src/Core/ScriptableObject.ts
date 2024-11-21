@@ -14,8 +14,8 @@
 * ```
 **/
 
-import { GameObject } from "./GameObject";
-import { UpdateFunction } from "./Utils/Interfaces";
+import GameObject from "./GameObject";
+import { UpdateFunction } from "../Utils/Interfaces";
 
 export class ScriptableObject extends GameObject{
 

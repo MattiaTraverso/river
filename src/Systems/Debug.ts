@@ -4,6 +4,9 @@ import { Artboard, File } from "@rive-app/canvas-advanced";
 import { Game } from "../Game";
 import { Input } from "./Input";
 
+/**
+ * Needs refactoring.
+ */
 export class Debug {
     private static Box : HTMLElement;
 
