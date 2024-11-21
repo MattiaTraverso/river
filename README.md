@@ -8,6 +8,7 @@ Fair warning: I'm learning TypeScript as I go, so expect some "interesting" code
 ## What's This All About?
 
 Rive is a wonderful tool, but:
+
 A) Its high level JS api is WAY too high level to make a game with
 
 B) Its low level JS api is WAY too low level for anyone to make a game with ( :D )
