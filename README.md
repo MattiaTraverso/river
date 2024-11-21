@@ -9,7 +9,9 @@ Fair warning: I'm learning TypeScript as I go, so expect some "interesting" code
 
 Rive is a wonderful tool, but:
 A) Its high level JS api is WAY too high level to make a game with
+
 B) Its low level JS api is WAY too low level for anyone to make a game with ( :D )
+
 C) While empowering animators to build logic is AWESOME, it skews too much towards no-code solutions, and you need a healthy mix to make games!
 
 If only there was a middle level api... :)
