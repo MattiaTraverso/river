@@ -5,8 +5,8 @@ import Rive, {
     AABB
   } from "@rive-app/canvas-advanced";
 import Game from "../Game";
-import { Vec2D } from "../Vec2D";
-import { Destroyable } from "../Interfaces";
+import { Vec2D } from "../Utils/Vec2D";
+import { Destroyable } from "../Utils/Interfaces";
 import { Debug } from "../Systems/Debug";
 
 export class RiveRenderer implements Destroyable {

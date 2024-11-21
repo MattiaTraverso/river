@@ -3,7 +3,7 @@ import { RiveSMRenderer } from "./Rive/RiveStateMachine";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import { RiveAnimatorRenderer } from "./Rive/RiveAnimator";
 import RiveRenderer from "./Rive/RiveRenderer";
-import { Vec2D } from "./Vec2D";
+import { Vec2D } from "./Utils/Vec2D";
 import { Debug } from "./Systems/Debug";
 import { Input, KeyCode } from "./Systems/Input";
 import { FPSChart } from "./WIP/FPSChart";

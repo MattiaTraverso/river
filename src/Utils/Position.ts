@@ -1,4 +1,4 @@
-import Game from "./Game";
+import Game from "../Game";
 import { Vec2D } from "./Vec2D";
 
 export enum PositionMode {

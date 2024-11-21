@@ -5,11 +5,11 @@ import Rive, {
     Artboard
 } from "@rive-app/canvas-advanced";
   
-import { Vec2D } from "./Vec2D"; 
+import { Vec2D } from "./Utils/Vec2D"; 
 import { Input, KeyCode } from "./Systems/Input";
 import { Debug } from "./Systems/Debug";
 import Scene from "./Scene";
-import { UpdateFunction } from "./Interfaces";
+import { UpdateFunction } from "./Utils/Interfaces";
 
 export class Game{
   static TargetResolution : Vec2D = new Vec2D(400, 400);

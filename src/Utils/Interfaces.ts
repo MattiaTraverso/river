@@ -1,5 +1,3 @@
-import { StateMachine } from "./StateMachine";
-
 export interface Destroyable
 {
     destroy() : void
@@ -12,7 +10,6 @@ export interface Advanceable
 
 export interface Renderable
 {
-    
 }
 
 export interface UpdateFunction {
