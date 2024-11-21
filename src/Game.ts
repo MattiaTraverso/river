@@ -5,7 +5,7 @@ import Rive, {
     Artboard
 } from "@rive-app/canvas-advanced";
 
-import RiveRenderer from "./RiveRenderer";
+import RiveRenderer from "./Rive/RiveRenderer";
 import { Vec2D } from "./Vec2D"; 
 import { Input, KeyCode } from "./Input";
 import { Debug } from "./Debug";
@@ -42,7 +42,7 @@ export class Game{
       locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
     });
   
-    Game.TargetResolution.x = width; Game.TargetResolution.y = height;
+    Game.TargetResolution = new Vec2D(width, height);
 
     Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 
@@ -52,7 +52,7 @@ export class Game{
     window.addEventListener('resize', Game.ResizeCanvas);
     Game.ResizeCanvas();
 
-    window.addEventListener('onvisibilitychange', Game.Destroy);
+    window.addEventListener('visibilitychange', Game.Destroy);
 
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
@@ -60,8 +60,6 @@ export class Game{
   }
 
   private static ResizeCanvas() : void {
-    //For now skipping this as it takes some time
-
     const aspectRatio = Game.TargetResolution.x / Game.TargetResolution.y;
 
     let newWidth = window.innerWidth;
@@ -95,7 +93,7 @@ export class Game{
   }
 
   static RemoveAtIndex(index : number) {
-    if (index > 0) {
+    if (index >= 0) {
       Game.riveObjects[index].destroy();
       Game.riveObjects = Game.riveObjects.splice(index, 1);
     }

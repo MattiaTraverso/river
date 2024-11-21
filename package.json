@@ -2,22 +2,30 @@
   "name": "rive-game",
   "version": "1.0.0",
   "description": "crazy enough to make a game",
+  "targets": {
+    "browsers": {
+      "source": "index.html",
+      "includeNodeModules": true,
+      "engines": {
+        "browsers": [
+          "supports es2017"
+        ]
+      }
+    }
+  },
   "scripts": {
-    "start": "parcel index.html --open",
+    "start": "parcel index.html --log-level verbose | tee parcel-log.txt",
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "@parcel/runtime-browser-hmr": "^2.13.0",
     "@rive-app/canvas-advanced": "2.21.6",
-    "@rive-app/canvas-advanced-single": "2.21.6",
-    "@tweenjs/tween.js": "^25.0.0",
-    "parcel": "^2.10.3"
+    "@tweenjs/tween.js": "latest",
+    "parcel": "latest"
   },
   "devDependencies": {
-    "@babel/core": "latest",
-    "typescript": "^5.3.3"
-  },
-  "resolutions": {
-    "@babel/preset-env": "latest"
+    "@parcel/transformer-typescript-tsc": "latest",
+    "typescript": "latest"
   },
   "keywords": []
- }
+}

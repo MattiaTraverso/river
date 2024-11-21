@@ -72,13 +72,14 @@ export class Debug {
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: black;
+            z-index: 9999;
             }
             .crosshair-h {
             width: 100%;
-            height: 1px;
+            height: 2px;
             }
             .crosshair-v {
-            width: 1px;
+            width: 2px;
             height: 100%;
             }
         </style>

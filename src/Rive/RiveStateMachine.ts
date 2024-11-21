@@ -8,8 +8,8 @@ import {
 } from "@rive-app/canvas-advanced";
 import { RiveSMInput } from "./RiveSMInput";
 import RiveRenderer from "./RiveRenderer";
-import Game from "./Game";
-import { Input } from "./Input";
+import Game from "../Game";
+import { Input } from "../Input";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;

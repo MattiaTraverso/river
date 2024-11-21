@@ -1,0 +1,937 @@
+@parcel/core: Intializing request tracker...
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Server running at http://localhost:1234
+✨ Built in 6ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+Optimizing index.[hash].js...
+✨ Built in 1.07s
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+Optimizing index.[hash].js...
+✨ Built in 389ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 1
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 6
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 131ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 93ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 169ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 139ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 161ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 88ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 1
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 76ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 174ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 67ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/apple-touch-icon-precomposed.png
+@parcel/reporter-dev-server: Request: localhost:1234/apple-touch-icon.png
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 124ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 196ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 1 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+✨ Built in 246ms
+unknown: File watch event emitted with 1 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 123ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 1
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 131ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 141ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 43ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 47ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 60ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 105ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 129ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 97ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 67ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 231ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].css...
+Packaging index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+Packaging index.html...
+Optimizing index.[hash].js...
+Optimizing index.html...
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Optimizing index.[hash].css...
+✨ Built in 998ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.4d663569.css
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+🚨 Build failed.
+
+
+
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].css...
+Packaging index.[hash].js...
+Packaging index.html...
+Optimizing index.[hash].css...
+Optimizing index.[hash].js...
+unknown: File watch event emitted with 4 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.4d663569.css
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Optimizing index.html...
+✨ Built in 537ms
+unknown: File watch event emitted with 4 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.4d663569.css.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/dist/index.html
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 47ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 52ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+Optimizing index.[hash].js...
+✨ Built in 119ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 2
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 89ms
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 232ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 78ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 89ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 94ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 42ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 69ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 100ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 264ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 93ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 150ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 80ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 50ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Interfaces.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Interfaces.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 117ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 2 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 92ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 1
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 169ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 33ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 27ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 34ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/Scene.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building Scene.ts...
+@parcel/core: Asset graph walked
+Bundling...
+✨ Built in 26ms
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+@parcel/reporter-dev-server: Request: localhost:1234/
+✨ Built in 216ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js.map
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map
+unknown: File watch event emitted with 1 events. Sample event: [update] /Users/mattia/Dropbox/2024 Backup/RIVE_PROJ/rive/src/StateMachine.ts
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+Building StateMachine.ts...
+@parcel/core: Asset graph walked
+Bundling...
+Packaging index.[hash].js...
+Optimizing index.[hash].js...
+✨ Built in 109ms
+unknown: File watch event emitted with 2 events. Sample event: [create] /Users/mattia/Dropbox/2024 
+Backup/RIVE_PROJ/rive/dist/index.e71a02e8.js
+@parcel/core: RequestGraph.respondToFSEvents duration: 0
+@parcel/reporter-dev-server: Request: localhost:1234/
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js
+@parcel/reporter-dev-server: Request: localhost:1234/index.4d663569.css.map
+@parcel/reporter-dev-server: Request: localhost:1234/index.e71a02e8.js.map

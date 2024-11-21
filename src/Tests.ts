@@ -1,13 +1,13 @@
 import { Game } from "./Game";
-import { RiveSMRenderer } from "./RiveStateMachine";
+import { RiveSMRenderer } from "./Rive/RiveStateMachine";
 import { Artboard, File } from "@rive-app/canvas-advanced";
-import { RiveAnimatorRenderer } from "./RiveAnimator";
-import RiveRenderer from "./RiveRenderer";
+import { RiveAnimatorRenderer } from "./Rive/RiveAnimator";
+import RiveRenderer from "./Rive/RiveRenderer";
 import { Vec2D } from "./Vec2D";
 import {Tween, Easing} from "@tweenjs/tween.js";
 import { Debug } from "./Debug";
 import { Input, KeyCode } from "./Input";
-import { FPSChart } from "../FPSChart";
+import { FPSChart } from "./WIP/FPSChart";
 
 
 async function main()
@@ -19,14 +19,14 @@ async function main()
         }
     });
 
-    CityOrCountry(); 
+    scalingScene();
 } 
 
 //SUPER LOW FRAMERATE. Probaly lots of nested artboards
 async function CityOrCountry() {
     await Game.Initiate(960, 456);
 
-    let file : File = await Game.LoadFile("cityorcountry.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/cityorcountry.riv", import.meta.url).href);
 
     let ro : RiveSMRenderer = Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0))) as RiveSMRenderer;
 
@@ -51,7 +51,8 @@ async function CityOrCountry() {
 async function ENI_Step3() {
     await Game.Initiate(500, 500);
 
-    let file : File = await Game.LoadFile("eni_pitch_step_3.riv");
+    console.log(new URL("../rivs/eni_pitch_step_3.riv", import.meta.url).href);
+    let file : File = await Game.LoadFile(new URL("../rivs/eni_pitch_step_3.riv", import.meta.url).href);
 
     Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
 }
@@ -59,7 +60,7 @@ async function ENI_Step3() {
 async function pokeypokey() {
     await Game.Initiate(1080, 1350);
 
-    let file : File = await Game.LoadFile("test/pokey_pokey.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/pokey_pokey.riv", import.meta.url).href);
 
     Game.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
 
@@ -69,7 +70,7 @@ async function pokeypokey() {
 async function turtleScene() {
     await Game.Initiate(1600, 1200);
 
-    let file : File = await Game.LoadFile("test/angry_turtle.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/angry_turtle.riv", import.meta.url).href);
 
     let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
 
@@ -79,7 +80,7 @@ async function turtleScene() {
 async function bigRivFile () {
     await Game.Initiate(1280, 720);
 
-    let file : File = await Game.LoadFile("test/shroom_gloom_game.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/shroom_gloom_game.riv", import.meta.url).href);
 
     let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
    
@@ -90,7 +91,7 @@ async function scalingScene() {
 
     await Game.Initiate(400, 400);
 
-    let file : File = await Game.LoadFile("test/scaling.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/scaling-test.riv", import.meta.url).href);
 
     let ro = Game.Add(new RiveRenderer(file.artboardByIndex(2)));
 
@@ -110,7 +111,7 @@ async function scalingScene() {
 async function basketBallTestScene(){
     await Game.Initiate(1280, 720);
 
-    let basket : File = await Game.LoadFile("test/basketball.riv");
+    let basket : File = await Game.LoadFile(new URL("../rivs/basketball.riv", import.meta.url).href);
     let basketRiveObject : RiveAnimatorRenderer = new RiveAnimatorRenderer(basket.artboardByIndex(0));
     basketRiveObject.add(basketRiveObject.artboard.animationByIndex(0));
 
@@ -161,7 +162,7 @@ async function animationBlendingTestScene() {
     // Append the new div to the body
     document.body.appendChild(newDiv);
 
-    let character : File = await Game.LoadFile("test/walk_cycle.riv");
+    let character : File = await Game.LoadFile(new URL("../rivs/walk_cycle.riv", import.meta.url).href);
     let characterRive : RiveAnimatorRenderer = new RiveAnimatorRenderer(character.artboardByIndex(0));
 
     characterRive.position.x = Game.TargetResolution.x * .5 - characterRive.width * .5;
@@ -191,7 +192,7 @@ async function animationBlendingTestScene() {
 async function eventsTestScene() {
     await Game.Initiate(1000, 1000);
 
-    let events : File = await Game.LoadFile("test/events.riv");
+    let events : File = await Game.LoadFile(new URL("../rivs/events-test.riv", import.meta.url).href);
     
     let artboard : Artboard = events.artboardByIndex(0);
 
@@ -213,7 +214,7 @@ async function eventsTestScene() {
 async function fashionTestScene() {
     await Game.Initiate(1280, 720);
 
-    let file : File = await Game.LoadFile("test/fashion_app.riv");
+    let file : File = await Game.LoadFile(new URL("../rivs/fashion_app.riv", import.meta.url).href);
 
     let artboard : Artboard = file.artboardByIndex(0);
     let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));

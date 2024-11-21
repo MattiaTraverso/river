@@ -1,7 +1,7 @@
 import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/canvas-advanced";
 import RiveRenderer from "./RiveRenderer";
 import { RiveAnimation } from "./RiveAnimation";
-import Game from "./Game";
+import Game from "../Game";
 
 export class RiveAnimatorRenderer extends RiveRenderer {
   private animations: Map<string, RiveAnimation> = new Map();
