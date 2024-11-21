@@ -28,10 +28,11 @@
  * - Cleaning up objects when destroyed
  */
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
-import RiveRenderer from "./Rive/RiveRenderer";
+import RiveGameObject from "./Rive/RiveGameObject";
+import { GameObject } from "./GameObject";
 
 export default class Scene {
-  protected riveObjects: RiveRenderer[] = [];
+  protected gameObjects: GameObject[] = [];
   private initialized: boolean = false;
   private name: string;
 
@@ -47,49 +48,41 @@ export default class Scene {
     this.initialized = true;
   }
 
-  Add(object: RiveRenderer): RiveRenderer {
-    this.riveObjects.push(object);
+  Add(object: GameObject): GameObject {
+    this.gameObjects.push(object);
     return object;
   }
 
-  Remove(object: RiveRenderer): void {
-    const index = this.riveObjects.indexOf(object);
+  Remove(object: GameObject): void {
+    const index = this.gameObjects.indexOf(object);
     if (index >= 0) {
       object.destroy();
-      this.riveObjects.splice(index, 1);
+      this.gameObjects.splice(index, 1);
     }
   }
 
   Update(deltaTime: number, time: number): void {
     // Update game logic
-    for (let riveRenderer of this.riveObjects) {
-      if (riveRenderer.enabled) {
-        riveRenderer.advance(deltaTime);
+    for (let gameObject of this.gameObjects) {
+      if (gameObject.enabled) {
+        gameObject.update(deltaTime);
       }
     }
   }
 
   Destroy(): void {
-    while (this.riveObjects.length > 0) {
-      const object = this.riveObjects[0];
+    while (this.gameObjects.length > 0) {
+      const object = this.gameObjects[0];
       this.Remove(object);
     }
     this.initialized = false;
   }
 
   Render(renderer: WrappedRenderer): void {
-    for (let riveRenderer of this.riveObjects) {
-      if (!riveRenderer.enabled) continue;
+    for (let gameObject of this.gameObjects) {
+      if (!gameObject.render || !gameObject.enabled) continue;
 
-      renderer.save();
-      renderer.align(
-        riveRenderer.fit,
-        riveRenderer.alignment,
-        riveRenderer.frame,
-        riveRenderer.artboard.bounds
-      );
-      riveRenderer.artboard.draw(renderer);
-      renderer.restore();
+      gameObject.render(renderer);
     }
   }
 }

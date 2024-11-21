@@ -1,5 +1,5 @@
 import Game from "../Game";
-import RiveRenderer from "../Rive/RiveRenderer";
+import RiveGameObject from "../Rive/RiveGameObject";
 
 //TODO: keyboard events are not well thought out.
 export class Input {
@@ -130,7 +130,7 @@ export class Input {
         return this.keysDown.has(keyCode);
     }
 
-    static MouseToArtboardSpace(riveRenderer : RiveRenderer) : {x : number, y : number} {
+    static MouseToArtboardSpace(riveRenderer : RiveGameObject) : {x : number, y : number} {
         let fwdMatrix = Game.RiveInstance.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,

@@ -2,7 +2,7 @@ import { Game } from "./Game";
 import { RiveSMRenderer } from "./Rive/RiveStateMachine";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import { RiveAnimatorRenderer } from "./Rive/RiveAnimator";
-import RiveRenderer from "./Rive/RiveRenderer";
+import RiveGameObject from "./Rive/RiveGameObject";
 import { Vec2D } from "./Utils/Vec2D";
 import { Debug } from "./Systems/Debug";
 import { Input, KeyCode } from "./Systems/Input";
@@ -26,8 +26,8 @@ async function doubleSceneTest() {
     
     const file : File = await Game.LoadFile(new URL("../rivs/angry_turtle.riv", import.meta.url).href);
 
-    const ro1 : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
-    const ro2 : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    const ro1 : RiveSMRenderer = new RiveSMRenderer("Turtle1", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    const ro2 : RiveSMRenderer = new RiveSMRenderer("Turtle2", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
     
     const scene1 = new Scene("Turtle1");
     scene1.Add(ro1);
@@ -49,7 +49,7 @@ async function CityOrCountry() {
     const file : File = await Game.LoadFile(new URL("../rivs/cityorcountry.riv", import.meta.url).href);
 
     const scene = new Scene("CityOrCountry");
-    let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    let ro : RiveSMRenderer = new RiveSMRenderer("CityOrCountry", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
     scene.Add(ro);
     Game.AddScene(scene);
 
@@ -78,7 +78,7 @@ async function ENI_Step3() {
     let file : File = await Game.LoadFile(new URL("../rivs/eni_pitch_step_3.riv", import.meta.url).href);
 
     const scene = new Scene("ENI_Step3");
-    scene.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
+    scene.Add(new RiveSMRenderer("ENI_Step3", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
     Game.AddScene(scene);
 }
 
@@ -88,7 +88,7 @@ async function pokeypokey() {
     let file : File = await Game.LoadFile(new URL("../rivs/pokey_pokey.riv", import.meta.url).href);
 
     const scene = new Scene("PokeyPokey");
-    scene.Add(new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
+    scene.Add(new RiveSMRenderer("PokeyPokey", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0)));
     Game.AddScene(scene);
 
     Debug.LogUnpackedRiveFile(file);
@@ -100,7 +100,7 @@ async function turtleScene(skipGameInitialization: boolean = false) {
     console.log(new URL("../rivs/angry_turtle.riv", import.meta.url).href);
     let file : File = await Game.LoadFile(new URL("../rivs/angry_turtle.riv", import.meta.url).href);
 
-    let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    let ro : RiveSMRenderer = new RiveSMRenderer("Turtle", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
 
     const scene = new Scene("Turtle");
     scene.Add(ro);
@@ -112,7 +112,7 @@ async function bigRivFile () {
 
     let file : File = await Game.LoadFile(new URL("../rivs/shroom_gloom_game.riv", import.meta.url).href);
 
-    let ro : RiveSMRenderer = new RiveSMRenderer(file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    let ro : RiveSMRenderer = new RiveSMRenderer("ShroomGloom", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
    
     const scene = new Scene("BigRivFile");
     scene.Add(ro);
@@ -126,7 +126,7 @@ async function scalingScene() {
     let file : File = await Game.LoadFile(new URL("../rivs/scaling-test.riv", import.meta.url).href);
 
     const scene = new Scene("ScalingScene");
-    const ro = new RiveRenderer(file.artboardByIndex(2));       
+    const ro = new RiveGameObject("ScalingTest", file.artboardByIndex(2));       
     scene.Add(ro);
     Game.AddScene(scene, true);
 
@@ -149,7 +149,7 @@ async function basketBallTestScene(skipGameInitialization: boolean = false){
     if (!skipGameInitialization) await Game.Initiate(1280, 720);
 
     let basket : File = await Game.LoadFile(new URL("../rivs/basketball.riv", import.meta.url).href);
-    let basketRiveObject : RiveAnimatorRenderer = new RiveAnimatorRenderer(basket.artboardByIndex(0));
+    let basketRiveObject : RiveAnimatorRenderer = new RiveAnimatorRenderer("Basketball", basket.artboardByIndex(0));
     basketRiveObject.add(basketRiveObject.artboard.animationByIndex(0));
 
     basketRiveObject.position.x = Game.TargetResolution.x * .5 - basketRiveObject.width * .5;
@@ -202,7 +202,7 @@ async function animationBlendingTestScene() {
     document.body.appendChild(newDiv);
 
     let character : File = await Game.LoadFile(new URL("../rivs/walk_cycle.riv", import.meta.url).href);
-    let characterRive : RiveAnimatorRenderer = new RiveAnimatorRenderer(character.artboardByIndex(0));
+    let characterRive : RiveAnimatorRenderer = new RiveAnimatorRenderer("WalkCycle", character.artboardByIndex(0));
 
     characterRive.position.x = Game.TargetResolution.x * .5 - characterRive.width * .5;
     characterRive.position.y = Game.TargetResolution.y * .5 - characterRive.height * .5;
@@ -237,7 +237,7 @@ async function eventsTestScene() {
     
     let artboard : Artboard = events.artboardByIndex(0);
 
-    let riveObject : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+    let riveObject : RiveSMRenderer = new RiveSMRenderer("EventsTest", artboard, artboard.stateMachineByIndex(0));
 
     riveObject.position.x = Game.Canvas.width * .5 - riveObject.width * .5;
     riveObject.position.y = Game.Canvas.height * .5 - riveObject.height * .5;
@@ -260,7 +260,7 @@ async function fashionTestScene() {
     let file : File = await Game.LoadFile(new URL("../rivs/fashion_app.riv", import.meta.url).href);
 
     let artboard : Artboard = file.artboardByIndex(0);
-    let ro : RiveSMRenderer = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+    let ro : RiveSMRenderer = new RiveSMRenderer("Fashion", artboard, artboard.stateMachineByIndex(0));
 
     const scene = new Scene("FashionTestScene");
     scene.Add(ro);
@@ -272,7 +272,7 @@ async function fashionTestScene() {
         let y = Math.floor(i / 8);
 
         artboard = file.artboardByIndex(0);
-        ro = new RiveSMRenderer(artboard, artboard.stateMachineByIndex(0));
+        ro = new RiveSMRenderer("Fashion" + i, artboard, artboard.stateMachineByIndex(0));
 
         ro.position.x = x * 250;
         ro.position.y =  y * 400;

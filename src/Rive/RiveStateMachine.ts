@@ -7,7 +7,7 @@ import {
   StateMachine
 } from "@rive-app/canvas-advanced";
 import { RiveSMInput } from "./RiveSMInput";
-import RiveRenderer from "./RiveRenderer";
+import RiveGameObject from "./RiveGameObject";
 import Game from "../Game";
 import { Input } from "../Systems/Input";
 
@@ -20,7 +20,7 @@ enum RiveEventType {
   Audio = 132
 }
 
-export class RiveSMRenderer extends RiveRenderer {
+export class RiveSMRenderer extends RiveGameObject {
   private smInstance: StateMachineInstance;
   readonly inputs: RiveSMInput[] = [];
   private _reportedEvents: (OpenUrlEvent | RiveEvent)[] = [];
@@ -28,8 +28,8 @@ export class RiveSMRenderer extends RiveRenderer {
   private generalEventListeners: RiveEventCallback[] = [];
   private openUrlEventListeners: OpenUrlEventCallback[] = [];
 
-  constructor(artboard: Artboard, stateMachine: StateMachine) {
-    super(artboard);
+  constructor(name: string, artboard: Artboard, stateMachine: StateMachine) {
+    super(name, artboard);
     this.smInstance = new Game.RiveInstance.StateMachineInstance(stateMachine, artboard);
     for (let i = 0; i < this.smInstance.inputCount(); i++) {
       let input: SMIInput = this.smInstance.input(i);
@@ -37,7 +37,7 @@ export class RiveSMRenderer extends RiveRenderer {
     }
   }
 
-  advance(deltaTime: number): void {
+  update(deltaTime: number): void {
     this._reportedEvents = [];
     this._changedStates = [];
 
@@ -67,7 +67,7 @@ export class RiveSMRenderer extends RiveRenderer {
       }
     }
 
-    super.advance(deltaTime);
+    super.update(deltaTime);
   }
 
   get reportedEvents(): ReadonlyArray<OpenUrlEvent | RiveEvent> {

@@ -2,14 +2,15 @@ import Rive, {
     Artboard,
     Fit,
     Alignment,
-    AABB
+    AABB,
+    WrappedRenderer
   } from "@rive-app/canvas-advanced";
 import Game from "../Game";
 import { Vec2D } from "../Utils/Vec2D";
-import { Destroyable } from "../Utils/Interfaces";
+import { GameObject } from "../GameObject";
 import { Debug } from "../Systems/Debug";
 
-export class RiveRenderer implements Destroyable {
+export class RiveGameObject extends GameObject {
     //====
   // Remember: Y positive is DOWN, Y negative is UP
   // Remember: [0,0] is top left unless you change it in Rive, which you shouldn't
@@ -42,22 +43,35 @@ export class RiveRenderer implements Destroyable {
   position : Vec2D = new Vec2D(0,0);
   scale : Vec2D = new Vec2D(1, 1);
 
-
-  constructor(artboard : Artboard)
-  {
+  constructor(name: string, artboard : Artboard) {
+    super(name);
     this.artboard = artboard;
     this.artboard.frameOrigin = this.frameOrigin;
   }
 
-  enabled : boolean = true;
+  update(deltaTime: number): void {
+    if (this.enabled) {
+      this.artboard.advance(deltaTime);
+    }
+  }
 
-  advance (deltaTime : number){
-    this.artboard.advance(deltaTime);
+  render(renderer: WrappedRenderer): void {
+    if (!this.enabled) return;
+
+    renderer.save();
+      renderer.align(
+        this.fit,
+        this.alignment,
+        this.frame,
+        this.artboard.bounds
+    );
+    this.artboard.draw(renderer);
+    renderer.restore();
   }
     
   destroy(): void {
-    //what to do, what to do
+    //no need to destroy artboards in Rive's WASM.
   }
 }
 
-export default RiveRenderer
+export default RiveGameObject

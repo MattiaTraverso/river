@@ -1,13 +1,13 @@
 import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/canvas-advanced";
-import RiveRenderer from "./RiveRenderer";
+import RiveGameObject from "./RiveGameObject";
 import { RiveAnimation } from "./RiveAnimation";
 import Game from "../Game";
 
-export class RiveAnimatorRenderer extends RiveRenderer {
+export class RiveAnimatorRenderer extends RiveGameObject {
   private animations: Map<string, RiveAnimation> = new Map();
 
-  constructor(artboard: Artboard) {
-    super(artboard);
+  constructor(name: string, artboard: Artboard) {
+    super(name, artboard);
   }
 
   add(linearAnimation: LinearAnimation): string {
@@ -62,12 +62,12 @@ export class RiveAnimatorRenderer extends RiveRenderer {
     }
   }
 
-  advance(deltaTime: number): void {
+  update(deltaTime: number): void {
     for (const animation of this.animations.values()) {
       animation.advance(deltaTime);
     }
 
-    super.advance(deltaTime);
+    super.update(deltaTime);
   }
 
   // Method to get all animation names
