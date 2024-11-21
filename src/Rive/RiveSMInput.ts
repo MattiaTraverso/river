@@ -1,6 +1,4 @@
-import {
-    SMIInput
-} from "@rive-app/canvas-advanced";
+import { SMIInput } from "@rive-app/canvas-advanced";
 
 /**
  * Wrapper class for Rive's SMIInput.
@@ -65,3 +63,5 @@ export class RiveSMInput {
       this.smiInput.fire();
     }
   }
+
+export default RiveSMInput;

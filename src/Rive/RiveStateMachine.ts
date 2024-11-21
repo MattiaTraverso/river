@@ -1,15 +1,9 @@
-import {
-  Artboard,
-  StateMachineInstance,
-  SMIInput,
-  OpenUrlEvent,
-  RiveEvent,
-  StateMachine
-} from "@rive-app/canvas-advanced";
-import { RiveSMInput } from "./RiveSMInput";
+import { Artboard, StateMachineInstance, SMIInput, OpenUrlEvent, RiveEvent, StateMachine } from "@rive-app/canvas-advanced";
+
+import RiveSMInput from "./RiveSMInput";
 import RiveGameObject from "./RiveGameObject";
 import Game from "../Game";
-import { Input } from "../Systems/Input";
+import Input from "../Systems/Input";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;
@@ -112,3 +106,5 @@ export class RiveSMRenderer extends RiveGameObject {
     this.smInstance.delete();
   }
 }
+
+export default RiveSMRenderer;

@@ -1,14 +1,8 @@
-import Rive, {
-    Artboard,
-    Fit,
-    Alignment,
-    AABB,
-    WrappedRenderer
-  } from "@rive-app/canvas-advanced";
+import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canvas-advanced";
+
 import Game from "../Game";
-import { Vec2D } from "../Utils/Vec2D";
-import { GameObject } from "../GameObject";
-import { Debug } from "../Systems/Debug";
+import Vec2D from "../Utils/Vec2D";
+import GameObject from "../GameObject";
 
 export class RiveGameObject extends GameObject {
     //====

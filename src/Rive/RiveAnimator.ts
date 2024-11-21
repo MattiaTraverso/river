@@ -1,6 +1,6 @@
 import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/canvas-advanced";
 import RiveGameObject from "./RiveGameObject";
-import { RiveAnimation } from "./RiveAnimation";
+import RiveAnimation from "./RiveAnimation";
 import Game from "../Game";
 
 export class RiveAnimatorRenderer extends RiveGameObject {
@@ -81,3 +81,5 @@ export class RiveAnimatorRenderer extends RiveGameObject {
     }
   }
 }
+
+export default RiveAnimatorRenderer;

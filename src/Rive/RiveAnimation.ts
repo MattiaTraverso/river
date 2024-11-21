@@ -37,3 +37,5 @@ export class RiveAnimation implements Destroyable {
     this.instance.delete();
   }
 }
+
+export default RiveAnimation;

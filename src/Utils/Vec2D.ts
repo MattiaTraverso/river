@@ -121,3 +121,5 @@ export class Vec2D {
         return radians * (180 / Math.PI);
     }
 }
+
+export default Vec2D;

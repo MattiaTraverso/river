@@ -26,7 +26,6 @@ export class Debug {
 
     static UpdateDebugInfo(): void {
         Debug.Clear();
-        Debug.Add(`Current Scene: ${Game.CurrentScene?.Name}`);
         Debug.Add(`Canvas Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
         Debug.Add(`<br>Target Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
         Debug.Add(`Canvas: [${Game.Canvas.width},${Game.Canvas.height}] -> [${Game.ResScale.x}x, ${Game.ResScale.y}x]`);
@@ -116,6 +115,11 @@ export class Debug {
       }
 }
 
+export default Debug;
+
+/*
+* Crappy AI generated stuff I need to change
+*/
 class Performance {
     private static FPSArray: number[] = [];
 

@@ -4,7 +4,7 @@
   "description": "crazy enough to make a game",
   "targets": {
     "browsers": {
-      "source": "index.html",
+      "source": "export/index.html",
       "includeNodeModules": true,
       "engines": {
         "browsers": [
@@ -14,8 +14,8 @@
     }
   },
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "start": "parcel export/index.html",
+    "build": "parcel build export/index.html"
   },
   "dependencies": {
     "@rive-app/canvas-advanced": "2.21.6",

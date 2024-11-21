@@ -1,19 +1,19 @@
+
+//================================
+//========== CLASSES =============  
+//================================
+
 export interface Destroyable
 {
     destroy() : void
 }
 
-export interface Advanceable
-{
-    advance(deltaTime : number) : void
-}
-
-export interface Renderable
-{
-}
+//================================
+//========== FUNCTIONS ============
+//================================
 
 export interface UpdateFunction {
-    (deltaTime : number, time : number) : void
+    (deltaTime : number) : void
 }
 
 export interface ConditionFunction {

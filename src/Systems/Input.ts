@@ -274,3 +274,5 @@ export class Input {
     CloseBracket = 221,
     SingleQuote = 222
 }
+
+export default Input;

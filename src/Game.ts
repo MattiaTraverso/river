@@ -1,54 +1,32 @@
-import Rive, {
-    RiveCanvas,
-    WrappedRenderer,
-    File,
-    Artboard
-} from "@rive-app/canvas-advanced";
-  
-import { Vec2D } from "./Utils/Vec2D"; 
-import { Input, KeyCode } from "./Systems/Input";
-import { Debug } from "./Systems/Debug";
+import Rive, { RiveCanvas, WrappedRenderer, File, Artboard } from "@rive-app/canvas-advanced";
+
+import Vec2D from "./Utils/Vec2D"; 
+import Input from "./Systems/Input";
+import Debug from "./Systems/Debug";
 import Scene from "./Scene";
-import { UpdateFunction } from "./Utils/Interfaces";
 
-export class Game{
+//Local WASM loads faster. Remote WASM might be updated if I'm lazy.
+const USE_LOCAL_WASM: boolean = true;
+const LOCAL_WASM_URL = new URL("../export/rive.wasm", import.meta.url).toString();
+const REMOTE_WASM_URL = "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm";
+
+export class Game {
+
+  //================================
+  //==== GLOBAL STATIC VARIABLES ====
+  //================================
+
   static TargetResolution : Vec2D = new Vec2D(400, 400);
-  static get ResScale() : Vec2D {
-    return new Vec2D(Game.Canvas.width / Game.TargetResolution.x, Game.Canvas.height / Game.TargetResolution.y);
-  }
-  
   static RiveInstance: RiveCanvas;
-
-  
-
-  //====
-  // Remember: Y positive is DOWN, Y negative is UP
-  // Remember: [0,0] is top left
-  //=====
   static Canvas : HTMLCanvasElement;
   static Renderer : WrappedRenderer;
-  static CurrentScene : Scene;
+
+
+  //================================
+  //======== INITIALIZATION ========
+  //================================
 
   private static _hasInitiated : boolean = false;
-  private static scenes: Map<string, Scene> = new Map();
-
-  static AddScene(scene: Scene, current : boolean = false): void {
-    Game.scenes.set(scene.Name, scene);
-    scene.Init();
-    if (current) Game.CurrentScene = scene;
-  }
-
-  static GetScene(name: string): Scene {
-    return Game.scenes.get(name) as Scene;
-  } 
-
-  static SetCurrentScene(name: string): void {
-    Game.CurrentScene = Game.GetScene(name);
-  }
-
-  static RemoveScene(name: string): void {
-    Game.scenes.delete(name);
-  }
 
   public static async Initiate(width : number, height : number): Promise<void> {
     if (Game._hasInitiated) {
@@ -57,7 +35,9 @@ export class Game{
     Game._hasInitiated = true
 
     Game.RiveInstance = await Rive({
-      locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
+      locateFile: (_: string) => USE_LOCAL_WASM ? 
+        LOCAL_WASM_URL
+       : REMOTE_WASM_URL
     });
   
     Game.TargetResolution = new Vec2D(width, height);
@@ -75,6 +55,46 @@ export class Game{
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
     requestAnimationFrame(Game.Update);
+  }
+
+  //================================
+  //========== UPDATE ==============
+  //================================
+
+  static TimeScale = 1.0;
+
+  static #elapsedTime : number = 0;
+
+  private static Update(time : number) {
+    let deltaTime = (time - Game.#elapsedTime) / 1000;
+    deltaTime *= Game.TimeScale;
+    Game.#elapsedTime = time;
+
+    Debug.Update(deltaTime, time);
+    
+    for (const scene of Game.#scenes.values()) {
+      if (scene.enabled) scene.Update(deltaTime, time);
+    }
+
+    Game.Render(deltaTime);
+
+    Game.RiveInstance.resolveAnimationFrame();
+
+    requestAnimationFrame(Game.Update);
+
+    Input.Clear();
+  }
+
+  //================================
+  //=========== RENDER =============
+  //================================
+
+  private static Render(deltaTime : number) {
+    Game.Renderer.clear();
+    
+    for (const scene of Game.#scenes.values()) {
+      if (scene.enabled) scene.Render(Game.Renderer);
+    }
   }
 
   private static ResizeCanvas() : void {
@@ -96,40 +116,35 @@ export class Game{
     Game.Canvas.height = newHeight;
   }
 
-  static PreLoop : UpdateFunction[] = [];
 
-  static TimeScale = 1.0;
+  static get ResScale() : Vec2D {
+    return new Vec2D(Game.Canvas.width / Game.TargetResolution.x, Game.Canvas.height / Game.TargetResolution.y);
+  }
 
-  private static elapsedTime : number = 0;
-
-  private static Update(time : number) {
-    Debug.Clear();
-
-    let deltaTime = (time - Game.elapsedTime) / 1000;
-    deltaTime *= Game.TimeScale;
-    Game.elapsedTime = time;
   
+  //================================
+  //========== SCENES ==============
+  //================================
 
-    for (let callback of Game.PreLoop) callback(deltaTime, time);
+  static #scenes: Map<string, Scene> = new Map();
 
-    Debug.Update(deltaTime, time);
-
-    if (Game.CurrentScene) Game.CurrentScene.Update(deltaTime, time);
-    
-    Game.Render(deltaTime);
-
-    Game.RiveInstance.resolveAnimationFrame();
-
-    requestAnimationFrame(Game.Update);
-
-    Input.Clear();
+  static AddScene(scene: Scene): void {
+    Game.#scenes.set(scene.Name, scene);
+    scene.Init();
   }
 
-  private static Render(deltaTime : number) {
-    Game.Renderer.clear();
-    
-    if (Game.CurrentScene) Game.CurrentScene.Render(Game.Renderer);
+  static GetScene(name: string): Scene {
+    return Game.#scenes.get(name) as Scene;
+  } 
+
+  static RemoveScene(name: string): void {
+    Game.#scenes.delete(name);
   }
+
+
+  //================================
+  //========== DESTRUCT ============
+  //================================
 
   static Destroy(event : Event) {
     event.preventDefault();
@@ -137,9 +152,10 @@ export class Game{
     
     window.alert("Being Destroyed");
 
-    Game.CurrentScene.Destroy();
-    Game.scenes.forEach(scene => scene.Destroy());
-    Game.scenes.clear();
+    for (const scene of Game.#scenes.values()) {  
+      scene.Destroy();
+    }
+    Game.#scenes.clear();
   }
 
   static async LoadFile(url: string): Promise<File> {

@@ -28,10 +28,11 @@
  * - Cleaning up objects when destroyed
  */
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
-import RiveGameObject from "./Rive/RiveGameObject";
-import { GameObject } from "./GameObject";
+import GameObject from "./GameObject";
 
 export default class Scene {
+  enabled: boolean = true;
+
   protected gameObjects: GameObject[] = [];
   private initialized: boolean = false;
   private name: string;
