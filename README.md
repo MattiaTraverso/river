@@ -9,12 +9,12 @@ Fair warning: I'm learning TypeScript as I go, so expect some "interesting" code
 
 Rive is a wonderful tool, but:
 A) Its high level JS api is WAY too high level to make a game with
-B) It low level JS api is WAY too low level for anyone to make a game with
-C) While empowering animators to build logic is AWESOME, it skews too much towards no-code solutions currently, and I need a mix.
+B) Its low level JS api is WAY too low level for anyone to make a game with ( :D )
+C) While empowering animators to build logic is AWESOME, it skews too much towards no-code solutions, and you need a healthy mix to make games!
 
 If only there was a middle level api... :)
 
-Tada! This is a 2D game engine that uses Rive for rendering, but with all of the scaffolding you expect from an engine: a Game Loop, Scene System, Asset Management, State Machines (the generic ones), etc...
+Tada! River is a 2D game engine that uses Rive for rendering, but with all of the scaffolding you expect from an engine: a Game Loop, Scene System, Asset Management, State Machines (the generic ones), etc...
 
 When this is done you'll be able to make 2D games as you'd with LOVE2D, but with a Rive renderer.
 
@@ -30,6 +30,8 @@ If you want to try it out, you need to:
 * Using your favourite package manager, install the depencies (yarn install)
 * Build it (yarn start)
 * Try it and be very underwhelmed because there's no good showcase as to why we need this... yet!
+
+If you wait a few weeks I should have something to show you to prove why this matters.
 
   
 
