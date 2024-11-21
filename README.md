@@ -2,7 +2,7 @@
 
 Hey! 👋 This is my attempt at building a game framework using [Rive](https://rive.app) as a renderer!
 
-Fair warning: I'm learning TypeScript as I go, so expect some "interesting" code choices.
+Fair warning: IT'S **NOT** USABLE RIGHT NOW.
 
 
 ## What's This All About?
@@ -41,10 +41,10 @@ If you wait a few weeks I should have something to show you to prove why this ma
 ## Current State
 
 - Naming conventions are all over the place
-- TypeScript implementation is improving as I learn
 - API might change as the framework evolves
 - Documentation is a work in progress
 - Claude's been helping out when I get lazy :)
+- I'm learning TypeScript as I go, so expect some "interesting" code choices.
 
 
 ## Planned Features
