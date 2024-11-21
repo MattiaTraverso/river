@@ -137,7 +137,7 @@ export class StateMachine<TState extends string, TContext = any> {
         this.setState(newState);
     }
 
-    Update(deltaTime: number): void {
+    Update(deltaTime: number, time: number): void {
         if (!this._currentState) return;
 
         const stateTransitions = this.transitions.get(this._currentState);
@@ -151,7 +151,7 @@ export class StateMachine<TState extends string, TContext = any> {
         }
 
         const currentDef = this.states.get(this._currentState);
-        currentDef?.update.call(this.context, deltaTime);
+        currentDef?.update.call(this.context, deltaTime, time);
     }
 
     DebugRenderStateTransitionsAsMermaidGraph(): string {

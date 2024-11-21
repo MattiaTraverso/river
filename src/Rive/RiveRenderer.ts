@@ -7,7 +7,7 @@ import Rive, {
 import Game from "../Game";
 import { Vec2D } from "../Vec2D";
 import { Destroyable } from "../Interfaces";
-import { Debug } from "../Debug";
+import { Debug } from "../Systems/Debug";
 
 export class RiveRenderer implements Destroyable {
     //====

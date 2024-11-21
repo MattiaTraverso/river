@@ -16,7 +16,7 @@ export interface Renderable
 }
 
 export interface UpdateFunction {
-    (deltaTime : number) : void
+    (deltaTime : number, time : number) : void
 }
 
 export interface ConditionFunction {

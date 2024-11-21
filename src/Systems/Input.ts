@@ -1,5 +1,5 @@
-import Game from "./Game";
-import RiveRenderer from "./Rive/RiveRenderer";
+import Game from "../Game";
+import RiveRenderer from "../Rive/RiveRenderer";
 
 //TODO: keyboard events are not well thought out.
 export class Input {

@@ -9,7 +9,7 @@ import {
 import { RiveSMInput } from "./RiveSMInput";
 import RiveRenderer from "./RiveRenderer";
 import Game from "../Game";
-import { Input } from "../Input";
+import { Input } from "../Systems/Input";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;

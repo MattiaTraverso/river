@@ -1,7 +1,8 @@
 import { StateMachine } from "@rive-app/canvas-advanced";
 import { SMIInput } from "@rive-app/canvas-advanced";
 import { Artboard, File } from "@rive-app/canvas-advanced";
-import Game from "./Game";
+import { Game } from "../Game";
+import { Input } from "./Input";
 
 export class Debug {
     private static Box : HTMLElement;
@@ -16,6 +17,20 @@ export class Debug {
 
     static Add(text : string) {
         Debug.Box.innerHTML += "<br>" + text;
+    }
+
+    static Update(deltaTime : number, time : number) {
+      Performance.Update(deltaTime);
+      this.UpdateDebugInfo();
+    } 
+
+    static UpdateDebugInfo(): void {
+        Debug.Clear();
+        Debug.Add(`Current Scene: ${Game.CurrentScene?.Name}`);
+        Debug.Add(`Canvas Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
+        Debug.Add(`<br>Target Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
+        Debug.Add(`Canvas: [${Game.Canvas.width},${Game.Canvas.height}] -> [${Game.ResScale.x}x, ${Game.ResScale.y}x]`);
+        Debug.Add(`Average FPS: ${Performance.AverageFPS}`);
     }
 
     static LogUnpackedRiveFile(file: File): void {
@@ -99,4 +114,25 @@ export class Debug {
         // Append the new div to the body
         document.body.appendChild(this.crosshair);
       }
+}
+
+class Performance {
+    private static FPSArray: number[] = [];
+
+    static Update(deltaTime: number) {
+        // Calculate delta time and FPS
+        let fps = 1 / deltaTime;
+
+        // Update FPS tracking
+        Performance.FPSArray.push(fps);
+        if (Performance.FPSArray.length > 100) {
+            Performance.FPSArray = Performance.FPSArray.slice(1);
+        }
+    }
+
+    static get AverageFPS(): number {
+        let sum = 0;
+        for (let n of Performance.FPSArray) sum += n;
+        return Math.trunc(sum / Performance.FPSArray.length);
+    }
 }

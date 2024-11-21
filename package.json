@@ -14,18 +14,15 @@
     }
   },
   "scripts": {
-    "start": "parcel index.html --log-level verbose | tee parcel-log.txt",
+    "start": "parcel index.html",
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "@parcel/runtime-browser-hmr": "^2.13.0",
     "@rive-app/canvas-advanced": "2.21.6",
-    "@tweenjs/tween.js": "latest",
-    "parcel": "latest"
+    "parcel": "^2.13.0"
   },
   "devDependencies": {
-    "@parcel/transformer-typescript-tsc": "latest",
+    "@parcel/transformer-typescript-tsc": "^2.13.0",
     "typescript": "latest"
-  },
-  "keywords": []
+  }
 }

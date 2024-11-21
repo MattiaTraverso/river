@@ -76,12 +76,8 @@ export class RiveAnimatorRenderer extends RiveRenderer {
   }
   
   destroy(): void {
-    let anims : MapIterator<RiveAnimation> = this.animations.values();
-
-    for (let anim in anims)
-    {
-      console.log(typeof(anim));;
+    for (const anim of this.animations.values()) {
+      anim.destroy();
     }
-    //how to iterate and get all RiveAnimations?
   }
 }

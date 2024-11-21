@@ -4,15 +4,12 @@ import Rive, {
     File,
     Artboard
 } from "@rive-app/canvas-advanced";
-
-import RiveRenderer from "./Rive/RiveRenderer";
+  
 import { Vec2D } from "./Vec2D"; 
-import { Input, KeyCode } from "./Input";
-import { Debug } from "./Debug";
-
-export interface LoopCallback {
-   (deltaTime : number, time : number) : void 
-}
+import { Input, KeyCode } from "./Systems/Input";
+import { Debug } from "./Systems/Debug";
+import Scene from "./Scene";
+import { UpdateFunction } from "./Interfaces";
 
 export class Game{
   static TargetResolution : Vec2D = new Vec2D(400, 400);
@@ -22,21 +19,42 @@ export class Game{
   
   static RiveInstance: RiveCanvas;
 
+  
+
   //====
   // Remember: Y positive is DOWN, Y negative is UP
   // Remember: [0,0] is top left
   //=====
   static Canvas : HTMLCanvasElement;
   static Renderer : WrappedRenderer;
+  static CurrentScene : Scene;
 
   private static _hasInitiated : boolean = false;
+  private static scenes: Map<string, Scene> = new Map();
+
+  static AddScene(scene: Scene, current : boolean = false): void {
+    Game.scenes.set(scene.Name, scene);
+    scene.Init();
+    if (current) Game.CurrentScene = scene;
+  }
+
+  static GetScene(name: string): Scene {
+    return Game.scenes.get(name) as Scene;
+  } 
+
+  static SetCurrentScene(name: string): void {
+    Game.CurrentScene = Game.GetScene(name);
+  }
+
+  static RemoveScene(name: string): void {
+    Game.scenes.delete(name);
+  }
 
   public static async Initiate(width : number, height : number): Promise<void> {
     if (Game._hasInitiated) {
       throw console.error("Has already been initiated");
     }
     Game._hasInitiated = true
-
 
     Game.RiveInstance = await Rive({
       locateFile: (_: string) => "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm"
@@ -52,11 +70,11 @@ export class Game{
     window.addEventListener('resize', Game.ResizeCanvas);
     Game.ResizeCanvas();
 
-    window.addEventListener('visibilitychange', Game.Destroy);
+    window.addEventListener('onvisibilitychange', Game.Destroy);
 
     Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
 
-    requestAnimationFrame(Game.Loop);
+    requestAnimationFrame(Game.Update);
   }
 
   private static ResizeCanvas() : void {
@@ -78,25 +96,39 @@ export class Game{
     Game.Canvas.height = newHeight;
   }
 
-  private static riveObjects : RiveRenderer[] = [];
-  
+  static PreLoop : UpdateFunction[] = [];
+
+  static TimeScale = 1.0;
+
   private static elapsedTime : number = 0;
 
-  static Add(object : RiveRenderer) : RiveRenderer {
-    Game.riveObjects.push(object);
-    return object;
+  private static Update(time : number) {
+    Debug.Clear();
+
+    let deltaTime = (time - Game.elapsedTime) / 1000;
+    deltaTime *= Game.TimeScale;
+    Game.elapsedTime = time;
+  
+
+    for (let callback of Game.PreLoop) callback(deltaTime, time);
+
+    Debug.Update(deltaTime, time);
+
+    if (Game.CurrentScene) Game.CurrentScene.Update(deltaTime, time);
+    
+    Game.Render(deltaTime);
+
+    Game.RiveInstance.resolveAnimationFrame();
+
+    requestAnimationFrame(Game.Update);
+
+    Input.Clear();
   }
 
-  static Remove(object: RiveRenderer) {
-    const index = Game.riveObjects.indexOf(object);
-    Game.RemoveAtIndex(index);
-  }
-
-  static RemoveAtIndex(index : number) {
-    if (index >= 0) {
-      Game.riveObjects[index].destroy();
-      Game.riveObjects = Game.riveObjects.splice(index, 1);
-    }
+  private static Render(deltaTime : number) {
+    Game.Renderer.clear();
+    
+    if (Game.CurrentScene) Game.CurrentScene.Render(Game.Renderer);
   }
 
   static Destroy(event : Event) {
@@ -105,115 +137,14 @@ export class Game{
     
     window.alert("Being Destroyed");
 
-    while (Game.riveObjects.length > 0)
-      Game.RemoveAtIndex(0);
+    Game.CurrentScene.Destroy();
+    Game.scenes.forEach(scene => scene.Destroy());
+    Game.scenes.clear();
   }
-
-  static PreLoop : LoopCallback[] = [];
-  static PostLoop : LoopCallback[] = []
-
-  static TimeScale = 1.0;
-
-  static FPSArray : number[] = [];
-
-  private static Loop(time : number) {
-    Debug.Clear();
-
-    Debug.Add(`Canvas Mouse: [${Input.CanvasMouseX},${Input.CanvasMouseY}]`);
-
-    Debug.Add(`<br>Target Res: [${Game.TargetResolution.x}, ${Game.TargetResolution.y}]`);
-    Debug.Add(`Canvas: [${Game.Canvas.width},${Game.Canvas.height}] -> [${Game.ResScale.x}x, ${Game.ResScale.y}x]`);
-   
-
-    let deltaTime = (time - Game.elapsedTime) / 1000;
-    deltaTime *= Game.TimeScale;
-
-    if (Game.riveObjects.length > 0) {
-      let artboard : Artboard = Game.riveObjects[0].artboard;
-
-      let movement = deltaTime * 200;
-
-      if (Input.IsKeyDown(KeyCode.A))
-        artboard.frameOrigin = !artboard.frameOrigin;
-      if (Input.IsKey(KeyCode.LeftArrow))
-        Game.riveObjects[0].position.x -= movement;
-      if (Input.IsKey(KeyCode.RightArrow))
-        Game.riveObjects[0].position.x += movement;
-      if (Input.IsKey(KeyCode.UpArrow)) {
-        Game.riveObjects[0].position.y -= movement;
-      }
-      if (Input.IsKey(KeyCode.DownArrow)) {
-        Game.riveObjects[0].position.y += movement;
-      }
-      
-      Debug.Add(`<br>Artboard Bounds: [${Game.riveObjects[0].artboard.bounds.minX},${Game.riveObjects[0].artboard.bounds.minY},${Game.riveObjects[0].artboard.bounds.maxX},${Game.riveObjects[0].artboard.bounds.maxY},${artboard.frameOrigin}]`)
-      Debug.Add(`Artboard Size: [${Math.abs(Game.riveObjects[0].artboard.bounds.maxX - Game.riveObjects[0].artboard.bounds.minX)},${Math.abs(Game.riveObjects[0].artboard.bounds.maxY - Game.riveObjects[0].artboard.bounds.minY)}]`);
-
-      Debug.Add(`<br>RiveObj Bounds: [${Game.riveObjects[0].frame.minX},${Game.riveObjects[0].frame.minY},${Game.riveObjects[0].frame.maxX},${Game.riveObjects[0].frame.maxY},${artboard.frameOrigin}]`)
-      Debug.Add(`RiveObj Size: [${Math.abs(Game.riveObjects[0].frame.maxX - Game.riveObjects[0].frame.minX)},${Math.abs(Game.riveObjects[0].frame.maxY - Game.riveObjects[0].frame.minY)}]`);
-      Debug.Add(`Position: [${Game.riveObjects[0].position.x}, ${Game.riveObjects[0].position.y}]`)
-    }
-
-    let fps = 1 / deltaTime;
-
-
-    //Calculate average FPS
-    //TODO: This should go somewhere else.
-    Game.FPSArray.push(fps);
-    if (Game.FPSArray.length > 100) Game.FPSArray = Game.FPSArray.slice(1);
-    let sum = 0; for (let n of Game.FPSArray) sum+=n;
-    Debug.Add(`Average FPS: ${Math.trunc(sum / Game.FPSArray.length)}`);
-
-    //Debug.Add(Math.trunc(fps*100)/100 + " fps");
-
-    Game.elapsedTime = time;
-
-    for (let callback of Game.PreLoop) callback(deltaTime, time);
-
-    for (let riveRenderer of Game.riveObjects)
-    {
-      if (riveRenderer.enabled)
-        riveRenderer.advance(deltaTime);
-    }
-    
-    Game.Render(deltaTime);
-
-    Game.DebugRender(deltaTime);
-    
-    Game.RiveInstance.resolveAnimationFrame();
-
-    requestAnimationFrame(Game.Loop);
-
-    Input.Clear();
-  }
-
-  private static Render(deltaTime : number) {
-    Game.Renderer.clear();
-
-    for (let riveRenderer of Game.riveObjects)
-    {
-      Game.Renderer.save();
-
-      Game.Renderer.align(
-        riveRenderer.fit,
-        riveRenderer.alignment,
-        riveRenderer.frame,
-        riveRenderer.artboard.bounds
-      );
-
-      riveRenderer.artboard.draw(Game.Renderer);
-
-      Game.Renderer.restore();
-    }
-  }
-
-  private static DebugRender(deltaTime : number) {
-  }
-
 
   static async LoadFile(url: string): Promise<File> {
     const bytes = await (await fetch(new Request(url))).arrayBuffer();
-    
+
     // import File as a named import from the Rive dependency
     const file = (await Game.RiveInstance.load(new Uint8Array(bytes))) as File;
     
