@@ -11,7 +11,7 @@ const USE_LOCAL_WASM: boolean = true;
 const LOCAL_WASM_URL = new URL("../export/rive.wasm", import.meta.url).toString();
 const REMOTE_WASM_URL = "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm";
 
-export class Game {
+export default class Game {
 
   //================================
   //==== GLOBAL STATIC VARIABLES ====
@@ -160,5 +160,3 @@ export class Game {
     Game.scenes.clear();
   }
 }
-
-export default Game;

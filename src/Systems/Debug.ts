@@ -1,8 +1,8 @@
 import { StateMachine } from "@rive-app/canvas-advanced";
 import { SMIInput } from "@rive-app/canvas-advanced";
 import { Artboard, File } from "@rive-app/canvas-advanced";
-import { Game } from "../Game";
-import { Input } from "./Input";
+import Game from "../Game";
+import Input from "./Input";
 
 /**
  * Needs refactoring.
