@@ -1,5 +1,5 @@
 import Game from "../Game";
-import Vec2D from "../Utils/Vec2D";
+import Vector from "../Utils/Vector";
 
 export enum PositionMode {
     Coordinates,
@@ -27,7 +27,7 @@ export default class Position {
         if (this.mode === PositionMode.Coordinates) {
             return this.rawX;
         } else {
-            return (this.rawX / 100) * Game.canvas.width;
+            return (this.rawX / 100) * Game.targetRes.x;
         }
     }
 
@@ -35,7 +35,7 @@ export default class Position {
         if (this.mode === PositionMode.Coordinates) {
             return this.rawY;
         } else {
-            return (this.rawY / 100) * Game.canvas.height;
+            return (this.rawY / 100) * Game.targetRes.y;
         }
     }
 
@@ -98,16 +98,16 @@ export default class Position {
         if (this.mode === mode) return;
         
         if (mode === PositionMode.Percentage) {
-            const newX = (this.rawX / Game.canvas.width) * 100;
-            const newY = (this.rawY / Game.canvas.height) * 100;
+            const newX = (this.rawX / Game.targetRes.x) * 100;
+            const newY = (this.rawY / Game.targetRes.y) * 100;
             if (newX < 0 || newX > 100 || newY < 0 || newY > 100) {
                 throw new Error("Converting to percentage would result in values outside 0-100 range");
             }
             this.rawX = newX;
             this.rawY = newY;
         } else {
-            this.rawX = (this.rawX / 100) * Game.canvas.width;
-            this.rawY = (this.rawY / 100) * Game.canvas.height;
+            this.rawX = (this.rawX / 100) * Game.targetRes.x;
+            this.rawY = (this.rawY / 100) * Game.targetRes.y;
         }
         this.mode = mode;
     }
@@ -117,12 +117,12 @@ export default class Position {
     }
 
     // Convert to Vec2D (will give actual coordinates regardless of mode)
-    public toVec2D(): Vec2D {
-        return new Vec2D(this.x, this.y);
+    public toVec2D(): Vector {
+        return new Vector(this.x, this.y);
     }
 
     // Static creation methods
-    public static fromVec2D(vec: Vec2D, mode: PositionMode = PositionMode.Coordinates): Position {
+    public static fromVec2D(vec: Vector, mode: PositionMode = PositionMode.Coordinates): Position {
         return new Position(vec.x, vec.y, mode);
     }
 

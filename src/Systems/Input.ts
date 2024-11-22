@@ -7,6 +7,12 @@ export default class Input {
     static windowMouseY: number = 0;
     static canvasMouseX: number = 0;
     static canvasMouseY: number = 0;
+    static get scaledMouseX() : number {
+        return this.canvasMouseX / Game.resolutionScale.x;
+    }
+    static get scaledMouseY() : number {
+        return this.canvasMouseY / Game.resolutionScale.y;
+    }   
     
     static isMouseDown: boolean = false;
     static isMouseClicked: boolean = false;
@@ -19,7 +25,7 @@ export default class Input {
     private static keysPressed: Set<number> = new Set();
     private static keysReleased: Set<number> = new Set();
   
-    static initiate(canvas: HTMLCanvasElement): void {
+    static init(canvas: HTMLCanvasElement): void {
         this.canvas = canvas;
 
         // Mouse events

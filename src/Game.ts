@@ -1,10 +1,12 @@
 import Rive, { RiveCanvas, WrappedRenderer, File, Artboard } from "@rive-app/canvas-advanced";
 
-import Vec2D from "./Utils/Vec2D"; 
+import Vector from "./Utils/Vector"; 
 import Input from "./Systems/Input";
 import Debug from "./Systems/Debug";
 import Scene from "./Core/Scene";
 import { Destroyable } from "./Utils/Interfaces";
+import Physics from "./Systems/Physics";
+import { b2World } from "@box2d/core";
 
 //Local WASM loads faster. Remote WASM might be updated if I'm lazy.
 const USE_LOCAL_WASM: boolean = true;
@@ -17,10 +19,11 @@ export default class Game {
   //==== GLOBAL STATIC VARIABLES ====
   //================================
 
-  static targetRes : Vec2D = new Vec2D(400, 400);
+  static targetRes : Vector = new Vector(400, 400);
   static rive: RiveCanvas;
-  static canvas : HTMLCanvasElement;
-  static renderer : WrappedRenderer;
+  
+  private static canvas : HTMLCanvasElement;
+  private static renderer : WrappedRenderer;
 
 
   //================================
@@ -28,6 +31,9 @@ export default class Game {
   //================================
 
   private static _hasInitiated : boolean = false;
+  static get isInitiated() : boolean {
+    return Game._hasInitiated;
+  }
 
   public static async initiate(width : number, height : number): Promise<void> {
     if (Game._hasInitiated) {
@@ -41,15 +47,15 @@ export default class Game {
        : REMOTE_WASM_URL
     });
   
-    Game.targetRes = new Vec2D(width, height);
+    Game.targetRes = new Vector(width, height);
 
     Game.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 
-    Input.initiate(Game.canvas);
-    Debug.initiate();
+    Input.init(Game.canvas);
+    Debug.init(Game.canvas);
   
-    window.addEventListener('resize', Game.resizeCanvas);
-    Game.resizeCanvas();
+    window.addEventListener('resize', Game.onResizeCanvas);
+    Game.onResizeCanvas();
 
     //TODO: figure out what's the best event for this?
     window.addEventListener('onvisibilitychange', Game.destroy);
@@ -72,7 +78,7 @@ export default class Game {
   private static elapsedTime : number = -1;
 
   private static update(time : number) {
-    // Handle first frame with lag spike?
+    // Handle first frame with lag spike
     if (Game.elapsedTime === -1) {
       Game.elapsedTime = time;
       requestAnimationFrame(Game.update);
@@ -85,10 +91,8 @@ export default class Game {
 
     Game.elapsedTime = time;
 
-    Debug.update(deltaTime, time);
+    Debug.update(deltaTime);
     
-    console.log("UPDATE: " + deltaTime);
-
     Game.fixedUpdateAccumulator += deltaTime;
 
     let steps = 0;
@@ -101,12 +105,14 @@ export default class Game {
     Game.interpolationAlpha = Game.fixedUpdateAccumulator / Game.FIXED_TIME_STEP;
 
     for (const scene of Game.scenes.values()) {
-      if (scene.enabled) scene.update(deltaTime, time);
+      if (scene.enabled) scene.update(deltaTime);
     }
 
-    Game.render(deltaTime);
+    Game.render();
 
     Game.rive.resolveAnimationFrame();
+
+    Game.debugRender();
 
     requestAnimationFrame(Game.update);
 
@@ -117,8 +123,6 @@ export default class Game {
   private static interpolationAlpha : number = 0;
 
   private static fixedUpdate(fixedDeltaTime : number) {
-    console.log("FIXED UPDATE: " + fixedDeltaTime);
-
     for (const scene of Game.scenes.values()) {
       if (scene.enabled) scene.fixedUpdate(fixedDeltaTime);
     }
@@ -128,15 +132,35 @@ export default class Game {
   //=========== RENDER =============
   //================================
 
-  private static render(deltaTime : number) {
+  /**
+   * Note: when position entities, we use the Target Resolution you define in Game.init
+   * However, since this runs on the web, the canvas might have a different resolution.
+   * This is where resolutionScale comes in.
+   * 
+   * We pass it to the renderer so that when we render, we scale the AABB accordingly.
+   */
+
+  static get resolutionScale() : Vector {
+    return new Vector(Game.canvas.width / Game.targetRes.x, Game.canvas.height / Game.targetRes.y);
+  }
+
+  private static render() {
     Game.renderer.clear();
     
     for (const scene of Game.scenes.values()) {
-      if (scene.enabled) scene.render(Game.renderer);
+      if (scene.enabled) scene.render(Game.renderer, Game.resolutionScale);
     }
   }
 
-  private static resizeCanvas() : void {
+  //HACK! TODO: REMOVE!
+  private static debugRender() {
+    for (const scene of Game.scenes.values()) {
+      if (scene.enabled) scene.debugRender(Game.canvas, Game.resolutionScale);
+    }
+  }
+
+
+  private static onResizeCanvas() : void {
     const aspectRatio = Game.targetRes.x / Game.targetRes.y;
 
     let newWidth = window.innerWidth;
@@ -156,10 +180,6 @@ export default class Game {
   }
 
 
-  static get resScale() : Vec2D {
-    return new Vec2D(Game.canvas.width / Game.targetRes.x, Game.canvas.height / Game.targetRes.y);
-  }
-
   
   //================================
   //========== SCENES ==============
@@ -168,8 +188,7 @@ export default class Game {
   private static scenes: Map<string, Scene> = new Map();
 
   static addScene(scene: Scene): void {
-    Game.scenes.set(scene.Name, scene);
-    scene.init();
+    Game.scenes.set(scene.name, scene);
   }
 
   static getScene(name: string): Scene {

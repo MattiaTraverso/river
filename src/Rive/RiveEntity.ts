@@ -29,7 +29,7 @@
 import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canvas-advanced";
 
 import Game from "../Game";
-import Vec2D from "../Utils/Vec2D";
+import Vector from "../Utils/Vector";
 import Entity from "../Core/Entity";
 
 export class RiveEntity extends Entity {
@@ -62,8 +62,8 @@ export class RiveEntity extends Entity {
   get height() : number {
     return this.artboard.bounds.maxY - this.artboard.bounds.minY;
   }
-  position : Vec2D = new Vec2D(0,0);
-  scale : Vec2D = new Vec2D(1, 1);
+  position : Vector = new Vector(0,0);
+  scale : Vector = new Vector(1, 1);
 
   constructor(name: string, artboard : Artboard) {
     super(name);

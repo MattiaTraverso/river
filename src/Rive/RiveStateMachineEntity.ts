@@ -31,7 +31,7 @@ export class RiveStateMachineEntity extends RiveEntity {
     }
   }
 
-  update(deltaTime: number): void {
+  override update(deltaTime: number): void {
     this._reportedEvents = [];
     this._changedStates = [];
 
@@ -102,7 +102,7 @@ export class RiveStateMachineEntity extends RiveEntity {
     }
   }
 
-  destroy(): void {
+  override destroy(): void {
     this.smInstance.delete();
   }
 }

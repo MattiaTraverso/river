@@ -1,4 +1,4 @@
-import Vec2D from "../../Utils/Vec2D";
+import Vector from "../../Utils/Vector";
 
 export type InterpolationFunction<T> = (start: T, end: T, t: number) => T;
 
@@ -8,7 +8,7 @@ export class Interpolation {
             return Interpolation.number as unknown as InterpolationFunction<T>;
         }
         
-        if (startValue instanceof Vec2D && endValue instanceof Vec2D) {
+        if (startValue instanceof Vector && endValue instanceof Vector) {
             return Interpolation.vector2D as unknown as InterpolationFunction<T>;
         }
         
@@ -42,8 +42,8 @@ export class Interpolation {
         return start + (end - start) * t;
     };
 
-    static vector2D: InterpolationFunction<Vec2D> = (start, end, t) => {
-        return new Vec2D(
+    static vector2D: InterpolationFunction<Vector> = (start, end, t) => {
+        return new Vector(
             start.x + (end.x - start.x) * t,
             start.y + (end.y - start.y) * t
         );

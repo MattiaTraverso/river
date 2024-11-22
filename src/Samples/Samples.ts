@@ -10,8 +10,11 @@ import Scene from "../Core/Scene";
 import ScriptableEntity from "../Core/ScriptableEntity";
 import RiveLoader from "../Rive/RiveLoader";
 import Tween, { LoopType } from "../Core/Tweens/Tween";
-import Vec2D from "../Utils/Vec2D";
+import Vector from "../Utils/Vector";
 import { easing } from "../Core/Tweens/Easing";
+import { b2CircleShape, b2FixtureDef } from "@box2d/core";
+import { b2BodyType } from "@box2d/core";
+import Physics from "../Systems/Physics";
 //================================ 
 // !!HORRIBLE CODE!! !!MOSTLY FOR INTERNAL TESTING!!
 // Various Samples showing different parts of the engine at work.
@@ -22,13 +25,57 @@ import { easing } from "../Core/Tweens/Easing";
 async function main() {
     //Uncomment the sample you want.
     
+    await Game.initiate(400, 400);
+
+    /*
+    Physics test
+    */
+
+    /*
+    let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
+
+    let artboard: Artboard = file.artboardByIndex(0);
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
+*/
+    const scene = new Scene("Box2DTest");
+    Game.addScene(scene);
+
+
+    /*
+    TEST CREATE 30 BOXES
+    */
+    const boxShape = Physics.getBoxShape(50, 50);
+    const fixtureDef : b2FixtureDef = {
+        shape: boxShape,
+        density: 1,
+        friction: 0.3,
+    };
+
+
+    // Create 30 random boxes
+    for(let i = 0; i < 30; i++) {
+        const body = scene.world.CreateBody(Physics.dynamicBodyDef);
+        
+        // Random position within game resolution
+        const x = Math.random() * Game.targetRes.x;
+        const y = Math.random() * Game.targetRes.y;
+        
+        const physicsPos = Physics.toPhysicsTransform(new Vector(x, y));
+        body.SetTransformXY(physicsPos.x, physicsPos.y, 0);
+        
+        body.CreateFixture(fixtureDef);
+    }
+
+    //scene.add(riveEntity);
+
+
     //doubleSceneTest();
     //cityOrCountry();
     //pokeyPokey();
     //turtleScene();
     //bigRivFile();
     //scalingScene();
-    basketBallTestScene();
+    //doubleSceneTest();
     //animationBlendingTestScene();
     //eventsTestScene();
     //fashionTestScene();
@@ -199,17 +246,17 @@ async function basketBallTestScene(skipGameInitialization: boolean = false) {
     Game.addScene(scene);
 
     //testing tweens:
-    let tween: Tween<Vec2D> = Tween.toProperty(
-        (value: Vec2D) => basketRiveEntity.position = value,
+    let tween: Tween<Vector> = Tween.toProperty(
+        (value: Vector) => basketRiveEntity.position = value,
         () => basketRiveEntity.position,
-        new Vec2D(200, 100),
+        new Vector(200, 100),
         .5
     )
         .auto(false)
         .easing(easing.outCubic)
         .setLoops(-1)
         .setLoopType(LoopType.Restart)
-        .onUpdate((value: Vec2D) => {
+        .onUpdate((value: Vector) => {
             //console.log(basketRiveEntity.position);
         });
 
@@ -311,8 +358,8 @@ async function eventsTestScene() {
 
     let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("EventsTest", artboard, artboard.stateMachineByIndex(0));
 
-    riveEntity.position.x = Game.canvas.width * .5 - riveEntity.width * .5;
-    riveEntity.position.y = Game.canvas.height * .5 - riveEntity.height * .5;
+    riveEntity.position.x = Game.targetRes.x * .5 - riveEntity.width * .5;
+    riveEntity.position.y = Game.targetRes.y * .5 - riveEntity.height * .5;
 
     const scene = new Scene("EventsTestScene");
     scene.add(riveEntity);

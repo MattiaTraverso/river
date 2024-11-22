@@ -1,5 +1,5 @@
 import Entity from "../Entity";
-import Vec2D from "../../Utils/Vec2D";
+import Vector from "../../Utils/Vector";
 import { TEasing, easing } from "./Easing";
 import { InterpolationFunction, Interpolation } from "./Interpolation";
 

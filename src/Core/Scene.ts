@@ -35,29 +35,38 @@
  */
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
 import Entity from "./Entity";
+import { b2Vec2, b2StepConfig, b2World, b2BodyType } from "@box2d/core";
+import Physics from "../Systems/Physics";
+import Game from "../Game";
+import Vector from "../Utils/Vector";
+import Input from "../Systems/Input";
 
 export default class Scene {
-  enabled: boolean = true;
+  readonly name: string;
 
-  protected entities: Entity[] = [];
-  private initialized: boolean = false;
-  private name: string;
+  enabled: boolean = true;
 
   constructor(name: string) {
     this.name = name;
+    this.world = Physics.getWorld();
   }
 
-  public get Name(): string {
-    return this.name;
-  }
+  //================================
+  //========== ENTITIES ===========
+  //================================
 
-  init(): void {
-    this.initialized = true;
-  }
+  protected entities: Entity[] = [];
 
-  add(object: Entity): Entity {
-    this.entities.push(object);
-    return object;
+  add(entity: Entity, addToPhysicsWorld: boolean = true): Entity {
+    this.entities.push(entity);
+
+    if (addToPhysicsWorld) {
+      console.log("IT IS I");
+      let body = this.world.CreateBody(Physics.dynamicBodyDef);
+      entity.initPhysics(body);
+    }
+
+    return entity;
   }
 
   remove(object: Entity): void {
@@ -68,7 +77,19 @@ export default class Scene {
     }
   }
 
-  update(deltaTime: number, time: number): void {
+
+  destroy(): void {
+    while (this.entities.length > 0) {
+      const object = this.entities[0];
+      this.remove(object);
+    }
+  }
+
+  //================================
+  //========== UPDATE ==============
+  //================================
+
+  update(deltaTime: number): void {
     // Update game logic
     for (let entity of this.entities) {
       if (entity.enabled) {
@@ -77,23 +98,104 @@ export default class Scene {
     }
   }
 
+  readonly world : b2World;
+
   fixedUpdate(fixedDeltaTime: number): void {
+    let firstBody = this.world.GetBodyList();
 
-  }
+    let x = Input.scaledMouseX;
+    let y = Input.scaledMouseY;
 
-  destroy(): void {
-    while (this.entities.length > 0) {
-      const object = this.entities[0];
-      this.remove(object);
+    let pos = Physics.toPhysicsTransform(new Vector(x, y));
+
+    if (firstBody && Input.isMouseDown) {
+      let currentPos = firstBody.GetPosition();
+
+      let direction = new Vector(pos.x - currentPos.x, pos.y - currentPos.y);
+
+      direction.x *= 60;
+      direction.y *= 60;
+      firstBody.SetLinearVelocity(direction);
+      firstBody.SetAwake(true);
     }
-    this.initialized = false;
+
+    this.world.Step(fixedDeltaTime, Physics.stepConfig);
   }
 
-  render(renderer: WrappedRenderer): void {
+
+  //================================
+  //========== RENDER ==============
+  //================================
+
+  render(renderer: WrappedRenderer, resolutionScale: Vector): void {
     for (let entity of this.entities) {
       if (!entity.render || !entity.enabled) continue;
 
-      entity.render(renderer);
+      entity.render(renderer, resolutionScale);
     }
   }
+
+  public shouldDebugRender : boolean = true;
+  debugRender(canvas: HTMLCanvasElement, resolutionScale: Vector): void {  
+    if (!this.shouldDebugRender) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //draw text in the top right saying number of bodies:   
+    ctx.fillStyle = '#000000';
+    ctx.font = '12px Arial';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`Bodies: ${this.world.GetBodyCount()}`, canvas.width - 10, 10);
+
+    let id : number = 0;
+    for (let body = this.world.GetBodyList(); body; body = body.GetNext()) {    
+      if (body.GetType() === b2BodyType.b2_staticBody) continue;
+      let pos = Physics.toPixelTransform(body.GetPosition() as b2Vec2);
+
+      let x = pos.x * resolutionScale.x;
+      let y = pos.y * resolutionScale.y;
+
+      let angle = body.GetAngle();
+
+      // Generate consistent color based on id
+      const r = Math.sin(id * 0.3) * 127 + 128;
+      const g = Math.sin(id * 0.3 + 2) * 127 + 128;
+      const b = Math.sin(id * 0.3 + 4) * 127 + 128;
+      ctx.fillStyle = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
+
+      const BOX_SIZE = 100;
+
+      // Save context state
+      ctx.save();
+      
+      // Translate to box center and rotate
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      
+      // Draw rotated box
+      ctx.fillRect(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE, BOX_SIZE);
+      
+      // Restore context state
+      ctx.restore();
+
+      // Draw coordinates and rotation text
+      ctx.fillStyle = '#000000';
+      ctx.font = '12px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(
+        `x: ${pos.x.toFixed(1)}, y: ${pos.y.toFixed(1)}, θ: ${(angle * 180 / Math.PI).toFixed(1)}°`, 
+        x + 5, 
+        y - 10
+      );
+      id++;
+    }
+  }
+
+
+
 }

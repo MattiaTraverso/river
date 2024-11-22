@@ -3,15 +3,18 @@ import { SMIInput } from "@rive-app/canvas-advanced";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import Game from "../Game";
 import Input from "./Input";
-
+import Vector from "../Utils/Vector";
 /**
  * Needs refactoring.
  */
 export class Debug {
     private static Box : HTMLElement;
 
-    static initiate() {
+    private static canvas : HTMLCanvasElement;
+
+    static init(canvas : HTMLCanvasElement) {
         Debug.Box = document.getElementById('debug-content') as HTMLElement;
+        Debug.canvas = canvas;
     }
 
     static clear() {
@@ -22,7 +25,7 @@ export class Debug {
         Debug.Box.innerHTML += "<br>" + text;
     }
 
-    static update(deltaTime : number, time : number) {
+    static update(deltaTime : number) {
       Performance.update(deltaTime);
       this.updateDebugInfo();
     } 
@@ -30,8 +33,11 @@ export class Debug {
     static updateDebugInfo(): void {
         Debug.clear();
         Debug.add(`Canvas Mouse: [${Input.canvasMouseX},${Input.canvasMouseY}]`);
+        Debug.add(`Scaled Mouse: [${Input.scaledMouseX},${Input.scaledMouseY}]`);
         Debug.add(`<br>Target Res: [${Game.targetRes.x}, ${Game.targetRes.y}]`);
-        Debug.add(`Canvas: [${Game.canvas.width},${Game.canvas.height}] -> [${Game.resScale.x}x, ${Game.resScale.y}x]`);
+
+        let resolutionScale = new Vector(Debug.canvas.width / Game.targetRes.x, Debug.canvas.height / Game.targetRes.y);
+        Debug.add(`Canvas: [${Debug.canvas.width},${Debug.canvas.height}] -> [${resolutionScale.x}x, ${resolutionScale.y}x]`);
         Debug.add(`FPS: ${Performance.FPS}`);
         Debug.add(`Average FPS: ${Performance.averageFPS}`);
     }

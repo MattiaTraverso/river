@@ -43,17 +43,24 @@
  */
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
 import { Destroyable } from "../Utils/Interfaces";
+import { b2Body, b2BodyDef, b2Shape } from "@box2d/core";
+import Vector from "../Utils/Vector";
+import { PhysicsState } from "../Systems/Physics";
 
 export default class Entity implements Destroyable {
     enabled: boolean = true;
     name: string;
 
-    constructor(name: string) {
+    constructor(name: string,) {
         this.name = name;
     }
 
     update(deltaTime: number): void {
-
+        /*
+        if (this.physicsBody) {
+            this.physicsBody.position = this.physicState.position;
+            this.physicsBody.angle = this.physicState.rotation;
+        }*/
     }
 
     destroy(): void {
@@ -61,5 +68,25 @@ export default class Entity implements Destroyable {
     }
 
     // Optional render method
-    render?(renderer: WrappedRenderer): void;
+    render?(renderer: WrappedRenderer, resolutionScale: Vector): void;
+
+    //================================
+    //========== PHYSICS =============
+    //================================
+    
+    protected physicsBody?: b2Body;
+    protected physicState?: PhysicsState;
+
+    public initPhysics(body: b2Body): void {
+        if (this.physicsBody) throw new Error("Physics already initialized");
+
+        this.physicsBody = body;
+    }
+
+    public addCollider(shape: b2Shape, density: number = 1): void {
+        if (!this.physicsBody) throw new Error("Physics not initialized");
+
+        this.physicsBody.CreateFixture({ shape, density });
+    }
+
 }
