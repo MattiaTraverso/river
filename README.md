@@ -2,7 +2,7 @@
 
 Hey! 👋 This is my attempt at building a game framework using [Rive](https://rive.app) as a renderer!
 
-> ⚠️ **Fair warning**: Rive works but it is **NOT** READY FOR PUBLIC USE. It still needs a ton of work before you can ship a game with it!
+> ⚠️ **Fair warning**: river works but it is **NOT** READY FOR PUBLIC USE. It still needs a ton of work before you can ship a game with it!
 
 ## What's This All About?
 
