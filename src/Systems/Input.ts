@@ -2,25 +2,25 @@ import Game from "../Game";
 import RiveGameObject from "../Rive/RiveGameObject";
 
 //TODO: keyboard events are not well thought out.
-export class Input {
-    static MouseX: number = 0;
-    static MouseY: number = 0;
-    static CanvasMouseX: number = 0;
-    static CanvasMouseY: number = 0;
+export default class Input {
+    static windowMouseX: number = 0;
+    static windowMouseY: number = 0;
+    static canvasMouseX: number = 0;
+    static canvasMouseY: number = 0;
     
-    static IsMouseDown: boolean = false;
-    static IsMouseClicked: boolean = false;
-    static IsMouseUp: boolean = false;
-    static HasMouseMoved: boolean = false;
+    static isMouseDown: boolean = false;
+    static isMouseClicked: boolean = false;
+    static isMouseUp: boolean = false;
+    static hasMouseMoved: boolean = false;
 
-    private static Canvas: HTMLCanvasElement;
+    private static canvas: HTMLCanvasElement;
 
     private static keysDown: Set<number> = new Set();
     private static keysPressed: Set<number> = new Set();
     private static keysReleased: Set<number> = new Set();
   
-    static Initiate(canvas: HTMLCanvasElement): void {
-        this.Canvas = canvas;
+    static initiate(canvas: HTMLCanvasElement): void {
+        this.canvas = canvas;
 
         // Mouse events
         window.addEventListener('mousemove', this.handleMouseMove);
@@ -42,28 +42,28 @@ export class Input {
     }
   
     private static handleStart = (event: MouseEvent | TouchEvent): void => {
-        this.IsMouseDown = true;
-        this.IsMouseClicked = true;
-        this.HasMouseMoved = false;
+        this.isMouseDown = true;
+        this.isMouseClicked = true;
+        this.hasMouseMoved = false;
         this.updateCoordinates(event);
     }
   
     private static handleEnd = (event: MouseEvent | TouchEvent): void => {
-        this.IsMouseDown = false;
-        this.IsMouseUp = true;
+        this.isMouseDown = false;
+        this.isMouseUp = true;
         this.updateCoordinates(event);
-        if (!this.HasMouseMoved) {
+        if (!this.hasMouseMoved) {
             this.handleClick(event);
         }
     }
   
     private static handleMouseMove = (event: MouseEvent): void => {
-        this.HasMouseMoved = true;
+        this.hasMouseMoved = true;
         this.updateCoordinates(event);
     }
   
     private static handleTouchMove = (event: TouchEvent): void => {
-        this.HasMouseMoved = true;
+        this.hasMouseMoved = true;
         this.updateCoordinates(event);
     }
   
@@ -74,25 +74,25 @@ export class Input {
   
     private static updateCoordinates(event: MouseEvent | TouchEvent): void {
         if (event instanceof MouseEvent) {
-            this.MouseX = event.clientX;
-            this.MouseY = event.clientY;
+            this.windowMouseX = event.clientX;
+            this.windowMouseY = event.clientY;
         } else if (event instanceof TouchEvent && event.touches.length > 0) {
-            this.MouseX = event.touches[0].clientX;
-            this.MouseY = event.touches[0].clientY;
+            this.windowMouseX = event.touches[0].clientX;
+            this.windowMouseY = event.touches[0].clientY;
         }
-        this.UpdateCanvasCoords();
+        this.updateCanvasCoords();
     }
   
-    private static UpdateCanvasCoords(): void {
-        const rect = this.Canvas.getBoundingClientRect();
-        this.CanvasMouseX = this.MouseX - rect.left;
-        this.CanvasMouseY = this.MouseY - rect.top;
+    private static updateCanvasCoords(): void {
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvasMouseX = this.windowMouseX - rect.left;
+        this.canvasMouseY = this.windowMouseY - rect.top;
     }
   
-    static Clear(): void {
-        this.IsMouseClicked = false;
-        this.IsMouseUp = false;
-        this.HasMouseMoved = false;
+    static clear(): void {
+        this.isMouseClicked = false;
+        this.isMouseUp = false;
+        this.hasMouseMoved = false;
         this.keysDown.clear();
         this.keysPressed.clear();
         this.keysReleased.clear();
@@ -118,39 +118,39 @@ export class Input {
         this.keysReleased.add(keyCode);
     }
 
-    static IsKeyDown(keyCode: KeyCode): boolean {
+    static isKeyDown(keyCode: KeyCode): boolean {
         return this.keysPressed.has(keyCode);
     }
 
-    static IsKeyUp(keyCode: KeyCode): boolean {
+    static isKeyUp(keyCode: KeyCode): boolean {
         return this.keysReleased.has(keyCode);
     }
 
-    static IsKey(keyCode: KeyCode): boolean {
+    static isKey(keyCode: KeyCode): boolean {
         return this.keysDown.has(keyCode);
     }
 
-    static MouseToArtboardSpace(riveRenderer : RiveGameObject) : {x : number, y : number} {
-        let fwdMatrix = Game.RiveInstance.computeAlignment(
+    static mouseToArtboardSpace(riveRenderer : RiveGameObject) : {x : number, y : number} {
+        let fwdMatrix = Game.rive.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,
           riveRenderer.frame,
           riveRenderer.artboard.bounds
         );
       
-        let inverseViewMatrix = new Game.RiveInstance.Mat2D();
+        let inverseViewMatrix = new Game.rive.Mat2D();
       
         let x = 0;
         let y = 0;
         // Invert the view matrix in order to go from cursor to artboard space.
         if (fwdMatrix.invert(inverseViewMatrix)) {
           x =
-            inverseViewMatrix.xx * this.CanvasMouseX +
-            inverseViewMatrix.yx * this.CanvasMouseY +
+            inverseViewMatrix.xx * this.canvasMouseX +
+            inverseViewMatrix.yx * this.canvasMouseY +
             inverseViewMatrix.tx;
           y =
-            inverseViewMatrix.xy * this.CanvasMouseX +
-            inverseViewMatrix.yy * this.CanvasMouseY +
+            inverseViewMatrix.xy * this.canvasMouseX +
+            inverseViewMatrix.yy * this.canvasMouseY +
             inverseViewMatrix.ty;
         }
 
@@ -274,5 +274,3 @@ export class Input {
     CloseBracket = 221,
     SingleQuote = 222
 }
-
-export default Input;

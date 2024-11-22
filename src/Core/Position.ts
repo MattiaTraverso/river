@@ -27,7 +27,7 @@ export default class Position {
         if (this.mode === PositionMode.Coordinates) {
             return this.rawX;
         } else {
-            return (this.rawX / 100) * Game.Canvas.width;
+            return (this.rawX / 100) * Game.canvas.width;
         }
     }
 
@@ -35,7 +35,7 @@ export default class Position {
         if (this.mode === PositionMode.Coordinates) {
             return this.rawY;
         } else {
-            return (this.rawY / 100) * Game.Canvas.height;
+            return (this.rawY / 100) * Game.canvas.height;
         }
     }
 
@@ -98,16 +98,16 @@ export default class Position {
         if (this.mode === mode) return;
         
         if (mode === PositionMode.Percentage) {
-            const newX = (this.rawX / Game.Canvas.width) * 100;
-            const newY = (this.rawY / Game.Canvas.height) * 100;
+            const newX = (this.rawX / Game.canvas.width) * 100;
+            const newY = (this.rawY / Game.canvas.height) * 100;
             if (newX < 0 || newX > 100 || newY < 0 || newY > 100) {
                 throw new Error("Converting to percentage would result in values outside 0-100 range");
             }
             this.rawX = newX;
             this.rawY = newY;
         } else {
-            this.rawX = (this.rawX / 100) * Game.Canvas.width;
-            this.rawY = (this.rawY / 100) * Game.Canvas.height;
+            this.rawX = (this.rawX / 100) * Game.canvas.width;
+            this.rawY = (this.rawY / 100) * Game.canvas.height;
         }
         this.mode = mode;
     }

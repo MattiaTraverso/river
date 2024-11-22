@@ -45,16 +45,16 @@ export default class Scene {
     return this.name;
   }
 
-  Init(): void {
+  init(): void {
     this.initialized = true;
   }
 
-  Add(object: GameObject): GameObject {
+  add(object: GameObject): GameObject {
     this.gameObjects.push(object);
     return object;
   }
 
-  Remove(object: GameObject): void {
+  remove(object: GameObject): void {
     const index = this.gameObjects.indexOf(object);
     if (index >= 0) {
       object.destroy();
@@ -62,7 +62,7 @@ export default class Scene {
     }
   }
 
-  Update(deltaTime: number, time: number): void {
+  update(deltaTime: number, time: number): void {
     // Update game logic
     for (let gameObject of this.gameObjects) {
       if (gameObject.enabled) {
@@ -71,15 +71,15 @@ export default class Scene {
     }
   }
 
-  Destroy(): void {
+  destroy(): void {
     while (this.gameObjects.length > 0) {
       const object = this.gameObjects[0];
-      this.Remove(object);
+      this.remove(object);
     }
     this.initialized = false;
   }
 
-  Render(renderer: WrappedRenderer): void {
+  render(renderer: WrappedRenderer): void {
     for (let gameObject of this.gameObjects) {
       if (!gameObject.render || !gameObject.enabled) continue;
 

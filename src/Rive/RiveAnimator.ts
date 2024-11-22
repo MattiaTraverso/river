@@ -11,7 +11,7 @@ export class RiveAnimatorRenderer extends RiveGameObject {
   }
 
   add(linearAnimation: LinearAnimation): string {
-    const instance = new Game.RiveInstance.LinearAnimationInstance(linearAnimation, this.artboard);
+    const instance = new Game.rive.LinearAnimationInstance(linearAnimation, this.artboard);
 
     const riveAnimation = new RiveAnimation(instance);
     this.animations.set(linearAnimation.name, riveAnimation);

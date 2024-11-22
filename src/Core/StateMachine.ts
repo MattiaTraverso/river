@@ -52,7 +52,7 @@ export default class StateMachine<TState extends string, TContext = any> {
         this.context = context;
     }
 
-    State(name: TState, update: UpdateFunction) {
+    state(name: TState, update: UpdateFunction) {
         const stateDef: StateDefinition<TState> = {
             update: update.bind(this.context)
         };
@@ -130,14 +130,14 @@ export default class StateMachine<TState extends string, TContext = any> {
     }
 
     //If you're using this, you're probably doing something wrong!
-    public ForceState(newState: TState): void {
+    public forceState(newState: TState): void {
         if (!this.states.has(newState)) {
             throw new Error(`Cannot force transition to non-existent state: ${newState}`);
         }
         this.setState(newState);
     }
 
-    Update(deltaTime: number, time: number): void {
+    update(deltaTime: number, time: number): void {
         if (!this._currentState) return;
 
         const stateTransitions = this.transitions.get(this._currentState);
@@ -154,7 +154,7 @@ export default class StateMachine<TState extends string, TContext = any> {
         currentDef?.update.call(this.context, deltaTime);
     }
 
-    DebugRenderStateTransitionsAsMermaidGraph(): string {
+    debugRenderStateTransitionsAsMermaidGraph(): string {
         let str: string = "```mermaid\nstateDiagram-v2\n";
         
         // Add all states

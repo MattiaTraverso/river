@@ -12,8 +12,8 @@ export class RiveGameObject extends GameObject {
   public readonly artboard : Artboard;
 
   frameOrigin : boolean = false;
-  fit : Fit = Game.RiveInstance.Fit.contain;
-  alignment : Alignment = Game.RiveInstance.Alignment.topLeft;
+  fit : Fit = Game.rive.Fit.contain;
+  alignment : Alignment = Game.rive.Alignment.topLeft;
   get frame() : AABB { 
     let aabb =  this.artboard.bounds; 
 
@@ -22,10 +22,10 @@ export class RiveGameObject extends GameObject {
     aabb.minY += this.position.y;
     aabb.maxY += this.position.y;
 
-    aabb.minX *= this.scale.x * Game.ResScale.x;
-    aabb.maxX *= this.scale.x * Game.ResScale.x;
-    aabb.minY *= this.scale.y * Game.ResScale.y;
-    aabb.maxY *= this.scale.y * Game.ResScale.y;
+    aabb.minX *= this.scale.x * Game.resScale.x;
+    aabb.maxX *= this.scale.x * Game.resScale.x;
+    aabb.minY *= this.scale.y * Game.resScale.y;
+    aabb.maxY *= this.scale.y * Game.resScale.y;
     return aabb;
   }
   get width() : number {

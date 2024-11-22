@@ -24,7 +24,7 @@ export class RiveSMRenderer extends RiveGameObject {
 
   constructor(name: string, artboard: Artboard, stateMachine: StateMachine) {
     super(name, artboard);
-    this.smInstance = new Game.RiveInstance.StateMachineInstance(stateMachine, artboard);
+    this.smInstance = new Game.rive.StateMachineInstance(stateMachine, artboard);
     for (let i = 0; i < this.smInstance.inputCount(); i++) {
       let input: SMIInput = this.smInstance.input(i);
       this.inputs.push(new RiveSMInput(input));
@@ -35,12 +35,12 @@ export class RiveSMRenderer extends RiveGameObject {
     this._reportedEvents = [];
     this._changedStates = [];
 
-    let mouseCoords = Input.MouseToArtboardSpace(this);
+    let mouseCoords = Input.mouseToArtboardSpace(this);
 
     //TODO: This is super slow. Only call this shit if within bounding box?
-    if (Input.IsMouseClicked) this.smInstance.pointerDown(mouseCoords.x, mouseCoords.y);
-    if (Input.IsMouseUp) this.smInstance.pointerUp(mouseCoords.x, mouseCoords.y);
-    if (Input.HasMouseMoved) this.smInstance.pointerMove(mouseCoords.x, mouseCoords.y);
+    if (Input.isMouseClicked) this.smInstance.pointerDown(mouseCoords.x, mouseCoords.y);
+    if (Input.isMouseUp) this.smInstance.pointerUp(mouseCoords.x, mouseCoords.y);
+    if (Input.hasMouseMoved) this.smInstance.pointerMove(mouseCoords.x, mouseCoords.y);
   
     this.smInstance.advance(deltaTime);
 

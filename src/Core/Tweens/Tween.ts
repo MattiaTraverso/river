@@ -73,7 +73,7 @@ export default class Tween<T> extends GameObject {
         this.to = to;
         this.duration = duration;
         
-        this.interpolationFunction = Interpolation.GetInterpolationFunction(this.from, this.to);
+        this.interpolationFunction = Interpolation.getInterpolationFunction(this.from, this.to);
     }
 
     public static to<T>(target: any, propertyKey: string, to: T, duration: number): Tween<T> {

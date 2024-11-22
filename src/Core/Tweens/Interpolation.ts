@@ -3,7 +3,7 @@ import Vec2D from "../../Utils/Vec2D";
 export type InterpolationFunction<T> = (start: T, end: T, t: number) => T;
 
 export class Interpolation {
-    static GetInterpolationFunction<T>(startValue: T, endValue: T): InterpolationFunction<T> {
+    static getInterpolationFunction<T>(startValue: T, endValue: T): InterpolationFunction<T> {
         if (typeof startValue === 'number' && typeof endValue === 'number') {
             return Interpolation.number as unknown as InterpolationFunction<T>;
         }

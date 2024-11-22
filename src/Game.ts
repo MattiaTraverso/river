@@ -4,6 +4,7 @@ import Vec2D from "./Utils/Vec2D";
 import Input from "./Systems/Input";
 import Debug from "./Systems/Debug";
 import Scene from "./Core/Scene";
+import { Destroyable } from "./Utils/Interfaces";
 
 //Local WASM loads faster. Remote WASM might be updated if I'm lazy.
 const USE_LOCAL_WASM: boolean = true;
@@ -16,10 +17,10 @@ export class Game {
   //==== GLOBAL STATIC VARIABLES ====
   //================================
 
-  static TargetResolution : Vec2D = new Vec2D(400, 400);
-  static RiveInstance: RiveCanvas;
-  static Canvas : HTMLCanvasElement;
-  static Renderer : WrappedRenderer;
+  static targetRes : Vec2D = new Vec2D(400, 400);
+  static rive: RiveCanvas;
+  static canvas : HTMLCanvasElement;
+  static renderer : WrappedRenderer;
 
 
   //================================
@@ -28,78 +29,78 @@ export class Game {
 
   private static _hasInitiated : boolean = false;
 
-  public static async Initiate(width : number, height : number): Promise<void> {
+  public static async initiate(width : number, height : number): Promise<void> {
     if (Game._hasInitiated) {
       throw console.error("Has already been initiated");
     }
     Game._hasInitiated = true
 
-    Game.RiveInstance = await Rive({
+    Game.rive = await Rive({
       locateFile: (_: string) => USE_LOCAL_WASM ? 
         LOCAL_WASM_URL
        : REMOTE_WASM_URL
     });
   
-    Game.TargetResolution = new Vec2D(width, height);
+    Game.targetRes = new Vec2D(width, height);
 
-    Game.Canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+    Game.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
 
-    Input.Initiate(Game.Canvas);
-    Debug.Initiate();
+    Input.initiate(Game.canvas);
+    Debug.initiate();
   
-    window.addEventListener('resize', Game.ResizeCanvas);
-    Game.ResizeCanvas();
+    window.addEventListener('resize', Game.resizeCanvas);
+    Game.resizeCanvas();
 
     //TODO: figure out what's the best event for this?
-    window.addEventListener('onvisibilitychange', Game.Destroy);
+    window.addEventListener('onvisibilitychange', Game.destroy);
 
-    Game.Renderer = Game.RiveInstance.makeRenderer(Game.Canvas);
+    Game.renderer = Game.rive.makeRenderer(Game.canvas);
 
-    requestAnimationFrame(Game.Update);
+    requestAnimationFrame(Game.update);
   }
 
   //================================
   //========== UPDATE ==============
   //================================
 
-  static TimeScale = 1.0;
+  static timeScale = 1.0;
 
-  static #elapsedTime : number = 0;
+  private static elapsedTime : number = 0;
 
-  private static Update(time : number) {
-    let deltaTime = (time - Game.#elapsedTime) / 1000;
-    deltaTime *= Game.TimeScale;
-    Game.#elapsedTime = time;
+  private static update(time : number) {
+    let deltaTime = (time - Game.elapsedTime) / 1000;
+    deltaTime *= Game.timeScale;
+    Game.elapsedTime = time;
 
-    Debug.Update(deltaTime, time);
+    Debug.update(deltaTime, time);
     
-    for (const scene of Game.#scenes.values()) {
-      if (scene.enabled) scene.Update(deltaTime, time);
+    for (const scene of Game.scenes.values()) {
+      if (scene.enabled) scene.update(deltaTime, time);
     }
 
-    Game.Render(deltaTime);
+    Game.render(deltaTime);
 
-    Game.RiveInstance.resolveAnimationFrame();
+    Game.rive.resolveAnimationFrame();
 
-    requestAnimationFrame(Game.Update);
+    requestAnimationFrame(Game.update);
 
-    Input.Clear();
+    Input.clear();
   }
 
   //================================
   //=========== RENDER =============
   //================================
 
-  private static Render(deltaTime : number) {
-    Game.Renderer.clear();
+  private static render(deltaTime : number) {
+    Game.renderer.clear();
     
-    for (const scene of Game.#scenes.values()) {
-      if (scene.enabled) scene.Render(Game.Renderer);
+    for (const scene of Game.scenes.values()) {
+      if (scene.enabled) scene.render(Game.renderer);
     }
   }
 
-  private static ResizeCanvas() : void {
-    const aspectRatio = Game.TargetResolution.x / Game.TargetResolution.y;
+  private static resizeCanvas() : void {
+    const aspectRatio = Game.targetRes.x / Game.targetRes.y;
 
     let newWidth = window.innerWidth;
     let newHeight = window.innerHeight;
@@ -113,13 +114,13 @@ export class Game {
     }
 
     // Update canvas dimensions
-    Game.Canvas.width = newWidth;
-    Game.Canvas.height = newHeight;
+    Game.canvas.width = newWidth;
+    Game.canvas.height = newHeight;
   }
 
 
-  static get ResScale() : Vec2D {
-    return new Vec2D(Game.Canvas.width / Game.TargetResolution.x, Game.Canvas.height / Game.TargetResolution.y);
+  static get resScale() : Vec2D {
+    return new Vec2D(Game.canvas.width / Game.targetRes.x, Game.canvas.height / Game.targetRes.y);
   }
 
   
@@ -127,19 +128,19 @@ export class Game {
   //========== SCENES ==============
   //================================
 
-  static #scenes: Map<string, Scene> = new Map();
+  private static scenes: Map<string, Scene> = new Map();
 
-  static AddScene(scene: Scene): void {
-    Game.#scenes.set(scene.Name, scene);
-    scene.Init();
+  static addScene(scene: Scene): void {
+    Game.scenes.set(scene.Name, scene);
+    scene.init();
   }
 
-  static GetScene(name: string): Scene {
-    return Game.#scenes.get(name) as Scene;
+  static getScene(name: string): Scene {
+    return Game.scenes.get(name) as Scene;
   } 
 
-  static RemoveScene(name: string): void {
-    Game.#scenes.delete(name);
+  static removeScene(name: string): void {
+    Game.scenes.delete(name);
   }
 
 
@@ -147,16 +148,16 @@ export class Game {
   //========== DESTRUCT ============
   //================================
 
-  static Destroy(event : Event) {
+  static destroy(event : Event) {
     event.preventDefault();
     event.returnValue = true;
     
     window.alert("Being Destroyed");
 
-    for (const scene of Game.#scenes.values()) {  
-      scene.Destroy();
+    for (const scene of Game.scenes.values()) {  
+      scene.destroy();
     }
-    Game.#scenes.clear();
+    Game.scenes.clear();
   }
 }
 
