@@ -36,7 +36,7 @@ interface StateDefinition<TState extends string> {
     onExit?: (nextState: TState) => void;
 }
 
-export class StateMachine<TState extends string, TContext = any> {
+export default class StateMachine<TState extends string, TContext = any> {
     private states = new Map<TState, StateDefinition<TState>>();
     private transitions = new Map<TState, Map<TState, ConditionFunction>>();
     private context: TContext;

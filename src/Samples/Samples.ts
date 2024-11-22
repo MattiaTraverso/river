@@ -9,6 +9,9 @@ import Input, {KeyCode } from "../Systems/Input";
 import Scene from "../Core/Scene";
 import ScriptableObject from "../Core/ScriptableObject";
 import RiveLoader from "../Rive/RiveLoader";
+import Tween, { LoopType } from "../Core/Tweens/Tween";
+import Vec2D from "../Utils/Vec2D";
+import { easing } from "../Core/Tweens/Easing";
 //================================ 
 // !!HORRIBLE CODE!! !!MOSTLY FOR INTERNAL TESTING!!
 // Various Samples showing different parts of the engine at work.
@@ -20,13 +23,13 @@ async function main()
 {
     //Uncomment the sample you want.
     
-    doubleSceneTest();
+    //doubleSceneTest();
     //CityOrCountry();
     //pokeypokey();
     //turtleScene();
     //bigRivFile();
     //scalingScene();
-    //basketBallTestScene();
+    basketBallTestScene();
     //animationBlendingTestScene();
     //eventsTestScene();
     //fashionTestScene();
@@ -178,11 +181,12 @@ async function scalingScene() {
 }
 
 /**
- * Just Running a standard .riv file.
- * I run it to see if everything still works.
+ * Simple test showing Tweens in action
  */
 async function basketBallTestScene(skipGameInitialization: boolean = false){
     if (!skipGameInitialization) await Game.Initiate(1280, 720);
+
+    console.log(new URL("../../rivs/basketball.riv", import.meta.url).href);
 
     let basket : File = await RiveLoader.LoadFile(new URL("../../rivs/basketball.riv", import.meta.url).href);
     let basketRiveObject : RiveAnimatorRenderer = new RiveAnimatorRenderer("Basketball", basket.artboardByIndex(0));
@@ -194,6 +198,27 @@ async function basketBallTestScene(skipGameInitialization: boolean = false){
     const scene = new Scene("BasketBallTestScene");
     scene.Add(basketRiveObject);
     Game.AddScene(scene);
+
+    //testing tweens:
+    let tween : Tween<Vec2D> = new Tween<Vec2D>(basketRiveObject, "position", new Vec2D(200, 100), .5)
+        .auto(false)
+        .easing(easing.outCubic)
+        .setLoops(-1)
+        .setLoopType(LoopType.Restart)
+        .onUpdate((value: Vec2D) => {
+            //console.log(basketRiveObject.position);
+        });
+
+    scene.Add(tween);
+
+    let scriptable : ScriptableObject = new ScriptableObject("TweenUpdater");
+    scriptable.setUpdateFunction((deltaTime: number) => {
+        if (Input.IsKeyDown(KeyCode.Space)) {
+            if (!tween.isPlaying) tween.play();
+            else tween.reset();
+        }
+    });
+    scene.Add(scriptable);
 }
 
 /**

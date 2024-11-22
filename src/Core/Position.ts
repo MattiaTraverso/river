@@ -6,7 +6,7 @@ export enum PositionMode {
     Percentage
 }
 
-export class Position {
+export default class Position {
     private mode: PositionMode;
     private rawX: number;
     private rawY: number;

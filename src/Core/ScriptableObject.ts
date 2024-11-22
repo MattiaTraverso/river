@@ -17,7 +17,7 @@
 import GameObject from "./GameObject";
 import { UpdateFunction } from "../Utils/Interfaces";
 
-export class ScriptableObject extends GameObject{
+export default class ScriptableObject extends GameObject{
 
     private _updateFN : UpdateFunction = (deltaTime: number) => {};
 
@@ -33,5 +33,3 @@ export class ScriptableObject extends GameObject{
         
     }
 }
-
-export default ScriptableObject;

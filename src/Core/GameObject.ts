@@ -1,7 +1,7 @@
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
 import { Destroyable } from "../Utils/Interfaces";
 
-export class GameObject implements Destroyable {
+export default class GameObject implements Destroyable {
     enabled: boolean = true;
     name: string;
 
@@ -20,5 +20,3 @@ export class GameObject implements Destroyable {
     // Optional render method
     render?(renderer: WrappedRenderer): void;
 }
-
-export default GameObject;
