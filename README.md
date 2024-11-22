@@ -42,8 +42,8 @@ When this is done you'll be able to make 2D games as you'd with LOVE2D, but with
 
 ## Current State
 
-- ⚠️ API might change as the framework evolves
-- 📝 Documentation is a non-existent
+- ⚠️ API WILL change as the framework evolves
+- 📝 Documentation is mostly missing and probably outdated
 - 🎓 I'm learning TypeScript as I go, so expect some "interesting" code choices
 
 ## Planned Features
