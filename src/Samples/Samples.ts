@@ -200,7 +200,12 @@ async function basketBallTestScene(skipGameInitialization: boolean = false){
     Game.AddScene(scene);
 
     //testing tweens:
-    let tween : Tween<Vec2D> = new Tween<Vec2D>(basketRiveObject, "position", new Vec2D(200, 100), .5)
+    let tween : Tween<Vec2D> = Tween.toProperty(
+        (value: Vec2D) => basketRiveObject.position = value,
+        () => basketRiveObject.position,
+        new Vec2D(200, 100),
+        .5
+    )
         .auto(false)
         .easing(easing.outCubic)
         .setLoops(-1)

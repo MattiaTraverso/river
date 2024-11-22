@@ -10,8 +10,8 @@ export enum LoopType {
 }
 
 export default class Tween<T> extends GameObject {
-    private context: any;
-    private propertyKey: string;
+    private _getter: () => T;
+    private _setter: (value: T) => void;
 
     private autoPlay: boolean = false;
 
@@ -19,8 +19,8 @@ export default class Tween<T> extends GameObject {
     private easingFunction: TEasing = easing.linear;
     private interpolationFunction: InterpolationFunction<T>;
 
-    private startValue: T;
-    private endValue: T;
+    private from: T;
+    private to: T;
 
     private duration: number = 0;
     private loopCount: number = 1;
@@ -44,24 +44,55 @@ export default class Tween<T> extends GameObject {
         return this.hasStarted && !this.isComplete;
     }
 
-
     //========================
-    //==== CREATION =========
+    //==== FACTORY ==========
     //========================
 
-    constructor(target: any, propertyKey: string, endValue: T, duration: number) {
+    private static createAccessors<T>(target: any, propertyKey: string): {
+        getter: () => T,
+        setter: (value: T) => void
+    } {
+        return {
+            getter: () => target[propertyKey] as T,
+            setter: (value: T) => target[propertyKey] = value
+        };
+    }
+
+    private constructor(
+        getter: () => T,
+        setter: (value: T) => void,
+        to: T,
+        duration: number
+    ) {
         super("Tween");
         
-        this.context = target;
-        this.propertyKey = propertyKey;
+        this._getter = getter;
+        this._setter = setter;
         
-        this.startValue = target[propertyKey] as T;
-        this.endValue = endValue;
+        this.from = this._getter();
+        this.to = to;
         this.duration = duration;
         
-        // Get the appropriate interpolation function
-        this.interpolationFunction = Interpolation.GetInterpolationFunction(this.startValue, this.endValue);
+        this.interpolationFunction = Interpolation.GetInterpolationFunction(this.from, this.to);
     }
+
+    public static to<T>(target: any, propertyKey: string, to: T, duration: number): Tween<T> {
+        const { getter, setter } = Tween.createAccessors<T>(target, propertyKey);
+        return new Tween(getter, setter, to, duration);
+    }
+
+    public static toProperty<T>(
+        setter: (value: T) => void,
+        getter: () => T,
+        to: T,
+        duration: number
+    ): Tween<T> {
+        return new Tween(getter, setter, to, duration);
+    }
+
+    //========================
+    //==== CONFIGURATION ====
+    //========================
 
     public easing(easingFunction: TEasing) {
         this.easingFunction = easingFunction;
@@ -122,14 +153,14 @@ export default class Tween<T> extends GameObject {
                         this.isReverse = !this.isReverse;
                         break;
                     case LoopType.Increment:
-                        this.startValue = this.endValue;
-                        this.endValue = this.interpolationFunction(this.startValue, this.endValue, 2);
+                        this.from = this.to;
+                        this.to = this.interpolationFunction(this.from, this.to, 2);
                         break;
                 }
             } else {
-                this.context[this.propertyKey] = this.endValue;
+                this._setter(this.to);
                 this.isComplete = true;
-                this.onUpdateCallback?.(this.endValue);
+                this.onUpdateCallback?.(this.to);
                 this.onCompleteCallback?.();
                 return;
             }
@@ -140,10 +171,9 @@ export default class Tween<T> extends GameObject {
             t = 1 - t;
         }
         const easedT = this.easingFunction(t);
-        const currentValue = this.interpolationFunction(this.startValue, this.endValue, easedT);
+        const currentValue = this.interpolationFunction(this.from, this.to, easedT);
 
-        console.log(this.context);
-        this.context[this.propertyKey] = currentValue;
+        this._setter(currentValue);
         this.onUpdateCallback?.(currentValue);
     }
 
@@ -162,6 +192,6 @@ export default class Tween<T> extends GameObject {
         this.hasStarted = false;
         this.currentLoop = 1;
         this.isReverse = false;
-        this.context[this.propertyKey] = this.startValue;
+        this._setter(this.from);
     }
 }
