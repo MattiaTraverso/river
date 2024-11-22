@@ -63,17 +63,43 @@ export default class Game {
   //========== UPDATE ==============
   //================================
 
+  private static readonly MAX_DELTA_TIME = 1/10;
+  private static readonly FIXED_TIME_STEP = 1/60; // 60 Hz
+  private static readonly MAX_STEPS = 5;
+
   static timeScale = 1.0;
 
-  private static elapsedTime : number = 0;
+  private static elapsedTime : number = -1;
 
   private static update(time : number) {
+    // Handle first frame with lag spike?
+    if (Game.elapsedTime === -1) {
+      Game.elapsedTime = time;
+      requestAnimationFrame(Game.update);
+      return;
+  }
+
     let deltaTime = (time - Game.elapsedTime) / 1000;
     deltaTime *= Game.timeScale;
+    deltaTime = Math.min(deltaTime, Game.MAX_DELTA_TIME);
+
     Game.elapsedTime = time;
 
     Debug.update(deltaTime, time);
     
+    console.log("UPDATE: " + deltaTime);
+
+    Game.fixedUpdateAccumulator += deltaTime;
+
+    let steps = 0;
+    while (Game.fixedUpdateAccumulator >= Game.FIXED_TIME_STEP && steps < Game.MAX_STEPS) {
+      Game.fixedUpdateAccumulator -= Game.FIXED_TIME_STEP;
+      Game.fixedUpdate(Game.FIXED_TIME_STEP);
+      steps++;
+    }
+
+    Game.interpolationAlpha = Game.fixedUpdateAccumulator / Game.FIXED_TIME_STEP;
+
     for (const scene of Game.scenes.values()) {
       if (scene.enabled) scene.update(deltaTime, time);
     }
@@ -85,6 +111,17 @@ export default class Game {
     requestAnimationFrame(Game.update);
 
     Input.clear();
+  }
+
+  private static fixedUpdateAccumulator : number = 0;
+  private static interpolationAlpha : number = 0;
+
+  private static fixedUpdate(fixedDeltaTime : number) {
+    console.log("FIXED UPDATE: " + fixedDeltaTime);
+
+    for (const scene of Game.scenes.values()) {
+      if (scene.enabled) scene.fixedUpdate(fixedDeltaTime);
+    }
   }
 
   //================================

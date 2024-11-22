@@ -32,6 +32,7 @@ export class Debug {
         Debug.add(`Canvas Mouse: [${Input.canvasMouseX},${Input.canvasMouseY}]`);
         Debug.add(`<br>Target Res: [${Game.targetRes.x}, ${Game.targetRes.y}]`);
         Debug.add(`Canvas: [${Game.canvas.width},${Game.canvas.height}] -> [${Game.resScale.x}x, ${Game.resScale.y}x]`);
+        Debug.add(`FPS: ${Performance.FPS}`);
         Debug.add(`Average FPS: ${Performance.averageFPS}`);
     }
 
@@ -104,5 +105,9 @@ class Performance {
         let sum = 0;
         for (let n of Performance.FPSArray) sum += n;
         return Math.trunc(sum / Performance.FPSArray.length);
+    }
+
+    static get FPS(): number {
+        return Math.trunc(Performance.FPSArray[Performance.FPSArray.length - 1]);
     }
 }

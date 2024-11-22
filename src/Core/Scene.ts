@@ -77,6 +77,10 @@ export default class Scene {
     }
   }
 
+  fixedUpdate(fixedDeltaTime: number): void {
+
+  }
+
   destroy(): void {
     while (this.entities.length > 0) {
       const object = this.entities[0];
