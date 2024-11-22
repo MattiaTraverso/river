@@ -6,20 +6,20 @@
  * - RiveAnimator: For manual control over animations
  * - RiveStateMachine: For letting Rive's state machine control animations
  * 
- * Usage:
+ * @example
  * ```typescript
  * // Load a Rive file
  * const file = await RiveLoader.loadFile("path/to/file.riv");
  * 
  * // Create a RiveEntity with an artboard
- * const riveObject = new RiveEntity("myRiveObject", file.artboardByIndex(0));
+ * const riveEntity = new RiveEntity("myRiveObject", file.artboardByIndex(0));
  * 
  * // Position and scale the object
- * riveObject.position = new Vec2D(100, 100);
- * riveObject.scale = new Vec2D(0.5, 0.5);
+ * riveEntity.position = new Vec2D(100, 100);
+ * riveEntity.scale = new Vec2D(0.5, 0.5);
  * 
  * // Add to a scene
- * scene.add(riveObject);
+ * scene.add(riveEntity);
  * ```
  * 
  * Important Notes:

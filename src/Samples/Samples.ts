@@ -7,7 +7,7 @@ import RiveEntity from "../Rive/RiveEntity";
 import Debug from "../Systems/Debug";
 import Input, {KeyCode } from "../Systems/Input";
 import Scene from "../Core/Scene";
-import ScriptableObject from "../Core/ScriptableObject";
+import ScriptableEntity from "../Core/ScriptableEntity";
 import RiveLoader from "../Rive/RiveLoader";
 import Tween, { LoopType } from "../Core/Tweens/Tween";
 import Vec2D from "../Utils/Vec2D";
@@ -71,22 +71,22 @@ async function cityOrCountry() {
     const file: File = await RiveLoader.loadFile(new URL("../../rivs/cityorcountry.riv", import.meta.url).href);
 
     const scene = new Scene("CityOrCountry");
-    let ro: RiveStateMachineEntity = new RiveStateMachineEntity("CityOrCountry", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
-    scene.add(ro);
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("CityOrCountry", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    scene.add(riveEntity);
     Game.addScene(scene);
 
     RiveLoader.logUnpackedRiveFile(file);
 
-    const inputHandler = new ScriptableObject("CityOrCountryInputs");
-    inputHandler.setUpdateFunction(() => {
+    const inputHandler = new ScriptableEntity("CityOrCountryInputs");
+    inputHandler.setScriptFunction(() => {
         //isClickedR fire
         //isHovered R bool
         //isClicked L fire
         //isHovered L bool
-        if (Input.isKeyDown(KeyCode.A)) ro.inputs[1].smiInput.asBool().value = !(ro.inputs[1].smiInput.asBool().value as boolean);
-        if (Input.isKeyDown(KeyCode.S)) ro.inputs[3].smiInput.asBool().value = !(ro.inputs[1].smiInput.asBool().value as boolean);
-        if (Input.isKeyDown(KeyCode.D)) ro.inputs[0].smiInput.asTrigger().fire();
-        if (Input.isKeyDown(KeyCode.F)) ro.inputs[2].smiInput.asTrigger().fire();
+        if (Input.isKeyDown(KeyCode.A)) riveEntity.inputs[1].smiInput.asBool().value = !(riveEntity.inputs[1].smiInput.asBool().value as boolean);
+        if (Input.isKeyDown(KeyCode.S)) riveEntity.inputs[3].smiInput.asBool().value = !(riveEntity.inputs[1].smiInput.asBool().value as boolean);
+        if (Input.isKeyDown(KeyCode.D)) riveEntity.inputs[0].smiInput.asTrigger().fire();
+        if (Input.isKeyDown(KeyCode.F)) riveEntity.inputs[2].smiInput.asTrigger().fire();
     });
     scene.add(inputHandler);
 }
@@ -117,14 +117,14 @@ async function turtleScene(skipGameInitialization: boolean = false) {
     console.log(new URL("../../rivs/angry_turtle.riv", import.meta.url).href);
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/angry_turtle.riv", import.meta.url).href);
 
-    let ro: RiveStateMachineEntity = new RiveStateMachineEntity("Turtle", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Turtle", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
 
     const scene = new Scene("Turtle");
-    scene.add(ro);
+    scene.add(riveEntity);
     Game.addScene(scene);
 
-    const crosshairToggler = new ScriptableObject("CrosshairToggler");
-    crosshairToggler.setUpdateFunction((deltaTime: number) => {
+    const crosshairToggler = new ScriptableEntity("CrosshairToggler");
+    crosshairToggler.setScriptFunction((deltaTime: number) => {
         if (Input.isKeyDown(KeyCode.C)) {
             Debug.toggleCrosshair();
         }
@@ -141,10 +141,10 @@ async function bigRivFile() {
 
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/shroom_gloom_game.riv", import.meta.url).href);
 
-    let ro: RiveStateMachineEntity = new RiveStateMachineEntity("ShroomGloom", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("ShroomGloom", file.artboardByIndex(0), file.artboardByIndex(0).stateMachineByIndex(0));
    
     const scene = new Scene("BigRivFile");
-    scene.add(ro);
+    scene.add(riveEntity);
     Game.addScene(scene);
 }
 
@@ -158,20 +158,20 @@ async function scalingScene() {
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/scaling-test.riv", import.meta.url).href);
 
     const scene = new Scene("ScalingScene");
-    const ro = new RiveEntity("ScalingTest", file.artboardByIndex(2));       
-    scene.add(ro);
+    const riveEntity = new RiveEntity("ScalingTest", file.artboardByIndex(2));       
+    scene.add(riveEntity);
     Game.addScene(scene);
 
     return;
 
     /*
     //tween example:
-    const tween = new Tween(ro.position)
+    const tween = new Tween(riveEntity.position)
     .to(new Vec2D(100, 100), 2500)
     .easing(Easing.Bounce.InOut)
     .start();
 
-    const tweenUpdater = new ScriptableObject("TweenUpdater");
+    const tweenUpdater = new ScriptableEntity("TweenUpdater");
     tweenUpdater.setUpdateFunction((deltaTime: number, time: number) => {
         tween.update(time);
     });
@@ -188,20 +188,20 @@ async function basketBallTestScene(skipGameInitialization: boolean = false) {
     console.log(new URL("../../rivs/basketball.riv", import.meta.url).href);
 
     let basket: File = await RiveLoader.loadFile(new URL("../../rivs/basketball.riv", import.meta.url).href);
-    let basketRiveObject: RiveAnimatorEntity = new RiveAnimatorEntity("Basketball", basket.artboardByIndex(0));
-    basketRiveObject.add(basketRiveObject.artboard.animationByIndex(0));
+    let basketRiveEntity: RiveAnimatorEntity = new RiveAnimatorEntity("Basketball", basket.artboardByIndex(0));
+    basketRiveEntity.add(basketRiveEntity.artboard.animationByIndex(0));
 
-    basketRiveObject.position.x = Game.targetRes.x * .5 - basketRiveObject.width * .5;
-    basketRiveObject.position.y = Game.targetRes.y * .5 - basketRiveObject.height * .5;
+    basketRiveEntity.position.x = Game.targetRes.x * .5 - basketRiveEntity.width * .5;
+    basketRiveEntity.position.y = Game.targetRes.y * .5 - basketRiveEntity.height * .5;
 
     const scene = new Scene("BasketBallTestScene");
-    scene.add(basketRiveObject);
+    scene.add(basketRiveEntity);
     Game.addScene(scene);
 
     //testing tweens:
     let tween: Tween<Vec2D> = Tween.toProperty(
-        (value: Vec2D) => basketRiveObject.position = value,
-        () => basketRiveObject.position,
+        (value: Vec2D) => basketRiveEntity.position = value,
+        () => basketRiveEntity.position,
         new Vec2D(200, 100),
         .5
     )
@@ -210,13 +210,13 @@ async function basketBallTestScene(skipGameInitialization: boolean = false) {
         .setLoops(-1)
         .setLoopType(LoopType.Restart)
         .onUpdate((value: Vec2D) => {
-            //console.log(basketRiveObject.position);
+            //console.log(basketRiveEntity.position);
         });
 
     scene.add(tween);
 
-    let scriptable: ScriptableObject = new ScriptableObject("TweenUpdater");
-    scriptable.setUpdateFunction((deltaTime: number) => {
+    let scriptable: ScriptableEntity = new ScriptableEntity("TweenUpdater");
+    scriptable.setScriptFunction((deltaTime: number) => {
         if (Input.isKeyDown(KeyCode.Space)) {
             if (!tween.isPlaying) tween.play();
             else tween.reset();
@@ -288,8 +288,8 @@ async function animationBlendingTestScene() {
     const slider1 = document.getElementById('slider1') as HTMLInputElement;
     const slider2 = document.getElementById('slider2') as HTMLInputElement; 
 
-    const weightUpdater = new ScriptableObject("WeightUpdater");
-    weightUpdater.setUpdateFunction(() => {
+    const weightUpdater = new ScriptableEntity("WeightUpdater");
+    weightUpdater.setScriptFunction(() => {
         const weight1 = parseFloat(slider1.value);
         const weight2 = parseFloat(slider2.value);
 
@@ -309,18 +309,18 @@ async function eventsTestScene() {
     
     let artboard: Artboard = events.artboardByIndex(0);
 
-    let riveObject: RiveStateMachineEntity = new RiveStateMachineEntity("EventsTest", artboard, artboard.stateMachineByIndex(0));
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("EventsTest", artboard, artboard.stateMachineByIndex(0));
 
-    riveObject.position.x = Game.canvas.width * .5 - riveObject.width * .5;
-    riveObject.position.y = Game.canvas.height * .5 - riveObject.height * .5;
+    riveEntity.position.x = Game.canvas.width * .5 - riveEntity.width * .5;
+    riveEntity.position.y = Game.canvas.height * .5 - riveEntity.height * .5;
 
     const scene = new Scene("EventsTestScene");
-    scene.add(riveObject);
+    scene.add(riveEntity);
     Game.addScene(scene);
 
     Game.timeScale = .1;
 
-    riveObject.addRiveEventListener((event) => {
+    riveEntity.addRiveEventListener((event) => {
         console.log(event.name);
         console.log(event?.properties);
     });
@@ -335,10 +335,10 @@ async function fashionTestScene() {
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
 
     let artboard: Artboard = file.artboardByIndex(0);
-    let ro: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
+    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
 
     const scene = new Scene("FashionTestScene");
-    scene.add(ro);
+    scene.add(riveEntity);
     Game.addScene(scene);
 
     for (let i = 0; i < 8; i++) {
@@ -346,27 +346,27 @@ async function fashionTestScene() {
         let y = Math.floor(i / 8);
 
         artboard = file.artboardByIndex(0);
-        ro = new RiveStateMachineEntity("Fashion" + i, artboard, artboard.stateMachineByIndex(0));
+        riveEntity = new RiveStateMachineEntity("Fashion" + i, artboard, artboard.stateMachineByIndex(0));
 
-        ro.position.x = x * 250;
-        ro.position.y = y * 400;
-        scene.add(ro);
+        riveEntity.position.x = x * 250;
+        riveEntity.position.y = y * 400;
+        scene.add(riveEntity);
 
         continue;
 
         //rotation test
         if (i == 1) {
-            ro.position.x += 100;
-            ro.position.y += 200;
-            ro.artboard.transformComponent("Root").rotation = 1;
+            riveEntity.position.x += 100;
+            riveEntity.position.y += 200;
+            riveEntity.artboard.transformComponent("Root").rotation = 1;
         }
 
         if (i == 0) {
-            ro.position.x += 200;
-            ro.position.y += 200;
-            const rotator = new ScriptableObject("Rotator");
-            rotator.setUpdateFunction((deltaTime: number) => {
-                ro.artboard.transformComponent("Root").rotation += deltaTime;
+            riveEntity.position.x += 200;
+            riveEntity.position.y += 200;
+            const rotator = new ScriptableEntity("Rotator");
+            rotator.setScriptFunction((deltaTime: number) => {
+                riveEntity.artboard.transformComponent("Root").rotation += deltaTime;
             });
             scene.add(rotator);
         }
