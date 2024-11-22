@@ -12,8 +12,7 @@ import RiveLoader from "../Rive/RiveLoader";
 import Tween, { LoopType } from "../Core/Tweens/Tween";
 import Vector from "../Utils/Vector";
 import { easing } from "../Core/Tweens/Easing";
-import { b2CircleShape, b2FixtureDef } from "@box2d/core";
-import { b2BodyType } from "@box2d/core";
+import { b2FixtureDef } from "@box2d/core";
 import Physics from "../Systems/Physics";
 //================================ 
 // !!HORRIBLE CODE!! !!MOSTLY FOR INTERNAL TESTING!!
@@ -25,22 +24,49 @@ import Physics from "../Systems/Physics";
 async function main() {
     //Uncomment the sample you want.
     
-    await Game.initiate(400, 400);
+    
 
-    /*
-    Physics test
-    */
+    await Game.initiate(1280, 720);
 
-    /*
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
 
-    let artboard: Artboard = file.artboardByIndex(0);
-    let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
-*/
-    const scene = new Scene("Box2DTest");
+    const scene = new Scene("FashionTestScene");
+
+    for (let i = 0; i < 3; i++) {
+        let artboard: Artboard = file.artboardByIndex(0);
+        let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
+        scene.add(riveEntity, true); //TODO: Check why this works even if false lol
+        riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, 1);
+        riveEntity.position = new Vector(Game.targetRes.x / 2, Game.targetRes.y / 2);
+        riveEntity.physicsBody?.SetTransformXY(Physics.toPhysicsTransform(riveEntity.position).x, Physics.toPhysicsTransform(riveEntity.position).y, 0);
+        riveEntity.physicsBody?.ApplyForceToCenter(new Vector(99000, 10000), true);
+        riveEntity.physicsBody?.ApplyAngularImpulse(20200 * Math.random(), true);
+    }
+
+
     Game.addScene(scene);
 
 
+
+    //physicsTest();
+    //doubleSceneTest();
+    //cityOrCountry();
+    //pokeyPokey();
+    //turtleScene();
+    //bigRivFile();
+    //scalingScene();
+    //doubleSceneTest();
+    //animationBlendingTestScene();
+    //eventsTestScene();
+    //fashionTestScene();
+} 
+
+async function physicsTest() {
+
+    await Game.initiate(400, 400);
+
+    const scene = new Scene("Box2DTest");
+    Game.addScene(scene);
     /*
     TEST CREATE 30 BOXES
     */
@@ -66,20 +92,30 @@ async function main() {
         body.CreateFixture(fixtureDef);
     }
 
-    //scene.add(riveEntity);
+    const scriptable = new ScriptableEntity("MouseControl");
 
+    scriptable.setFixedUpdateFunction((fixedDeltaTime: number) => {
+            let firstBody = scene.world.GetBodyList();
 
-    //doubleSceneTest();
-    //cityOrCountry();
-    //pokeyPokey();
-    //turtleScene();
-    //bigRivFile();
-    //scalingScene();
-    //doubleSceneTest();
-    //animationBlendingTestScene();
-    //eventsTestScene();
-    //fashionTestScene();
-} 
+            let x = Input.scaledMouseX;
+            let y = Input.scaledMouseY;
+
+            let pos = Physics.toPhysicsTransform(new Vector(x, y));
+
+            if (firstBody && Input.isMouseDown) {
+            let currentPos = firstBody.GetPosition();
+
+            let direction = new Vector(pos.x - currentPos.x, pos.y - currentPos.y);
+
+            direction.x *= 60;
+            direction.y *= 60;
+            firstBody.SetLinearVelocity(direction);
+            firstBody.SetAwake(true);
+        }
+    });
+
+    scene.add(scriptable);
+}
 
 /**
  *  Simple test scene showing that by pressing "1" you can toggle different scenes with their own states and updates.

@@ -2,7 +2,7 @@ import { StateMachine } from "@rive-app/canvas-advanced";
 import { SMIInput } from "@rive-app/canvas-advanced";
 import { Artboard, File } from "@rive-app/canvas-advanced";
 import Game from "../Game";
-import Input from "./Input";
+import Input, { KeyCode } from "./Input";
 import Vector from "../Utils/Vector";
 /**
  * Needs refactoring.
@@ -15,6 +15,11 @@ export class Debug {
     static init(canvas : HTMLCanvasElement) {
         Debug.Box = document.getElementById('debug-content') as HTMLElement;
         Debug.canvas = canvas;
+
+        let debugBoxContainer = document.getElementById('debug');
+        if (debugBoxContainer) {
+          debugBoxContainer.style.visibility = 'hidden';
+        }
     }
 
     static clear() {
@@ -28,6 +33,13 @@ export class Debug {
     static update(deltaTime : number) {
       Performance.update(deltaTime);
       this.updateDebugInfo();
+
+      if (Input.isKeyDown(KeyCode.D)) {
+        let debugBoxContainer = document.getElementById('debug');
+        if (debugBoxContainer) {
+          debugBoxContainer.style.visibility = debugBoxContainer.style.visibility === 'hidden' ? 'visible' : 'hidden';
+        }
+      }
     } 
 
     static updateDebugInfo(): void {

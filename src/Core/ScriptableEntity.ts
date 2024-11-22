@@ -20,13 +20,22 @@ import { UpdateFunction } from "../Utils/Interfaces";
 export default class ScriptableEntity extends Entity {
 
     private _script : UpdateFunction = (deltaTime: number) => {};
+    private _fixedUpdateScript : UpdateFunction = (fixedDeltaTime: number) => {};
 
     public setScriptFunction(fn: UpdateFunction) {
         this._script = fn;
     }
+
+    public setFixedUpdateFunction(fn: UpdateFunction) {
+        this._fixedUpdateScript = fn;
+    }
     
     override update(deltaTime: number): void {
         this._script(deltaTime);
+    }
+
+    override fixedUpdate(fixedDeltaTime: number): void {
+        this._fixedUpdateScript(fixedDeltaTime);
     }
 
     override destroy(): void {

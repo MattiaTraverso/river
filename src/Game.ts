@@ -70,7 +70,7 @@ export default class Game {
   //================================
 
   private static readonly MAX_DELTA_TIME = 1/10;
-  private static readonly FIXED_TIME_STEP = 1/60; // 60 Hz
+  private static readonly FIXED_TIME_STEP = 1/30; // 60 Hz
   private static readonly MAX_STEPS = 5;
 
   static timeScale = 1.0;

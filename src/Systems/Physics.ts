@@ -18,6 +18,7 @@ export default class Physics {
 
         const world = b2World.Create(Physics.Gravity);
 
+ 
         const bottomWallShape = Physics.getBoxShape(Game.targetRes.x, 10);
         const topWallShape = Physics.getBoxShape(Game.targetRes.x, 10);
         const leftWallShape = Physics.getBoxShape(10, Game.targetRes.y);

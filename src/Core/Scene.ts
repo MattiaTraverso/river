@@ -40,6 +40,7 @@ import Physics from "../Systems/Physics";
 import Game from "../Game";
 import Vector from "../Utils/Vector";
 import Input from "../Systems/Input";
+import RiveEntity from "../Rive/RiveEntity";
 
 export default class Scene {
   readonly name: string;
@@ -61,7 +62,6 @@ export default class Scene {
     this.entities.push(entity);
 
     if (addToPhysicsWorld) {
-      console.log("IT IS I");
       let body = this.world.CreateBody(Physics.dynamicBodyDef);
       entity.initPhysics(body);
     }
@@ -101,25 +101,13 @@ export default class Scene {
   readonly world : b2World;
 
   fixedUpdate(fixedDeltaTime: number): void {
-    let firstBody = this.world.GetBodyList();
-
-    let x = Input.scaledMouseX;
-    let y = Input.scaledMouseY;
-
-    let pos = Physics.toPhysicsTransform(new Vector(x, y));
-
-    if (firstBody && Input.isMouseDown) {
-      let currentPos = firstBody.GetPosition();
-
-      let direction = new Vector(pos.x - currentPos.x, pos.y - currentPos.y);
-
-      direction.x *= 60;
-      direction.y *= 60;
-      firstBody.SetLinearVelocity(direction);
-      firstBody.SetAwake(true);
-    }
-
     this.world.Step(fixedDeltaTime, Physics.stepConfig);
+
+    for (let entity of this.entities) {
+      if (entity.enabled) {
+        entity.fixedUpdate(fixedDeltaTime);
+      }
+    }
   }
 
 
@@ -135,14 +123,12 @@ export default class Scene {
     }
   }
 
-  public shouldDebugRender : boolean = true;
+  public shouldDebugRender : boolean = false;
   debugRender(canvas: HTMLCanvasElement, resolutionScale: Vector): void {  
     if (!this.shouldDebugRender) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     //draw text in the top right saying number of bodies:   
     ctx.fillStyle = '#000000';
@@ -152,8 +138,14 @@ export default class Scene {
     ctx.fillText(`Bodies: ${this.world.GetBodyCount()}`, canvas.width - 10, 10);
 
     let id : number = 0;
-    for (let body = this.world.GetBodyList(); body; body = body.GetNext()) {    
+    //for (let body = this.world.GetBodyList(); body; body = body.GetNext()) { 
+    for (let entity of this.entities) { 
+      let body = entity.physicsBody;
+
+      if (!body) continue;
+
       if (body.GetType() === b2BodyType.b2_staticBody) continue;
+
       let pos = Physics.toPixelTransform(body.GetPosition() as b2Vec2);
 
       let x = pos.x * resolutionScale.x;
@@ -167,7 +159,10 @@ export default class Scene {
       const b = Math.sin(id * 0.3 + 4) * 127 + 128;
       ctx.fillStyle = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
 
-      const BOX_SIZE = 100;
+      //const BOX_SIZE = 100;
+
+      const WIDTH = (entity as RiveEntity).width * resolutionScale.x;
+      const HEIGHT = (entity as RiveEntity).height * resolutionScale.y;
 
       // Save context state
       ctx.save();
@@ -177,7 +172,7 @@ export default class Scene {
       ctx.rotate(angle);
       
       // Draw rotated box
-      ctx.fillRect(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE, BOX_SIZE);
+      ctx.fillRect(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
       
       // Restore context state
       ctx.restore();

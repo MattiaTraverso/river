@@ -1,3 +1,4 @@
+import { AABB } from "@rive-app/canvas-advanced";
 import Game from "../Game";
 import RiveEntity from "../Rive/RiveEntity";
 
@@ -137,10 +138,16 @@ export default class Input {
     }
 
     static mouseToArtboardSpace(riveRenderer : RiveEntity) : {x : number, y : number} {
+        let scaledFrame : AABB = riveRenderer.frame;
+        scaledFrame.minX *= Game.resolutionScale.x;
+        scaledFrame.minY *= Game.resolutionScale.y;
+        scaledFrame.maxX *= Game.resolutionScale.x;
+        scaledFrame.maxY *= Game.resolutionScale.y;
+        
         let fwdMatrix = Game.rive.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,
-          riveRenderer.frame,
+          scaledFrame,
           riveRenderer.artboard.bounds
         );
       

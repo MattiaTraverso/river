@@ -56,13 +56,13 @@ export default class Entity implements Destroyable {
     }
 
     update(deltaTime: number): void {
-        /*
-        if (this.physicsBody) {
-            this.physicsBody.position = this.physicState.position;
-            this.physicsBody.angle = this.physicState.rotation;
-        }*/
+    
     }
 
+    fixedUpdate(fixedDeltaTime: number): void {
+    
+    }
+    
     destroy(): void {
         //useful when dealing with RIVE's WASM. It's C++ so it needs cleanup
     }
@@ -74,7 +74,7 @@ export default class Entity implements Destroyable {
     //========== PHYSICS =============
     //================================
     
-    protected physicsBody?: b2Body;
+    public physicsBody?: b2Body;
     protected physicState?: PhysicsState;
 
     public initPhysics(body: b2Body): void {
@@ -83,10 +83,10 @@ export default class Entity implements Destroyable {
         this.physicsBody = body;
     }
 
-    public addCollider(shape: b2Shape, density: number = 1): void {
+    public addCollider(shape: b2Shape, density: number = 1, friction: number = 0.3, restitution: number = 0.1): void {
         if (!this.physicsBody) throw new Error("Physics not initialized");
 
-        this.physicsBody.CreateFixture({ shape, density });
+        this.physicsBody.CreateFixture({ shape, density, friction, restitution });
     }
 
 }

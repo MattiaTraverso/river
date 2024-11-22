@@ -31,7 +31,8 @@ import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canva
 import Game from "../Game";
 import Vector from "../Utils/Vector";
 import Entity from "../Core/Entity";
-
+import Physics from "../Systems/Physics";
+import { b2Vec2 } from "@box2d/core";
 export class RiveEntity extends Entity {
     //====
   // Remember: Y positive is DOWN, Y negative is UP
@@ -50,17 +51,17 @@ export class RiveEntity extends Entity {
     aabb.minY += this.position.y;
     aabb.maxY += this.position.y;
 
-    aabb.minX *= this.scale.x * Game.resScale.x;
-    aabb.maxX *= this.scale.x * Game.resScale.x;
-    aabb.minY *= this.scale.y * Game.resScale.y;
-    aabb.maxY *= this.scale.y * Game.resScale.y;
+    aabb.minX *= this.scale.x;
+    aabb.maxX *= this.scale.x;
+    aabb.minY *= this.scale.y;
+    aabb.maxY *= this.scale.y;
     return aabb;
   }
   get width() : number {
-    return this.artboard.bounds.maxX - this.artboard.bounds.minX;
+    return (this.artboard.bounds.maxX - this.artboard.bounds.minX) * this.scale.x;
   }
   get height() : number {
-    return this.artboard.bounds.maxY - this.artboard.bounds.minY;
+    return (this.artboard.bounds.maxY - this.artboard.bounds.minY) * this.scale.y;
   }
   position : Vector = new Vector(0,0);
   scale : Vector = new Vector(1, 1);
@@ -77,14 +78,31 @@ export class RiveEntity extends Entity {
     }
   }
 
-  override render(renderer: WrappedRenderer): void {
+
+  override fixedUpdate(fixedDeltaTime: number): void {
+    if (this.physicsBody) {
+      this.artboard.transformComponent("Root").rotation = this.physicsBody.GetAngle();     
+      
+      let targetPos = Physics.toPixelTransform(this.physicsBody.GetPosition() as b2Vec2);
+      this.position.x = targetPos.x - this.width / this.scale.x / 2;
+      this.position.y = targetPos.y - this.height / this.scale.y / 2;
+    }
+  }
+
+  override render(renderer: WrappedRenderer, resolutionScale: Vector): void {
     if (!this.enabled) return;
+
+    let scaledFrame = this.frame;
+    scaledFrame.minX *= resolutionScale.x;
+    scaledFrame.maxX *= resolutionScale.x;
+    scaledFrame.minY *= resolutionScale.y;
+    scaledFrame.maxY *= resolutionScale.y;
 
     renderer.save();
       renderer.align(
         this.fit,
         this.alignment,
-        this.frame,
+        scaledFrame,
         this.artboard.bounds
     );
     this.artboard.draw(renderer);
