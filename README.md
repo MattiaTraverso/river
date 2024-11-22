@@ -59,3 +59,21 @@ This is currently a personal work in progress, being developed alongside a clien
 🤖 Claude's been helping out when I get lazy :)
 
 > **Note**: This is an active learning project. Feedback and suggestions are welcome!
+
+
+## Credits
+
+The following Rive files are used to test functionality:
+
+| File | Author | Source |
+|------|---------|--------|
+| angry_turtle.riv | extraframe28 | [Rive Community](https://rive.app/community/files/13427-25413-angry-turtle/) |
+| basketball.riv | RiveExamples | [Rive Community](https://rive.app/community/files/642-1469-basketball/) |
+| cityorcountry.riv | animatedom | Internal File |
+| clean_the_car.riv | JcToon | [Rive Community](https://rive.app/community/files/2732-5606-clean-the-car/) |
+| events-test.riv | - | Internal Test File |
+| fashion_app.riv | animatedom | [Rive Community](https://rive.app/community/files/11857-22628-fashion-app-test/) |
+| pokey_pokey.riv | eolobo | [Rive Community](https://rive.app/community/files/12995-24869-pokey-pokey/) |
+| scaling-test.riv | - | Internal Test File |
+| shroom_gloom_game.riv | richardbolland | [Rive Community](https://rive.app/community/files/13316-25195-shroom-and-gloom-fan-game/) |
+| walk_cycle.riv | animatedom | [Modified from Rive Community](https://rive.app/community/files/9779-18650-walk-cycle/) |
