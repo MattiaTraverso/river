@@ -60,6 +60,11 @@ This is currently a personal work in progress, being developed alongside a clien
 
 > **Note**: This is an active learning project. Feedback and suggestions are welcome!
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Copyright (c) 2024 Mattia Traverso
+
 
 ## Credits
 
