@@ -3,27 +3,34 @@
  * 
  * Usage:
  * ```typescript
- * // 1. Create a state machine instance with a context (usually 'this' from your class)
- * const stateMachine = new StateMachine<'IDLE' | 'WALK' | 'RUN', MyGameClass>(this);
  * 
- * // 2. Define states with their update functions and optional enter/exit handlers
- * stateMachine.State('IDLE', this.idleUpdate)
+ * // 0. Define the states you want as an enum:
+ * enum MyStates { IDLE, WALK, RUN };
+ * 
+ * // 1. Create a state machine instance passing your enum and a context (usually 'this' from your class)
+ * const stateMachine = new StateMachine<MyStates, MyGameClass>(this);
+ * 
+ * // 2. Define states with their update functions and optional enter/exit handlers and transitions
+ * stateMachine.state(MyStates.IDLE, this.idleUpdate)
  *   .withEnter(this.onEnterIdle)    // Optional
  *   .withExit(this.onExitIdle)      // Optional
- *   .transitionsTo('WALK', () => this.isMoving); // MANDATORY!
+ *   .transitionsTo(MyStates.WALK, () => this.isMoving); //transitions take a condition function
  * 
- * NOTE: First registered state becomes the initial state!
+ * NOTE: The first state you register becomes the initial state!
  * 
  * // 3. Add more states and transitions (transitions are checked in order)
- * stateMachine.State('WALK', this.walkUpdate)
- *   .transitionsTo('IDLE', () => !this.isMoving)
- *   .transitionsTo('RUN', () => this.isRunning);
+ * stateMachine.state(MyStates.WALK, this.walkUpdate)
+ *   .transitionsTo(MyStates.IDLE, () => !this.isMoving)
+ *   .transitionsTo(MyStates.RUN, () => this.isRunning);
  * 
  * NOTE: Transitions are processed in order, so have your highest priority transitions first!!
  * 
  * // 4. Update the state machine in your game loop
- * stateMachine.Update(deltaTime);
+ * stateMachine.update(deltaTime);
  * ```
+ * 
+ * IMPORTANT: Ideally, the transition between states are handled by defining transitions. 
+ * However, you can also force a state transition by calling forceState(newState).
  * 
  * Neat Features:
  * - Debug visualization support via Mermaid diagrams (call DebugRenderStateTransitionsAsMermaidGraph() to get a string)
@@ -137,7 +144,7 @@ export default class StateMachine<TState extends string, TContext = any> {
         this.setState(newState);
     }
 
-    update(deltaTime: number, time: number): void {
+    update(deltaTime: number): void {
         if (!this._currentState) return;
 
         const stateTransitions = this.transitions.get(this._currentState);
