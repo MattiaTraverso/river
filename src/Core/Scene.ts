@@ -1,8 +1,11 @@
 /**
- * A Scene is a container for RiveRenderer objects, which are the main "GameObjects" in the River engine.
+ * A Scene is a container for GameObjects.
  * 
  * Scenes allow you to organize your game into distinct sections like levels, menus, or game states.
- * The Game class maintains a current scene which it updates and renders each frame.
+ * 
+ * Why have Scene? Imagine having a Pause Scene and a Gameplay Scene. 
+ * 
+ * You could then easily switch between them, freezing one or the other and mantaining all the objects and states in them.
  * 
  * Usage:
  * ```typescript
@@ -10,18 +13,21 @@
  * const gameplayScene = new Scene("gameplay");
  * const pauseScene = new Scene("pause");
  * 
- * // Add RiveRenderer objects to scenes
+ * // Add GameObjects objects to scenes
  * gameplayScene.Add(playerCharacter);
  * gameplayScene.Add(enemies);
  * pauseScene.Add(pauseMenu);
  * 
- * // Switch between scenes
+ * // Add Scenes to Game;
  * Game.AddScene(gameplayScene);
- * // Later...
- * Game.SetCurrentScene(pauseScene);
+ * Game.AddScene(pauseScene);
+ * 
+ * // Switch between scenes
+ * gameplayScene.enabled = false;
+ * pauseScene.enabled = true;
  * ```
  * 
- * Each scene manages the lifecycle of its RiveRenderer objects:
+ * Each scene manages the lifecycle of its GameObjects:
  * - Adding/removing objects
  * - Updating objects each frame
  * - Rendering objects in order
