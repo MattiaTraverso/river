@@ -2,7 +2,10 @@
 
 Hey! 👋 This is my attempt at building a game framework using [Rive](https://rive.app) as a renderer!
 
-> ⚠️ **Fair warning**: river works but it is **NOT** READY FOR PUBLIC USE. It still needs a ton of work before you can ship a game with it!
+> ⚠️ **Fair warning**: river works but it is **NOT** READY FOR PUBLIC USE.
+> It still needs a ton of work before you can ship a game with it!
+> Plus, animating more than 5 or 6 Rive Artboards currently tanks the framerate.
+> I plan to implement some batch rendering, but the future will tell if you can actually make performant games with this.
 
 ## What's This All About?
 
