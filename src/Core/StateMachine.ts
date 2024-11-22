@@ -1,6 +1,8 @@
 /**
  * A flexible state machine implementation for managing game states and transitions.
  * 
+ * NOTE: This is *NOT* Rive's State Machine. This is a generic state machine that you can use to manage states in your game.
+ * 
  * Usage:
  * ```typescript
  * 
