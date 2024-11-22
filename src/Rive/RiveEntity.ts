@@ -71,13 +71,13 @@ export class RiveEntity extends Entity {
     this.artboard.frameOrigin = this.frameOrigin;
   }
 
-  update(deltaTime: number): void {
+  override update(deltaTime: number): void {
     if (this.enabled) {
       this.artboard.advance(deltaTime);
     }
   }
 
-  render(renderer: WrappedRenderer): void {
+  override render(renderer: WrappedRenderer): void {
     if (!this.enabled) return;
 
     renderer.save();
@@ -91,7 +91,7 @@ export class RiveEntity extends Entity {
     renderer.restore();
   }
     
-  destroy(): void {
+  override destroy(): void {
     //no need to destroy artboards in Rive's WASM.
   }
 }

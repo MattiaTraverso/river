@@ -133,7 +133,7 @@ export default class Tween<T> extends Entity {
     //==== LIFECYCLE =======
     //========================
 
-    update(deltaTime: number): void {
+    override update(deltaTime: number): void {
         if (this.isComplete || (!this.autoPlay && !this.hasStarted)) return;
 
         if (!this.hasStarted) {

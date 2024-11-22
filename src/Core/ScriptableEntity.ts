@@ -25,11 +25,11 @@ export default class ScriptableEntity extends Entity {
         this._script = fn;
     }
     
-    update(deltaTime: number): void {
+    override update(deltaTime: number): void {
         this._script(deltaTime);
     }
 
-    destroy(): void {
+    override destroy(): void {
         
     }
 }

@@ -12,7 +12,7 @@
     "exactOptionalPropertyTypes": true,
     "alwaysStrict": true,
     "noUnusedLocals": false,
-    "noUnusedParameters": true,
+    //"noUnusedParameters": true,
     "noImplicitReturns": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
