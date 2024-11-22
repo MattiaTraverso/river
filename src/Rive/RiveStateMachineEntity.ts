@@ -1,7 +1,7 @@
 import { Artboard, StateMachineInstance, SMIInput, OpenUrlEvent, RiveEvent, StateMachine } from "@rive-app/canvas-advanced";
 
-import RiveSMInput from "./RiveSMInput";
-import RiveGameObject from "./RiveGameObject";
+import RiveSMInput from "./Parts/RiveSMInput";
+import RiveEntity from "./RiveEntity";
 import Game from "../Game";
 import Input from "../Systems/Input";
 
@@ -14,7 +14,7 @@ enum RiveEventType {
   Audio = 132
 }
 
-export class RiveSMRenderer extends RiveGameObject {
+export class RiveStateMachineEntity extends RiveEntity {
   private smInstance: StateMachineInstance;
   readonly inputs: RiveSMInput[] = [];
   private _reportedEvents: (OpenUrlEvent | RiveEvent)[] = [];
@@ -107,4 +107,4 @@ export class RiveSMRenderer extends RiveGameObject {
   }
 }
 
-export default RiveSMRenderer;
+export default RiveStateMachineEntity;

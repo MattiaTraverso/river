@@ -1,5 +1,5 @@
 /**
- * A Scene is a container for GameObjects.
+ * A Scene is a container for Entities.
  * 
  * Scenes allow you to organize your game into distinct sections like levels, menus, or game states.
  * 
@@ -13,7 +13,7 @@
  * const gameplayScene = new Scene("gameplay");
  * const pauseScene = new Scene("pause");
  * 
- * // Add GameObjects objects to scenes
+ * // Add Entity objects to scenes
  * gameplayScene.Add(playerCharacter);
  * gameplayScene.Add(enemies);
  * pauseScene.Add(pauseMenu);
@@ -27,19 +27,19 @@
  * pauseScene.enabled = true;
  * ```
  * 
- * Each scene manages the lifecycle of its GameObjects:
+ * Each scene manages the lifecycle of its Entities:
  * - Adding/removing objects
  * - Updating objects each frame
  * - Rendering objects in order
  * - Cleaning up objects when destroyed
  */
 import { WrappedRenderer } from "@rive-app/canvas-advanced";
-import GameObject from "./GameObject";
+import Entity from "./Entity";
 
 export default class Scene {
   enabled: boolean = true;
 
-  protected gameObjects: GameObject[] = [];
+  protected entities: Entity[] = [];
   private initialized: boolean = false;
   private name: string;
 
@@ -55,41 +55,41 @@ export default class Scene {
     this.initialized = true;
   }
 
-  add(object: GameObject): GameObject {
-    this.gameObjects.push(object);
+  add(object: Entity): Entity {
+    this.entities.push(object);
     return object;
   }
 
-  remove(object: GameObject): void {
-    const index = this.gameObjects.indexOf(object);
+  remove(object: Entity): void {
+    const index = this.entities.indexOf(object);
     if (index >= 0) {
       object.destroy();
-      this.gameObjects.splice(index, 1);
+      this.entities.splice(index, 1);
     }
   }
 
   update(deltaTime: number, time: number): void {
     // Update game logic
-    for (let gameObject of this.gameObjects) {
-      if (gameObject.enabled) {
-        gameObject.update(deltaTime);
+    for (let entity of this.entities) {
+      if (entity.enabled) {
+        entity.update(deltaTime);
       }
     }
   }
 
   destroy(): void {
-    while (this.gameObjects.length > 0) {
-      const object = this.gameObjects[0];
+    while (this.entities.length > 0) {
+      const object = this.entities[0];
       this.remove(object);
     }
     this.initialized = false;
   }
 
   render(renderer: WrappedRenderer): void {
-    for (let gameObject of this.gameObjects) {
-      if (!gameObject.render || !gameObject.enabled) continue;
+    for (let entity of this.entities) {
+      if (!entity.render || !entity.enabled) continue;
 
-      gameObject.render(renderer);
+      entity.render(renderer);
     }
   }
 }

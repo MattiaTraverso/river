@@ -1,9 +1,9 @@
 import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/canvas-advanced";
-import RiveGameObject from "./RiveGameObject";
-import RiveAnimation from "./RiveAnimation";
+import RiveEntity from "./RiveEntity";
+import RiveAnimation from "./Parts/RiveAnimation";
 import Game from "../Game";
 
-export class RiveAnimatorRenderer extends RiveGameObject {
+export class RiveAnimatorEntity extends RiveEntity {
   private animations: Map<string, RiveAnimation> = new Map();
 
   constructor(name: string, artboard: Artboard) {
@@ -82,4 +82,4 @@ export class RiveAnimatorRenderer extends RiveGameObject {
   }
 }
 
-export default RiveAnimatorRenderer;
+export default RiveAnimatorEntity;

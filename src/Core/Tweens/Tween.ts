@@ -1,4 +1,4 @@
-import GameObject from "../GameObject";
+import Entity from "../Entity";
 import Vec2D from "../../Utils/Vec2D";
 import { TEasing, easing } from "./Easing";
 import { InterpolationFunction, Interpolation } from "./Interpolation";
@@ -9,7 +9,7 @@ export enum LoopType {
     Increment
 }
 
-export default class Tween<T> extends GameObject {
+export default class Tween<T> extends Entity {
     private _getter: () => T;
     private _setter: (value: T) => void;
 

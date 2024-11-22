@@ -1,10 +1,38 @@
+/**
+ * RiveEntity is the base class for rendering Rive artboards in your game.
+ * 
+ * This class handles the core functionality of displaying a Rive artboard, but does not handle animations.
+ * For animation control, use one of the child classes:
+ * - RiveAnimator: For manual control over animations
+ * - RiveStateMachine: For letting Rive's state machine control animations
+ * 
+ * Usage:
+ * ```typescript
+ * // Load a Rive file
+ * const file = await RiveLoader.loadFile("path/to/file.riv");
+ * 
+ * // Create a RiveEntity with an artboard
+ * const riveObject = new RiveEntity("myRiveObject", file.artboardByIndex(0));
+ * 
+ * // Position and scale the object
+ * riveObject.position = new Vec2D(100, 100);
+ * riveObject.scale = new Vec2D(0.5, 0.5);
+ * 
+ * // Add to a scene
+ * scene.add(riveObject);
+ * ```
+ * 
+ * Important Notes:
+ * - The coordinate system has [0,0] at top-left with Y positive going DOWN
+ * - The artboard's origin should be kept at default in Rive
+ */
 import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canvas-advanced";
 
 import Game from "../Game";
 import Vec2D from "../Utils/Vec2D";
-import GameObject from "../Core/GameObject";
+import Entity from "../Core/Entity";
 
-export class RiveGameObject extends GameObject {
+export class RiveEntity extends Entity {
     //====
   // Remember: Y positive is DOWN, Y negative is UP
   // Remember: [0,0] is top left unless you change it in Rive, which you shouldn't
@@ -68,4 +96,4 @@ export class RiveGameObject extends GameObject {
   }
 }
 
-export default RiveGameObject
+export default RiveEntity

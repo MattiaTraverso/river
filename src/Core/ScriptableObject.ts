@@ -14,10 +14,10 @@
 * ```
 **/
 
-import GameObject from "./GameObject";
+import Entity from "./Entity";
 import { UpdateFunction } from "../Utils/Interfaces";
 
-export default class ScriptableObject extends GameObject{
+export default class ScriptableObject extends Entity{
 
     private _updateFN : UpdateFunction = (deltaTime: number) => {};
 
