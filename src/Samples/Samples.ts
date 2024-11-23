@@ -12,7 +12,7 @@ import RiveLoader from "../Rive/RiveLoader";
 import Tween, { LoopType } from "../Core/Tweens/Tween";
 import Vector from "../Utils/Vector";
 import { easing } from "../Core/Tweens/Easing";
-import { b2FixtureDef } from "@box2d/core";
+import { b2Body, b2BodyType, b2FixtureDef } from "@box2d/core";
 import Physics from "../Systems/Physics";
 //================================ 
 // !!HORRIBLE CODE!! !!MOSTLY FOR INTERNAL TESTING!!
@@ -28,23 +28,83 @@ async function main() {
 
     await Game.initiate(1280, 720);
 
-    let file: File = await RiveLoader.loadFile(new URL("../../rivs/square.riv", import.meta.url).href);
+    let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
 
     const scene = new Scene("FashionTestScene");
 
-    for (let i = 0; i < 100; i++) {
+    let bodies : b2Body[] = [];
+
+    for (let i = 0; i < 3; i++) {
         let artboard: Artboard = file.artboardByIndex(0);
         let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
-        scene.add(riveEntity, true); //TODO: Check why this works even if false lol
-        riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, 1);
+        
+        let x = Math.random() * (Game.targetRes.x - 100) + 50;
+        let y = Math.random() * (Game.targetRes.y - 100) + 50;
+        
+        riveEntity.setPosition(new Vector(x, y));
+
+        let addToPhysics : boolean = true;
+        scene.add(riveEntity, addToPhysics); //TODO: Check why this works even if false lol
+
+        riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, .2);
         riveEntity.position = new Vector(Game.targetRes.x / 2, Game.targetRes.y / 2);
         riveEntity.physicsBody?.SetTransformXY(Physics.toPhysicsTransform(riveEntity.position).x, Physics.toPhysicsTransform(riveEntity.position).y, 0);
         riveEntity.physicsBody?.ApplyForceToCenter(new Vector(99000, 10000), true);
-        riveEntity.physicsBody?.ApplyAngularImpulse(20200 * Math.random(), true);
+        riveEntity.physicsBody?.ApplyAngularImpulse(500 * Math.random(), true);
+        if (riveEntity.physicsBody) bodies.push(riveEntity.physicsBody);
     }
 
 
-    Game.addScene(scene);
+    Game.addScene(scene); const scriptable = new ScriptableEntity("MouseControl");
+
+    scriptable.setFixedUpdateFunction((fixedDeltaTime: number) => {
+        if (Input.isMouseClicked) {
+            for (let i = 0; i < bodies.length; i++) {
+                let firstBody = bodies[i];
+                if (!firstBody) continue;
+                let x = Input.scaledMouseX;
+                let y = Input.scaledMouseY;
+
+                let pos = Physics.toPhysicsTransform(new Vector(x, y));
+
+                let currentBodyPos = firstBody.GetPosition();
+
+                let direction = new Vector(pos.x - currentBodyPos.x, pos.y - currentBodyPos.y);
+
+                if (direction.lengthSquared() > 400) continue;
+
+                let strength = 250;
+
+                direction.x *= -strength;
+                direction.y *= -strength;
+
+                firstBody.ApplyLinearImpulse(direction, pos, true);
+                firstBody.ApplyAngularImpulse(10000, true); 
+            }
+
+            return;
+        }
+        
+        /*
+        let x = Input.scaledMouseX;
+        let y = Input.scaledMouseY;
+
+        let pos = Physics.toPhysicsTransform(new Vector(x, y));
+
+        if (firstBody && Input.isMouseDown) {
+        let currentPos = firstBody.GetPosition();
+
+        let direction = new Vector(pos.x - currentPos.x, pos.y - currentPos.y);
+
+        direction.x *= 60;
+        direction.y *= 60;
+        
+        firstBody.SetLinearVelocity(direction);
+        firstBody.SetAwake(true);
+        }*/
+    });
+
+    scene.add(scriptable);
 
 
 
