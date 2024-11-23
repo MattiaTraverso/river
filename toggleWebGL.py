@@ -2,6 +2,7 @@ import os
 import re
 import sys
 import urllib.request
+import shutil
 from pathlib import Path
 
 def get_gitignore_patterns():
@@ -82,6 +83,22 @@ def replace_in_file(file_path, renderer_type, version):
         print(f"No changes needed in {file_path}")
     return False, wasm_pkg
 
+def clean_project():
+    # Delete yarn.lock if it exists
+    if os.path.exists('yarn.lock'):
+        os.remove('yarn.lock')
+        print("Deleted yarn.lock")
+
+    # Delete node_modules directory if it exists
+    if os.path.exists('node_modules'):
+        shutil.rmtree('node_modules')
+        print("Deleted node_modules directory")
+
+    # Delete export/dist directory if it exists
+    if os.path.exists('export/dist'):
+        shutil.rmtree('export/dist')
+        print("Deleted export/dist directory")
+
 def main():
     if len(sys.argv) < 2 or sys.argv[1] not in ['-webgl', '-canvas', '-webgl2']:
         print("Usage: python toggleWebGL.py [-webgl|-canvas|-webgl2] [-v version]")
@@ -97,6 +114,9 @@ def main():
     print("\nIgnoring patterns from .gitignore:", ignore_patterns)
     
     print(f"\nSwitching to {renderer_type[1:].upper()} renderer (version {version})...")
+    
+    # Clean project files first
+    clean_project()
     
     # Find all .ts files and package.json recursively
     modified_count = 0
