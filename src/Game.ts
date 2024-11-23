@@ -144,8 +144,6 @@ export default class Game {
     for (const scene of Game.scenes.values()) {
       if (scene.enabled) scene.render(Game.renderer);
     }
-
-    Game.renderer.flush();
   }
 
   //HACK! TODO: REMOVE!
