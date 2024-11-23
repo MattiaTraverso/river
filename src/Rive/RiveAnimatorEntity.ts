@@ -2,6 +2,8 @@ import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/ca
 import RiveEntity from "./RiveEntity";
 import RiveAnimation from "./Parts/RiveAnimation";
 import Game from "../Game";
+import RiveLoader from "./RiveLoader";
+
 
 export class RiveAnimatorEntity extends RiveEntity {
   private animations: Map<string, RiveAnimation> = new Map();
@@ -11,7 +13,7 @@ export class RiveAnimatorEntity extends RiveEntity {
   }
 
   add(linearAnimation: LinearAnimation): string {
-    const instance = new Game.rive.LinearAnimationInstance(linearAnimation, this.artboard);
+    const instance = new RiveLoader.rive.LinearAnimationInstance(linearAnimation, this.artboard);
 
     const riveAnimation = new RiveAnimation(instance);
     this.animations.set(linearAnimation.name, riveAnimation);
@@ -62,7 +64,7 @@ export class RiveAnimatorEntity extends RiveEntity {
     }
   }
 
-  update(deltaTime: number): void {
+  override update(deltaTime: number): void {
     for (const animation of this.animations.values()) {
       animation.advance(deltaTime);
     }
@@ -75,7 +77,7 @@ export class RiveAnimatorEntity extends RiveEntity {
     return Array.from(this.animations.keys());
   }
   
-  destroy(): void {
+  override destroy(): void {
     for (const anim of this.animations.values()) {
       anim.destroy();
     }

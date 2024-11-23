@@ -1,5 +1,5 @@
 import { LinearAnimationInstance } from "@rive-app/canvas-advanced";
-import { Destroyable } from "../Utils/Interfaces";
+import { Destroyable } from "../../Utils/Interfaces";
 
 export class RiveAnimation implements Destroyable {
   private instance: LinearAnimationInstance;
