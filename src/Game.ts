@@ -11,7 +11,8 @@ import { b2World } from "@box2d/core";
 //Local WASM loads faster. Remote WASM might be updated if I'm lazy.
 const USE_LOCAL_WASM: boolean = true;
 const LOCAL_WASM_URL = new URL("../export/rive.wasm", import.meta.url).toString();
-const REMOTE_WASM_URL = "https://unpkg.com/@rive-app/canvas-advanced@2.21.6/rive.wasm";
+const VERSION = '2.21.6'; //LAST IS 2.23.10
+const REMOTE_WASM_URL = `https://unpkg.com/@rive-app/canvas-advanced@${VERSION}/rive.wasm`;
 
 export default class Game {
 
@@ -114,9 +115,9 @@ export default class Game {
 
     Game.debugRender();
 
-    requestAnimationFrame(Game.update);
-
     Input.clear();
+
+    requestAnimationFrame(Game.update);
   }
 
   private static fixedUpdateAccumulator : number = 0;
