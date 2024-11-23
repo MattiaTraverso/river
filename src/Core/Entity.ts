@@ -51,6 +51,10 @@ export default class Entity implements Destroyable {
     enabled: boolean = true;
     name: string;
 
+    position : Vector = new Vector(0,0);
+    scale : Vector = new Vector(1, 1);
+    rotation : number = 0;
+
     constructor(name: string,) {
         this.name = name;
     }

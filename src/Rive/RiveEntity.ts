@@ -65,8 +65,6 @@ export class RiveEntity extends Entity {
   get height() : number {
     return (this.artboard.bounds.maxY - this.artboard.bounds.minY) * this.scale.y;
   }
-  position : Vector = new Vector(0,0);
-  scale : Vector = new Vector(1, 1);
 
   constructor(name: string, artboard : Artboard) {
     super(name);
@@ -112,9 +110,9 @@ export class RiveEntity extends Entity {
   }
 
 
-  setPosition(position: Vector, applyToPhysics: boolean = false): void {
+  setPosition(position: Vector): void {
     this.position = position;
-    if (applyToPhysics && this.physicsBody) {
+    if (this.physicsBody) {
         this.physicsBody.SetTransformXY(Physics.toPhysicsTransform(this.position).x, Physics.toPhysicsTransform(this.position).y, 0);
     }
 }
