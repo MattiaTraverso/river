@@ -28,11 +28,11 @@ async function main() {
 
     await Game.initiate(1280, 720);
 
-    let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
+    let file: File = await RiveLoader.loadFile(new URL("../../rivs/square.riv", import.meta.url).href);
 
     const scene = new Scene("FashionTestScene");
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 100; i++) {
         let artboard: Artboard = file.artboardByIndex(0);
         let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
         scene.add(riveEntity, true); //TODO: Check why this works even if false lol

@@ -15,11 +15,6 @@ export class Debug {
     static init(canvas : HTMLCanvasElement) {
         Debug.Box = document.getElementById('debug-content') as HTMLElement;
         Debug.canvas = canvas;
-
-        let debugBoxContainer = document.getElementById('debug');
-        if (debugBoxContainer) {
-          debugBoxContainer.style.visibility = 'hidden';
-        }
     }
 
     static clear() {
