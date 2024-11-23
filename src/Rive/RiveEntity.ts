@@ -33,6 +33,7 @@ import Vector from "../Utils/Vector";
 import Entity from "../Core/Entity";
 import Physics from "../Systems/Physics";
 import { b2Vec2 } from "@box2d/core";
+import Input from "../Systems/Input";
 export class RiveEntity extends Entity {
     //====
   // Remember: Y positive is DOWN, Y negative is UP
@@ -81,8 +82,8 @@ export class RiveEntity extends Entity {
 
   override fixedUpdate(fixedDeltaTime: number): void {
     if (this.physicsBody) {
-      this.artboard.transformComponent("Root").rotation = this.physicsBody.GetAngle();     
-      
+      this.artboard.transformComponent("Root").rotation = this.physicsBody.GetAngle();  
+         
       let targetPos = Physics.toPixelTransform(this.physicsBody.GetPosition() as b2Vec2);
       this.position.x = targetPos.x - this.width / this.scale.x / 2;
       this.position.y = targetPos.y - this.height / this.scale.y / 2;
@@ -99,19 +100,32 @@ export class RiveEntity extends Entity {
     scaledFrame.maxY *= resolutionScale.y;
 
     renderer.save();
-      renderer.align(
-        this.fit,
-        this.alignment,
-        scaledFrame,
-        this.artboard.bounds
+    renderer.align(
+      this.fit,
+      this.alignment,
+      scaledFrame,
+      this.artboard.bounds
     );
+    let startTime = performance.now();
     this.artboard.draw(renderer);
+    let endTime = performance.now();
+    console.log(`Rive draw time: ${endTime - startTime}ms + Input.hasMouseMoved: ${Input.hasMouseMoved}`);
     renderer.restore();
   }
     
   override destroy(): void {
     //no need to destroy artboards in Rive's WASM.
   }
+
+
+  setPosition(position: Vector, applyToPhysics: boolean = false): void {
+    this.position = position;
+    if (applyToPhysics && this.physicsBody) {
+        this.physicsBody.SetTransformXY(Physics.toPhysicsTransform(this.position).x, Physics.toPhysicsTransform(this.position).y, 0);
+    }
 }
+}
+
+
 
 export default RiveEntity
