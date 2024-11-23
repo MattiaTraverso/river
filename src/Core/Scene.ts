@@ -101,13 +101,13 @@ export default class Scene {
   readonly world : b2World;
 
   fixedUpdate(fixedDeltaTime: number): void {
-    this.world.Step(fixedDeltaTime, Physics.stepConfig);
-
     for (let entity of this.entities) {
       if (entity.enabled) {
         entity.fixedUpdate(fixedDeltaTime);
       }
     }
+
+    this.world.Step(fixedDeltaTime, Physics.stepConfig);
   }
 
 
