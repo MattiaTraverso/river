@@ -34,6 +34,7 @@ import Entity from "../Core/Entity";
 import Physics from "../Systems/Physics";
 import { b2Vec2 } from "@box2d/core";
 import Input from "../Systems/Input";
+import RiveLoader from "./RiveLoader";
 export class RiveEntity extends Entity {
     //====
   // Remember: Y positive is DOWN, Y negative is UP
@@ -42,8 +43,8 @@ export class RiveEntity extends Entity {
   public readonly artboard : Artboard;
 
   frameOrigin : boolean = false;
-  fit : Fit = Game.rive.Fit.contain;
-  alignment : Alignment = Game.rive.Alignment.topLeft;
+  fit : Fit = RiveLoader.rive.Fit.contain;
+  alignment : Alignment = RiveLoader.rive.Alignment.topLeft;
   get frame() : AABB { 
     let aabb =  this.artboard.bounds; 
 
@@ -90,26 +91,19 @@ export class RiveEntity extends Entity {
     }
   }
 
-  override render(renderer: WrappedRenderer, resolutionScale: Vector): void {
+  override render(renderer: WrappedRenderer): void {
     if (!this.enabled) return;
-
-    let scaledFrame = this.frame;
-    scaledFrame.minX *= resolutionScale.x;
-    scaledFrame.maxX *= resolutionScale.x;
-    scaledFrame.minY *= resolutionScale.y;
-    scaledFrame.maxY *= resolutionScale.y;
 
     renderer.save();
     renderer.align(
       this.fit,
       this.alignment,
-      scaledFrame,
+      this.frame,
       this.artboard.bounds
     );
-    let startTime = performance.now();
+
     this.artboard.draw(renderer);
-    let endTime = performance.now();
-    console.log(`Rive draw time: ${endTime - startTime}ms + Input.hasMouseMoved: ${Input.hasMouseMoved}`);
+
     renderer.restore();
   }
     

@@ -10,11 +10,13 @@ import Vector from "../Utils/Vector";
 export class Debug {
     private static Box : HTMLElement;
 
-    private static canvas : HTMLCanvasElement;
+    private static gameCanvas : OffscreenCanvas;
+    private static finalCanvas : HTMLCanvasElement;
 
-    static init(canvas : HTMLCanvasElement) {
+    static init(gameCanvas : OffscreenCanvas, finalCanvas : HTMLCanvasElement) {
         Debug.Box = document.getElementById('debug-content') as HTMLElement;
-        Debug.canvas = canvas;
+        Debug.gameCanvas = gameCanvas ;
+        Debug.finalCanvas = finalCanvas;
     }
 
     static clear() {
@@ -43,12 +45,11 @@ export class Debug {
 
     static updateDebugInfo(): void {
         Debug.clear();
-        Debug.add(`Canvas Mouse: [${Input.canvasMouseX},${Input.canvasMouseY}]`);
-        Debug.add(`Scaled Mouse: [${Input.scaledMouseX},${Input.scaledMouseY}]`);
-        Debug.add(`<br>Target Res: [${Game.targetRes.x}, ${Game.targetRes.y}]`);
-
-        let resolutionScale = new Vector(Debug.canvas.width / Game.targetRes.x, Debug.canvas.height / Game.targetRes.y);
-        Debug.add(`Canvas: [${Debug.canvas.width},${Debug.canvas.height}] -> [${resolutionScale.x}x, ${resolutionScale.y}x]`);
+        Debug.add(`Canvas Mouse: [${Input.gameMouseX},${Input.gameMouseY}]`);
+        
+        Debug.add(`Game Canvas: [${Debug.gameCanvas.width},${Debug.gameCanvas.height}]`);
+        Debug.add(`Final Canvas: [${Debug.finalCanvas.width},${Debug.finalCanvas.height}]`);
+        Debug.add(`Resolution Scale: [${Debug.finalCanvas.width / Debug.gameCanvas.width}x, ${Debug.finalCanvas.height / Debug.gameCanvas.height}x]`);
         Debug.add(`FPS: ${Performance.FPS}`);
         Debug.add(`Average FPS: ${Performance.averageFPS}`);
     }

@@ -68,7 +68,7 @@ export default class Entity implements Destroyable {
     }
 
     // Optional render method
-    render?(renderer: WrappedRenderer, resolutionScale: Vector): void;
+    render?(renderer: WrappedRenderer): void;
 
     //================================
     //========== PHYSICS =============

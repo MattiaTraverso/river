@@ -4,6 +4,7 @@ import RiveSMInput from "./Parts/RiveSMInput";
 import RiveEntity from "./RiveEntity";
 import Game from "../Game";
 import Input from "../Systems/Input";
+import RiveLoader from "./RiveLoader";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;
@@ -24,7 +25,7 @@ export class RiveStateMachineEntity extends RiveEntity {
 
   constructor(name: string, artboard: Artboard, stateMachine: StateMachine) {
     super(name, artboard);
-    this.smInstance = new Game.rive.StateMachineInstance(stateMachine, artboard);
+    this.smInstance = new RiveLoader.rive.StateMachineInstance(stateMachine, artboard);
     for (let i = 0; i < this.smInstance.inputCount(); i++) {
       let input: SMIInput = this.smInstance.input(i);
       this.inputs.push(new RiveSMInput(input));

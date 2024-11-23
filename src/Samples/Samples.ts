@@ -23,10 +23,8 @@ import Physics from "../Systems/Physics";
 
 async function main() {
     //Uncomment the sample you want.
-    
-    
 
-    await Game.initiate(1280, 720);
+    await Game.initiate(1920, 1080);
 
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
 
@@ -38,8 +36,8 @@ async function main() {
         let artboard: Artboard = file.artboardByIndex(0);
         let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
         
-        let x = Math.random() * (Game.targetRes.x - 100) + 50;
-        let y = Math.random() * (Game.targetRes.y - 100) + 50;
+        let x = Math.random() * (Game.resolution.x - 100) + 50;
+        let y = Math.random() * (Game.resolution.y - 100) + 50;
         
         riveEntity.setPosition(new Vector(x, y));
 
@@ -47,7 +45,7 @@ async function main() {
         scene.add(riveEntity, addToPhysics); //TODO: Check why this works even if false lol
 
         riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, .2);
-        riveEntity.position = new Vector(Game.targetRes.x / 2, Game.targetRes.y / 2);
+        riveEntity.position = new Vector(Game.resolution.x / 2, Game.resolution.y / 2);
         riveEntity.physicsBody?.SetTransformXY(Physics.toPhysicsTransform(riveEntity.position).x, Physics.toPhysicsTransform(riveEntity.position).y, 0);
         riveEntity.physicsBody?.ApplyForceToCenter(new Vector(99000, 10000), true);
         riveEntity.physicsBody?.ApplyAngularImpulse(500 * Math.random(), true);
@@ -62,8 +60,8 @@ async function main() {
             for (let i = 0; i < bodies.length; i++) {
                 let firstBody = bodies[i];
                 if (!firstBody) continue;
-                let x = Input.scaledMouseX;
-                let y = Input.scaledMouseY;
+                let x = Input.gameMouseX;
+                let y = Input.gameMouseY;
 
                 let pos = Physics.toPhysicsTransform(new Vector(x, y));
 
@@ -143,8 +141,8 @@ async function physicsTest() {
         const body = scene.world.CreateBody(Physics.dynamicBodyDef);
         
         // Random position within game resolution
-        const x = Math.random() * Game.targetRes.x;
-        const y = Math.random() * Game.targetRes.y;
+        const x = Math.random() * Game.resolution.x;
+        const y = Math.random() * Game.resolution.y;
         
         const physicsPos = Physics.toPhysicsTransform(new Vector(x, y));
         body.SetTransformXY(physicsPos.x, physicsPos.y, 0);
@@ -157,8 +155,8 @@ async function physicsTest() {
     scriptable.setFixedUpdateFunction((fixedDeltaTime: number) => {
             let firstBody = scene.world.GetBodyList();
 
-            let x = Input.scaledMouseX;
-            let y = Input.scaledMouseY;
+            let x = Input.gameMouseX;
+            let y = Input.gameMouseY;
 
             let pos = Physics.toPhysicsTransform(new Vector(x, y));
 
@@ -334,8 +332,8 @@ async function basketBallTestScene(skipGameInitialization: boolean = false) {
     let basketRiveEntity: RiveAnimatorEntity = new RiveAnimatorEntity("Basketball", basket.artboardByIndex(0));
     basketRiveEntity.add(basketRiveEntity.artboard.animationByIndex(0));
 
-    basketRiveEntity.position.x = Game.targetRes.x * .5 - basketRiveEntity.width * .5;
-    basketRiveEntity.position.y = Game.targetRes.y * .5 - basketRiveEntity.height * .5;
+    basketRiveEntity.position.x = Game.resolution.x * .5 - basketRiveEntity.width * .5;
+    basketRiveEntity.position.y = Game.resolution.y * .5 - basketRiveEntity.height * .5;
 
     const scene = new Scene("BasketBallTestScene");
     scene.add(basketRiveEntity);
@@ -415,8 +413,8 @@ async function animationBlendingTestScene() {
     let character: File = await RiveLoader.loadFile(new URL("../../rivs/walk_cycle.riv", import.meta.url).href);
     let characterRive: RiveAnimatorEntity = new RiveAnimatorEntity("WalkCycle", character.artboardByIndex(0));
 
-    characterRive.position.x = Game.targetRes.x * .5 - characterRive.width * .5;
-    characterRive.position.y = Game.targetRes.y * .5 - characterRive.height * .5;
+    characterRive.position.x = Game.resolution.x * .5 - characterRive.width * .5;
+    characterRive.position.y = Game.resolution.y * .5 - characterRive.height * .5;
 
     //characterRive.addByName("Walk");
     //characterRive.addByName("Stop");
@@ -454,8 +452,8 @@ async function eventsTestScene() {
 
     let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("EventsTest", artboard, artboard.stateMachineByIndex(0));
 
-    riveEntity.position.x = Game.targetRes.x * .5 - riveEntity.width * .5;
-    riveEntity.position.y = Game.targetRes.y * .5 - riveEntity.height * .5;
+    riveEntity.position.x = Game.resolution.x * .5 - riveEntity.width * .5;
+    riveEntity.position.y = Game.resolution.y * .5 - riveEntity.height * .5;
 
     const scene = new Scene("EventsTestScene");
     scene.add(riveEntity);

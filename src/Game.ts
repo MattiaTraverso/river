@@ -1,4 +1,4 @@
-import Rive, { RiveCanvas, WrappedRenderer, File, Artboard } from "@rive-app/canvas-advanced";
+import Rive, { RiveCanvas as RiveInstance, WrappedRenderer, File, Artboard } from "@rive-app/canvas-advanced";
 
 import Vector from "./Utils/Vector"; 
 import Input from "./Systems/Input";
@@ -7,12 +7,10 @@ import Scene from "./Core/Scene";
 import { Destroyable } from "./Utils/Interfaces";
 import Physics from "./Systems/Physics";
 import { b2World } from "@box2d/core";
+import RiveLoader from "./Rive/RiveLoader";
 
-//Local WASM loads faster. Remote WASM might be updated if I'm lazy.
-const USE_LOCAL_WASM: boolean = true;
-const LOCAL_WASM_URL = new URL("../export/rive.wasm", import.meta.url).toString();
-const VERSION = '2.21.6'; //LAST IS 2.23.10
-const REMOTE_WASM_URL = `https://unpkg.com/@rive-app/canvas-advanced@${VERSION}/rive.wasm`;
+
+const CANVAS_ID = 'gameCanvas';
 
 export default class Game {
 
@@ -20,10 +18,16 @@ export default class Game {
   //==== GLOBAL STATIC VARIABLES ====
   //================================
 
-  static targetRes : Vector = new Vector(400, 400);
-  static rive: RiveCanvas;
+  static resolution : Vector = new Vector(400, 400);
   
-  private static canvas : HTMLCanvasElement;
+  //The canvas that Rive uses to draw on, with a fixed resolution
+  private static gameCanvas : OffscreenCanvas;
+  //The canvas that we actually display on, with a variable resolution
+  private static finalCanvas : HTMLCanvasElement;
+
+  
+  
+  
   private static renderer : WrappedRenderer;
 
 
@@ -40,28 +44,25 @@ export default class Game {
     if (Game._hasInitiated) {
       throw console.error("Has already been initiated");
     }
+    
+    await RiveLoader.loadRive();
+
     Game._hasInitiated = true
-
-    Game.rive = await Rive({
-      locateFile: (_: string) => USE_LOCAL_WASM ? 
-        LOCAL_WASM_URL
-       : REMOTE_WASM_URL
-    });
   
-    Game.targetRes = new Vector(width, height);
+    Game.resolution = new Vector(width, height);
+    Game.gameCanvas = new OffscreenCanvas(width, height);
+    Game.renderer = RiveLoader.rive.makeRenderer(Game.gameCanvas);
 
-    Game.canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+    Game.finalCanvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement;
 
-    Input.init(Game.canvas);
-    Debug.init(Game.canvas);
+    Input.init(Game.gameCanvas, Game.finalCanvas);
+    Debug.init(Game.gameCanvas, Game.finalCanvas);
   
-    window.addEventListener('resize', Game.onResizeCanvas);
-    Game.onResizeCanvas();
+    window.addEventListener('resize', Game.onResizeWindow);
+    Game.onResizeWindow();
 
     //TODO: figure out what's the best event for this?
     window.addEventListener('onvisibilitychange', Game.destroy);
-
-    Game.renderer = Game.rive.makeRenderer(Game.canvas);
 
     requestAnimationFrame(Game.update);
   }
@@ -111,9 +112,11 @@ export default class Game {
 
     Game.render();
 
-    Game.rive.resolveAnimationFrame();
+    RiveLoader.rive.resolveAnimationFrame();
 
     Game.debugRender();
+
+    Game.finalRenderPass();
 
     Input.clear();
 
@@ -133,36 +136,33 @@ export default class Game {
   //=========== RENDER =============
   //================================
 
-  /**
-   * Note: when position entities, we use the Target Resolution you define in Game.init
-   * However, since this runs on the web, the canvas might have a different resolution.
-   * This is where resolutionScale comes in.
-   * 
-   * We pass it to the renderer so that when we render, we scale the AABB accordingly.
-   */
-
-  static get resolutionScale() : Vector {
-    return new Vector(Game.canvas.width / Game.targetRes.x, Game.canvas.height / Game.targetRes.y);
-  }
-
   private static render() {
     Game.renderer.clear();
     
     for (const scene of Game.scenes.values()) {
-      if (scene.enabled) scene.render(Game.renderer, Game.resolutionScale);
+      if (scene.enabled) scene.render(Game.renderer);
     }
   }
 
   //HACK! TODO: REMOVE!
   private static debugRender() {
     for (const scene of Game.scenes.values()) {
-      if (scene.enabled) scene.debugRender(Game.canvas, Game.resolutionScale);
+      if (scene.enabled) scene.debugRender(Game.gameCanvas);
     }
   }
 
+  private static finalRenderPass() {
+    // Draw offscreen canvas to main canvas
+    const finalContext = Game.finalCanvas.getContext('2d') as CanvasRenderingContext2D; // Access underlying 2D context
+    if (!finalContext) throw new Error("No 2D context found");
 
-  private static onResizeCanvas() : void {
-    const aspectRatio = Game.targetRes.x / Game.targetRes.y;
+    finalContext.clearRect(0, 0, Game.finalCanvas.width, Game.finalCanvas.height);
+    finalContext.drawImage(Game.gameCanvas, 0, 0, Game.finalCanvas.width, Game.finalCanvas.height);
+  }
+
+
+  private static onResizeWindow() : void {
+    const aspectRatio = Game.resolution.x / Game.resolution.y;
 
     let newWidth = window.innerWidth;
     let newHeight = window.innerHeight;
@@ -176,8 +176,8 @@ export default class Game {
     }
 
     // Update canvas dimensions
-    Game.canvas.width = newWidth;
-    Game.canvas.height = newHeight;
+    Game.finalCanvas.width = newWidth;
+    Game.finalCanvas.height = newHeight;
   }
 
 

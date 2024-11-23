@@ -1,51 +1,50 @@
 import { AABB } from "@rive-app/canvas-advanced";
 import Game from "../Game";
 import RiveEntity from "../Rive/RiveEntity";
+import RiveLoader from "../Rive/RiveLoader";
+import Vector from "../Utils/Vector";
 
 //TODO: keyboard events are kind of garbage
 export default class Input {
     static windowMouseX: number = 0;
     static windowMouseY: number = 0;
-    static canvasMouseX: number = 0;
-    static canvasMouseY: number = 0;
-    static get scaledMouseX() : number {
-        return this.canvasMouseX / Game.resolutionScale.x;
-    }
-    static get scaledMouseY() : number {
-        return this.canvasMouseY / Game.resolutionScale.y;
-    }   
+    static gameMouseX: number = 0;
+    static gameMouseY: number = 0;
+
     
     static isMouseDown: boolean = false;
     static isMouseClicked: boolean = false;
     static isMouseUp: boolean = false;
     static hasMouseMoved: boolean = false;
 
-    private static canvas: HTMLCanvasElement;
+    private static gameCanvas: OffscreenCanvas;
+    private static finalCanvas: HTMLCanvasElement;
 
     private static keysDown: Set<number> = new Set();
     private static keysPressed: Set<number> = new Set();
     private static keysReleased: Set<number> = new Set();
   
-    static init(canvas: HTMLCanvasElement): void {
-        this.canvas = canvas;
+    static init(gameCanvas: OffscreenCanvas, finalCanvas: HTMLCanvasElement): void {
+        this.gameCanvas = gameCanvas;
+        this.finalCanvas = finalCanvas;
 
         // Mouse events
-        window.addEventListener('mousemove', this.handleMouseMove);
-        window.addEventListener('mousedown', this.handleStart);
-        window.addEventListener('mouseup', this.handleEnd);
+        window.addEventListener('mousemove', this.onMouseMove);
+        window.addEventListener('mousedown', this.onMouseDown);
+        window.addEventListener('mouseup', this.onMouseUp);
         
         // Touch events
-        window.addEventListener('touchstart', this.handleStart as EventListener);
-        window.addEventListener('touchend', this.handleEnd as EventListener);
-        window.addEventListener('touchmove', this.handleTouchMove as EventListener);
+        window.addEventListener('touchstart', this.onMouseDown as EventListener);
+        window.addEventListener('touchend', this.onMouseUp as EventListener);
+        window.addEventListener('touchmove', this.onTouchMove as EventListener);
     
         // Prevent default touch behavior
         window.addEventListener('touchstart', this.preventDefault as EventListener, { passive: false });
         window.addEventListener('touchmove', this.preventDefault as EventListener, { passive: false });
 
         // Keyboard events
-        window.addEventListener('keydown', this.handleKeyDown);
-        window.addEventListener('keyup', this.handleKeyUp);
+        window.addEventListener('keydown', this.onKeyDown);
+        window.addEventListener('keyup', this.onKeyUp);
     }
 
     /**
@@ -59,36 +58,36 @@ export default class Input {
         this.keysReleased.clear();
     }
   
-    private static handleStart = (event: MouseEvent | TouchEvent): void => {
+    private static onMouseDown = (event: MouseEvent | TouchEvent): void => {
         this.isMouseDown = true;
         this.hasMouseMoved = false;
         this.updateCoordinates(event);
         event.preventDefault();
     }
   
-    private static handleEnd = (event: MouseEvent | TouchEvent): void => {
+    private static onMouseUp = (event: MouseEvent | TouchEvent): void => {
         this.isMouseDown = false;
         this.isMouseUp = true;
         this.updateCoordinates(event);
         if (!this.hasMouseMoved) {
-            this.handleClick(event);
+            this.onClick(event);
         }
         event.preventDefault();
     }
   
-    private static handleMouseMove = (event: MouseEvent): void => {
+    private static onMouseMove = (event: MouseEvent): void => {
         this.hasMouseMoved = true;
         this.updateCoordinates(event);
         event.preventDefault();
     }
   
-    private static handleTouchMove = (event: TouchEvent): void => {
+    private static onTouchMove = (event: TouchEvent): void => {
         this.hasMouseMoved = true;
         this.updateCoordinates(event);
         event.preventDefault();
     }
   
-    private static handleClick(event: MouseEvent | TouchEvent): void {
+    private static onClick(event: MouseEvent | TouchEvent): void {
         this.isMouseClicked = true;
         event.preventDefault();
         //console.log('Click or tap detected', event);
@@ -103,20 +102,20 @@ export default class Input {
             this.windowMouseX = event.touches[0].clientX;
             this.windowMouseY = event.touches[0].clientY;
         }
-        this.updateCanvasCoords();
+    
+        //need to convert from window transform to game canvas transform
+
+        let rect = this.finalCanvas.getBoundingClientRect();
+
+        this.gameMouseX = (this.windowMouseX - rect.left) * Game.resolution.x / rect.width;
+        this.gameMouseY = (this.windowMouseY - rect.top) * Game.resolution.y / rect.height;
     }
   
-    private static updateCanvasCoords(): void {
-        const rect = this.canvas.getBoundingClientRect();
-        this.canvasMouseX = this.windowMouseX - rect.left;
-        this.canvasMouseY = this.windowMouseY - rect.top;
-    }
-
     private static preventDefault(event: Event): void {
         event.preventDefault();
     }
 
-    private static handleKeyDown = (event: KeyboardEvent): void => {
+    private static onKeyDown = (event: KeyboardEvent): void => {
         const keyCode = event.keyCode;
         if (!this.keysDown.has(keyCode)) {
             this.keysPressed.add(keyCode);
@@ -125,7 +124,7 @@ export default class Input {
         this.keysDown.add(keyCode);
     }
 
-    private static handleKeyUp = (event: KeyboardEvent): void => {
+    private static onKeyUp = (event: KeyboardEvent): void => {
         const keyCode = event.keyCode;
         this.keysDown.delete(keyCode);
         this.keysPressed.delete(keyCode);
@@ -145,35 +144,29 @@ export default class Input {
     }
 
     static mouseToArtboardSpace(riveRenderer : RiveEntity) : {x : number, y : number} {
-        let scaledFrame : AABB = riveRenderer.frame;
-        scaledFrame.minX *= Game.resolutionScale.x;
-        scaledFrame.minY *= Game.resolutionScale.y;
-        scaledFrame.maxX *= Game.resolutionScale.x;
-        scaledFrame.maxY *= Game.resolutionScale.y;
-        
         /*
         In new version of Rive, it needs a fifth parameter which is the scaleFactor. The TS definition says it's optional, but it's not.
         */
-        let fwdMatrix = Game.rive.computeAlignment(
+        let fwdMatrix = RiveLoader.rive.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,
-          scaledFrame,
+          riveRenderer.frame,
           riveRenderer.artboard.bounds
         );
       
-        let inverseViewMatrix = new Game.rive.Mat2D();
+        let inverseViewMatrix = new RiveLoader.rive.Mat2D();
       
         let x = 0;
         let y = 0;
         // Invert the view matrix in order to go from cursor to artboard space.
         if (fwdMatrix.invert(inverseViewMatrix)) {
           x =
-            inverseViewMatrix.xx * this.canvasMouseX +
-            inverseViewMatrix.yx * this.canvasMouseY +
+            inverseViewMatrix.xx * this.gameMouseX +
+            inverseViewMatrix.yx * this.gameMouseY +
             inverseViewMatrix.tx;
           y =
-            inverseViewMatrix.xy * this.canvasMouseX +
-            inverseViewMatrix.yy * this.canvasMouseY +
+            inverseViewMatrix.xy * this.gameMouseX +
+            inverseViewMatrix.yy * this.gameMouseY +
             inverseViewMatrix.ty;
         }
 

@@ -115,16 +115,16 @@ export default class Scene {
   //========== RENDER ==============
   //================================
 
-  render(renderer: WrappedRenderer, resolutionScale: Vector): void {
+  render(renderer: WrappedRenderer): void {
     for (let entity of this.entities) {
       if (!entity.render || !entity.enabled) continue;
 
-      entity.render(renderer, resolutionScale);
+      entity.render(renderer);
     }
   }
 
   public shouldDebugRender : boolean = false;
-  debugRender(canvas: HTMLCanvasElement, resolutionScale: Vector): void {  
+  debugRender(canvas: OffscreenCanvas): void {  
     if (!this.shouldDebugRender) return;
 
     const ctx = canvas.getContext('2d');
@@ -148,8 +148,8 @@ export default class Scene {
 
       let pos = Physics.toPixelTransform(body.GetPosition() as b2Vec2);
 
-      let x = pos.x * resolutionScale.x;
-      let y = pos.y * resolutionScale.y;
+      let x = pos.x;
+      let y = pos.y;
 
       let angle = body.GetAngle();
 
@@ -161,8 +161,8 @@ export default class Scene {
 
       //const BOX_SIZE = 100;
 
-      const WIDTH = (entity as RiveEntity).width * resolutionScale.x;
-      const HEIGHT = (entity as RiveEntity).height * resolutionScale.y;
+      const WIDTH = (entity as RiveEntity).width;
+      const HEIGHT = (entity as RiveEntity).height;
 
       // Save context state
       ctx.save();

@@ -7,7 +7,7 @@ export default class Physics {
     //========== SETTINGS ===========
     //================================
 
-    static readonly VELOCITY_ITERATIONS = 6;
+    static readonly VELOCITY_ITERATIONS = 3;
     static readonly POSITION_ITERATIONS = 2;
     static readonly PIXELS_PER_METER = 30;
 
@@ -19,10 +19,10 @@ export default class Physics {
         const world = b2World.Create(Physics.Gravity);
 
  
-        const bottomWallShape = Physics.getBoxShape(Game.targetRes.x, 10);
-        const topWallShape = Physics.getBoxShape(Game.targetRes.x, 10);
-        const leftWallShape = Physics.getBoxShape(10, Game.targetRes.y);
-        const rightWallShape = Physics.getBoxShape(10, Game.targetRes.y);
+        const bottomWallShape = Physics.getBoxShape(Game.resolution.x, 10);
+        const topWallShape = Physics.getBoxShape(Game.resolution.x, 10);
+        const leftWallShape = Physics.getBoxShape(10, Game.resolution.y);
+        const rightWallShape = Physics.getBoxShape(10, Game.resolution.y);
 
         const bottomWallBody = world.CreateBody(Physics.staticBodyDef);
         const topWallBody = world.CreateBody(Physics.staticBodyDef);
@@ -34,16 +34,16 @@ export default class Physics {
         leftWallBody.CreateFixture({ shape: leftWallShape , density: 0, friction: 0.3 });
         rightWallBody.CreateFixture({ shape: rightWallShape , density: 0, friction: 0.3 });    
 
-        const bottomPos = Physics.toPhysicsTransform(new Vector(Game.targetRes.x / 2, Game.targetRes.y));
+        const bottomPos = Physics.toPhysicsTransform(new Vector(Game.resolution.x / 2, Game.resolution.y));
         bottomWallBody.SetTransformXY(bottomPos.x, bottomPos.y, 0);
 
-        const topPos = Physics.toPhysicsTransform(new Vector(Game.targetRes.x / 2, 0));
+        const topPos = Physics.toPhysicsTransform(new Vector(Game.resolution.x / 2, 0));
         topWallBody.SetTransformXY(topPos.x, topPos.y, 0);
 
-        const leftPos = Physics.toPhysicsTransform(new Vector(0, Game.targetRes.y / 2));
+        const leftPos = Physics.toPhysicsTransform(new Vector(0, Game.resolution.y / 2));
         leftWallBody.SetTransformXY(leftPos.x, leftPos.y, 0);
 
-        const rightPos = Physics.toPhysicsTransform(new Vector(Game.targetRes.x, Game.targetRes.y / 2));
+        const rightPos = Physics.toPhysicsTransform(new Vector(Game.resolution.x, Game.resolution.y / 2));
         rightWallBody.SetTransformXY(rightPos.x, rightPos.y, 0);
 
         return world;
