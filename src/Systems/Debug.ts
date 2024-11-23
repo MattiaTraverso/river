@@ -35,6 +35,10 @@ export class Debug {
           debugBoxContainer.style.visibility = debugBoxContainer.style.visibility === 'hidden' ? 'visible' : 'hidden';
         }
       }
+
+      if (Input.isKeyDown(KeyCode.L)) {
+        Performance.downloadCSVOfFPSandMouse();
+      }
     } 
 
     static updateDebugInfo(): void {
@@ -103,24 +107,55 @@ export default Debug;
 class Performance {
     private static FPSArray: number[] = [];
 
+    //we also need to keep track of Input.isMouseClicked, Input.isMouseUp, Input.hasMouseMoved to see if there's any correlation
+    private static mouseClickedArray: boolean[] = [];
+    private static mouseUpArray: boolean[] = [];
+    private static hasMouseMovedArray: boolean[] = [];
+
     static update(deltaTime: number) {
         // Calculate delta time and FPS
         let fps = 1 / deltaTime;
 
         // Update FPS tracking
         Performance.FPSArray.push(fps);
-        if (Performance.FPSArray.length > 100) {
-            Performance.FPSArray = Performance.FPSArray.slice(1);
+
+        Performance.mouseClickedArray.push(Input.isMouseClicked);
+        Performance.mouseUpArray.push(Input.isMouseUp);
+        Performance.hasMouseMovedArray.push(Input.hasMouseMoved);
+
+        if (Performance.FPSArray.length > 10000) {
+            Performance.FPSArray = Performance.FPSArray.slice(-100);
+            Performance.mouseClickedArray = Performance.mouseClickedArray.slice(-100);
+            Performance.mouseUpArray = Performance.mouseUpArray.slice(-100);
+            Performance.hasMouseMovedArray = Performance.hasMouseMovedArray.slice(-100);
         }
     }
 
     static get averageFPS(): number {
+        const last100 = Performance.FPSArray.slice(-100);
         let sum = 0;
-        for (let n of Performance.FPSArray) sum += n;
-        return Math.trunc(sum / Performance.FPSArray.length);
+        for (let n of last100) sum += n;
+        return Math.trunc(sum / last100.length);
     }
 
     static get FPS(): number {
         return Math.trunc(Performance.FPSArray[Performance.FPSArray.length - 1]);
+    }
+
+    static downloadCSVOfFPSandMouse(): void {
+        // Create CSV header row
+        let csv = "FPS,MouseClicked,MouseUp,MouseMoved\n";
+        
+        // Add each row of correlated data
+        for (let i = 0; i < Performance.FPSArray.length; i++) {
+            csv += `${Performance.FPSArray[i]},${Performance.mouseClickedArray[i]},${Performance.mouseUpArray[i]},${Performance.hasMouseMovedArray[i]}\n`;
+        }
+
+        let blob = new Blob([csv], { type: 'text/csv' });
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'fps_mouse_values.csv';
+        a.click();
     }
 }
