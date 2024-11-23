@@ -2,7 +2,7 @@ import { AABB } from "@rive-app/canvas-advanced";
 import Game from "../Game";
 import RiveEntity from "../Rive/RiveEntity";
 
-//TODO: keyboard events are not well thought out.
+//TODO: keyboard events are kind of garbage
 export default class Input {
     static windowMouseX: number = 0;
     static windowMouseY: number = 0;
@@ -47,12 +47,23 @@ export default class Input {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
     }
+
+    /**
+     * At the end of the frame, clear the input state.
+     */
+    static clear(): void {
+        this.isMouseClicked = false;
+        this.isMouseUp = false;
+        this.hasMouseMoved = false;
+        this.keysPressed.clear();
+        this.keysReleased.clear();
+    }
   
     private static handleStart = (event: MouseEvent | TouchEvent): void => {
         this.isMouseDown = true;
-        this.isMouseClicked = true;
         this.hasMouseMoved = false;
         this.updateCoordinates(event);
+        event.preventDefault();
     }
   
     private static handleEnd = (event: MouseEvent | TouchEvent): void => {
@@ -62,19 +73,24 @@ export default class Input {
         if (!this.hasMouseMoved) {
             this.handleClick(event);
         }
+        event.preventDefault();
     }
   
     private static handleMouseMove = (event: MouseEvent): void => {
         this.hasMouseMoved = true;
         this.updateCoordinates(event);
+        event.preventDefault();
     }
   
     private static handleTouchMove = (event: TouchEvent): void => {
         this.hasMouseMoved = true;
         this.updateCoordinates(event);
+        event.preventDefault();
     }
   
     private static handleClick(event: MouseEvent | TouchEvent): void {
+        this.isMouseClicked = true;
+        event.preventDefault();
         //console.log('Click or tap detected', event);
         // Your click/tap logic here
     }
@@ -95,16 +111,7 @@ export default class Input {
         this.canvasMouseX = this.windowMouseX - rect.left;
         this.canvasMouseY = this.windowMouseY - rect.top;
     }
-  
-    static clear(): void {
-        this.isMouseClicked = false;
-        this.isMouseUp = false;
-        this.hasMouseMoved = false;
-        this.keysDown.clear();
-        this.keysPressed.clear();
-        this.keysReleased.clear();
-    }
-  
+
     private static preventDefault(event: Event): void {
         event.preventDefault();
     }
@@ -144,6 +151,9 @@ export default class Input {
         scaledFrame.maxX *= Game.resolutionScale.x;
         scaledFrame.maxY *= Game.resolutionScale.y;
         
+        /*
+        In new version of Rive, it needs a fifth parameter which is the scaleFactor. The TS definition says it's optional, but it's not.
+        */
         let fwdMatrix = Game.rive.computeAlignment(
           riveRenderer.fit,
           riveRenderer.alignment,
