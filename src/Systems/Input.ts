@@ -1,4 +1,4 @@
-import { AABB } from "@rive-app/canvas-advanced";
+import { AABB } from "@rive-app/webgl-advanced";
 import Game from "../Game";
 import RiveEntity from "../Rive/RiveEntity";
 import RiveLoader from "../Rive/RiveLoader";

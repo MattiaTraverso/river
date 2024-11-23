@@ -26,7 +26,7 @@
  * - The coordinate system has [0,0] at top-left with Y positive going DOWN
  * - The artboard's origin should be kept at default in Rive
  */
-import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/canvas-advanced";
+import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/webgl-advanced";
 
 import Game from "../Game";
 import Vector from "../Utils/Vector";
@@ -81,7 +81,9 @@ export class RiveEntity extends Entity {
 
   override fixedUpdate(fixedDeltaTime: number): void {
     if (this.physicsBody) {
-      this.artboard.transformComponent("Root").rotation = this.physicsBody.GetAngle();  
+      if (this.artboard.transformComponent("Root")) {
+        this.artboard.transformComponent("Root").rotation = this.physicsBody.GetAngle();  
+      }
          
       let targetPos = Physics.toPixelTransform(this.physicsBody.GetPosition() as b2Vec2);
       this.position.x = targetPos.x - this.width / this.scale.x / 2;

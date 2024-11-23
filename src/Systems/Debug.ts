@@ -1,6 +1,6 @@
-import { StateMachine } from "@rive-app/canvas-advanced";
-import { SMIInput } from "@rive-app/canvas-advanced";
-import { Artboard, File } from "@rive-app/canvas-advanced";
+import { StateMachine } from "@rive-app/webgl-advanced";
+import { SMIInput } from "@rive-app/webgl-advanced";
+import { Artboard, File } from "@rive-app/webgl-advanced";
 import Game from "../Game";
 import Input, { KeyCode } from "./Input";
 import Vector from "../Utils/Vector";

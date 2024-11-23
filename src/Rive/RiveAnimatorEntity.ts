@@ -1,4 +1,4 @@
-import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/canvas-advanced";
+import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/webgl-advanced";
 import RiveEntity from "./RiveEntity";
 import RiveAnimation from "./Parts/RiveAnimation";
 import Game from "../Game";

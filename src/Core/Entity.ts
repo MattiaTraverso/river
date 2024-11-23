@@ -41,7 +41,7 @@
  * player.enabled = false; // Temporarily disable updates/rendering
  * ```
  */
-import { WrappedRenderer } from "@rive-app/canvas-advanced";
+import { WrappedRenderer } from "@rive-app/webgl-advanced";
 import { Destroyable } from "../Utils/Interfaces";
 import { b2Body, b2BodyDef, b2Shape } from "@box2d/core";
 import Vector from "../Utils/Vector";

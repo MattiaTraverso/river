@@ -1,4 +1,4 @@
-import { Artboard, StateMachineInstance, SMIInput, OpenUrlEvent, RiveEvent, StateMachine } from "@rive-app/canvas-advanced";
+import { Artboard, StateMachineInstance, SMIInput, OpenUrlEvent, RiveEvent, StateMachine } from "@rive-app/webgl-advanced";
 
 import RiveSMInput from "./Parts/RiveSMInput";
 import RiveEntity from "./RiveEntity";

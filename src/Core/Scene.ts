@@ -33,7 +33,7 @@
  * - Rendering objects in order
  * - Cleaning up objects when destroyed
  */
-import { WrappedRenderer } from "@rive-app/canvas-advanced";
+import { WrappedRenderer } from "@rive-app/webgl-advanced";
 import Entity from "./Entity";
 import { b2Vec2, b2StepConfig, b2World, b2BodyType } from "@box2d/core";
 import Physics from "../Systems/Physics";

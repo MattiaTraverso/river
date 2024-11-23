@@ -1,4 +1,4 @@
-import { SMIInput } from "@rive-app/canvas-advanced";
+import { SMIInput } from "@rive-app/webgl-advanced";
 
 /**
  * Wrapper class for Rive's SMIInput.

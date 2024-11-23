@@ -1,4 +1,4 @@
-import { Artboard, File } from "@rive-app/canvas-advanced";
+import { Artboard, File } from "@rive-app/webgl-advanced";
 
 import Game from "../Game";
 import RiveStateMachineEntity from "../Rive/RiveStateMachineEntity";
@@ -24,8 +24,26 @@ import Physics from "../Systems/Physics";
 async function main() {
     //Uncomment the sample you want.
 
+    await physicsPlusRive();
+
+    //physicsTest();
+    //doubleSceneTest();
+    //cityOrCountry();
+    //pokeyPokey();
+    //turtleScene();
+    //bigRivFile();
+    //scalingScene();
+    //doubleSceneTest();
+    //animationBlendingTestScene();
+    //eventsTestScene();
+    //fashionTestScene();
+} 
+
+
+async function physicsPlusRive() {
     await Game.initiate(1920, 1080);
 
+    console.log("here?");
     let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
 
     const scene = new Scene("FashionTestScene");
@@ -105,19 +123,7 @@ async function main() {
     scene.add(scriptable);
 
 
-
-    //physicsTest();
-    //doubleSceneTest();
-    //cityOrCountry();
-    //pokeyPokey();
-    //turtleScene();
-    //bigRivFile();
-    //scalingScene();
-    //doubleSceneTest();
-    //animationBlendingTestScene();
-    //eventsTestScene();
-    //fashionTestScene();
-} 
+}
 
 async function physicsTest() {
 

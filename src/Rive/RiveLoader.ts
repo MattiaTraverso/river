@@ -1,22 +1,26 @@
-import Rive, { File } from "@rive-app/canvas-advanced";
+import Rive, { File } from "@rive-app/webgl-advanced";
 import Game from "../Game";
-import { RiveCanvas as RiveInstance } from "@rive-app/canvas-advanced";
-import { Artboard, StateMachine, StateMachineInstance, SMIInput } from "@rive-app/canvas-advanced";
+import RiveWebGL, { RiveCanvas } from "@rive-app/webgl-advanced";
+import { Artboard, StateMachine, StateMachineInstance, SMIInput } from "@rive-app/webgl-advanced";
+import riveWasmUrl from '../../export/rive.wasm?url'
+
+const RIVE_VERSION = '2.21.6'; //LAST IS 2.23.10
 
 //Local WASM loads faster. Remote WASM might be updated if I'm lazy.
 const USE_LOCAL_WASM: boolean = true;
-const LOCAL_WASM_URL = new URL("../../export/rive.wasm", import.meta.url).toString();
-const VERSION = '2.21.6'; //LAST IS 2.23.10
-const REMOTE_WASM_URL = `https://unpkg.com/@rive-app/canvas-advanced@${VERSION}/rive.wasm`;
+const LOCAL_WASM_PATH = riveWasmUrl;
+const REMOTE_WASM_URL = `https://unpkg.com/@rive-app/webgl-advanced@${RIVE_VERSION}/rive.wasm`;
 
 
 export default class RiveLoader {
-  static rive: RiveInstance;
+  static rive: RiveCanvas;
 
   static async loadRive(): Promise<void> {
+    console.log("Loading Rive from ", USE_LOCAL_WASM ?  LOCAL_WASM_PATH : REMOTE_WASM_URL);
+
     RiveLoader.rive = await Rive({
       locateFile: (_: string) => USE_LOCAL_WASM ? 
-        LOCAL_WASM_URL
+        new URL(LOCAL_WASM_PATH, import.meta.url).href
        : REMOTE_WASM_URL
     })
   };

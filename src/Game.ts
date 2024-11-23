@@ -1,4 +1,4 @@
-import { WrappedRenderer } from "@rive-app/canvas-advanced";
+import { WrappedRenderer } from "@rive-app/webgl-advanced";
 
 import Vector from "./Utils/Vector"; 
 import Input from "./Systems/Input";
@@ -50,14 +50,16 @@ export default class Game {
     Game._hasInitiated = true
   
     Game.resolution = new Vector(width, height);
+
     Game.gameCanvas = new OffscreenCanvas(width, height);
-    Game.renderer = RiveLoader.rive.makeRenderer(Game.gameCanvas);
+
+    Game.renderer = RiveLoader.rive.makeRenderer(Game.gameCanvas, true);
 
     Game.finalCanvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement;
 
     Input.init(Game.gameCanvas, Game.finalCanvas);
     Debug.init(Game.gameCanvas, Game.finalCanvas);
-  
+    console.log("After we init debug");
     window.addEventListener('resize', Game.onResizeWindow);
     Game.onResizeWindow();
 
@@ -142,6 +144,8 @@ export default class Game {
     for (const scene of Game.scenes.values()) {
       if (scene.enabled) scene.render(Game.renderer);
     }
+
+    Game.renderer.flush();
   }
 
   //HACK! TODO: REMOVE!
