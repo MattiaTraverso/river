@@ -1,4 +1,4 @@
-import Rive, { RiveCanvas as RiveInstance, WrappedRenderer, File, Artboard } from "@rive-app/canvas-advanced";
+import { WrappedRenderer } from "@rive-app/canvas-advanced";
 
 import Vector from "./Utils/Vector"; 
 import Input from "./Systems/Input";
