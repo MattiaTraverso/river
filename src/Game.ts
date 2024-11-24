@@ -4,13 +4,11 @@ import Vector from "./Utils/Vector";
 import Input from "./Systems/Input";
 import Debug from "./Systems/Debug";
 import Scene from "./Core/Scene";
-import { Destroyable } from "./Utils/Interfaces";
-import Physics from "./Systems/Physics";
-import { b2World } from "@box2d/core";
 import RiveLoader from "./Rive/RiveLoader";
 
 
 const CANVAS_ID = 'gameCanvas';
+const IS_WEBGL = true;
 
 export default class Game {
 
@@ -22,11 +20,11 @@ export default class Game {
   
   //The canvas that Rive uses to draw on, with a fixed resolution
   private static gameCanvas : OffscreenCanvas;
+  //The canvas that we use to render debug information
+  private static debugCanvas : OffscreenCanvas;
   //The canvas that we actually display on, with a variable resolution
   private static finalCanvas : HTMLCanvasElement;
 
-  
-  
   
   private static renderer : WrappedRenderer;
 
@@ -52,8 +50,9 @@ export default class Game {
     Game.resolution = new Vector(width, height);
 
     Game.gameCanvas = new OffscreenCanvas(width, height);
-
     Game.renderer = RiveLoader.rive.makeRenderer(Game.gameCanvas, true);
+
+    Game.debugCanvas = new OffscreenCanvas(width, height);
 
     Game.finalCanvas = document.getElementById(CANVAS_ID) as HTMLCanvasElement;
 
@@ -74,7 +73,7 @@ export default class Game {
   //================================
 
   private static readonly MAX_DELTA_TIME = 1/10;
-  private static readonly FIXED_TIME_STEP = 1/30; // 60 Hz
+  private static readonly FIXED_TIME_STEP = 1/60; // 60 Hz
   private static readonly MAX_STEPS = 5;
 
   static timeScale = 1.0;
@@ -113,11 +112,15 @@ export default class Game {
     }
 
     Game.render();
+    Game.debugRender();
+    /*
+    Supposedly resolveAnimation takes care of this, but on WebGL I have to call it? Not sure why.
+    */
+    if (IS_WEBGL) Game.renderer.flush();
 
     RiveLoader.rive.resolveAnimationFrame();
 
-    Game.debugRender();
-
+    
     Game.finalRenderPass();
 
     Input.clear();
@@ -148,8 +151,12 @@ export default class Game {
 
   //HACK! TODO: REMOVE!
   private static debugRender() {
+    const debugContext = Game.debugCanvas.getContext('2d');
+    if (!debugContext) throw new Error("No 2D context found");
+    debugContext.clearRect(0, 0, Game.debugCanvas.width, Game.debugCanvas.height);
+
     for (const scene of Game.scenes.values()) {
-      if (scene.enabled) scene.debugRender(Game.gameCanvas);
+      if (scene.enabled) scene.debugRender(Game.debugCanvas);
     }
   }
 
@@ -160,6 +167,7 @@ export default class Game {
 
     finalContext.clearRect(0, 0, Game.finalCanvas.width, Game.finalCanvas.height);
     finalContext.drawImage(Game.gameCanvas, 0, 0, Game.finalCanvas.width, Game.finalCanvas.height);
+    finalContext.drawImage(Game.debugCanvas, 0, 0, Game.finalCanvas.width, Game.finalCanvas.height);
   }
 
 

@@ -124,10 +124,10 @@ export default class Scene {
   }
 
   public shouldDebugRender : boolean = false;
-  debugRender(canvas: OffscreenCanvas): void {  
+  debugRender(debugCanvas: OffscreenCanvas): void {  
     if (!this.shouldDebugRender) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = debugCanvas.getContext('2d');
     if (!ctx) return;
 
     //draw text in the top right saying number of bodies:   
@@ -135,12 +135,12 @@ export default class Scene {
     ctx.font = '12px Arial';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'top';
-    ctx.fillText(`Bodies: ${this.world.GetBodyCount()}`, canvas.width - 10, 10);
+    ctx.fillText(`Bodies: ${this.world.GetBodyCount()}`, debugCanvas.width - 10, 10);
 
     let id : number = 0;
-    //for (let body = this.world.GetBodyList(); body; body = body.GetNext()) { 
-    for (let entity of this.entities) { 
-      let body = entity.physicsBody;
+    for (let body = this.world.GetBodyList(); body; body = body.GetNext()) { 
+    //for (let entity of this.entities) { 
+      //let body = entity.physicsBody;
 
       if (!body) continue;
 
@@ -157,12 +157,13 @@ export default class Scene {
       const r = Math.sin(id * 0.3) * 127 + 128;
       const g = Math.sin(id * 0.3 + 2) * 127 + 128;
       const b = Math.sin(id * 0.3 + 4) * 127 + 128;
-      ctx.fillStyle = `rgb(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)})`;
+      ctx.fillStyle = `rgba(${Math.floor(r)},${Math.floor(g)},${Math.floor(b)},0.5)`; // Added 0.5 alpha
 
-      //const BOX_SIZE = 100;
+      const WIDTH = 400;
+      const HEIGHT = 300;
 
-      const WIDTH = (entity as RiveEntity).width;
-      const HEIGHT = (entity as RiveEntity).height;
+      //const WIDTH = (entity as RiveEntity).width;
+      //const HEIGHT = (entity as RiveEntity).height;
 
       // Save context state
       ctx.save();
@@ -173,7 +174,6 @@ export default class Scene {
       
       // Draw rotated box
       ctx.fillRect(-WIDTH / 2, -HEIGHT / 2, WIDTH, HEIGHT);
-      
       // Restore context state
       ctx.restore();
 

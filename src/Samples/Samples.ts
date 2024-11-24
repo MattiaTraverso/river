@@ -26,7 +26,7 @@ async function main() {
 
     await physicsPlusRive();
 
-    //physicsTest();
+    //await physicsTest();
     //doubleSceneTest();
     //cityOrCountry();
     //pokeyPokey();
@@ -44,37 +44,45 @@ async function physicsPlusRive() {
     await Game.initiate(1920, 1080);
 
     console.log("here?");
-    let file: File = await RiveLoader.loadFile(new URL("../../rivs/fashion_app.riv", import.meta.url).href);
+    let file: File = await RiveLoader.loadFile(new URL("../../rivs/angry_turtle.riv", import.meta.url).href);
 
     const scene = new Scene("FashionTestScene");
 
     let bodies : b2Body[] = [];
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 8; i++) {
         let artboard: Artboard = file.artboardByIndex(0);
         let riveEntity: RiveStateMachineEntity = new RiveStateMachineEntity("Fashion", artboard, artboard.stateMachineByIndex(0));
         
-        let x = Math.random() * (Game.resolution.x - 100) + 50;
+        let x = Game.resolution.x / (i + 2);
         let y = Math.random() * (Game.resolution.y - 100) + 50;
         
-        riveEntity.setPosition(new Vector(x, y));
+        
+        riveEntity.scale = new Vector(.25, .25);
+
+        console.log(riveEntity.width, riveEntity.height);
 
         let addToPhysics : boolean = true;
         scene.add(riveEntity, addToPhysics); //TODO: Check why this works even if false lol
 
-        riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, .2);
+        riveEntity.addCollider(Physics.getBoxShape(riveEntity.width, riveEntity.height), 1, 0.3, 1);
         riveEntity.position = new Vector(Game.resolution.x / 2, Game.resolution.y / 2);
-        riveEntity.physicsBody?.SetTransformXY(Physics.toPhysicsTransform(riveEntity.position).x, Physics.toPhysicsTransform(riveEntity.position).y, 0);
-        riveEntity.physicsBody?.ApplyForceToCenter(new Vector(99000, 10000), true);
-        riveEntity.physicsBody?.ApplyAngularImpulse(500 * Math.random(), true);
+
+        if (riveEntity.physicsBody == null) throw new Error("Physics body is null");
+
+        riveEntity.physicsBody.SetTransformXY(Physics.toPhysicsTransform(riveEntity.position).x, Physics.toPhysicsTransform(riveEntity.position).y, 0);
+        riveEntity.physicsBody.ApplyForceToCenter(new Vector(500, 500), true);
+        riveEntity.physicsBody.ApplyAngularImpulse(20 * Math.random(), true);
         if (riveEntity.physicsBody) bodies.push(riveEntity.physicsBody);
+
+        riveEntity.setPosition(new Vector(x, y));
     }
 
 
     Game.addScene(scene); const scriptable = new ScriptableEntity("MouseControl");
 
     scriptable.setFixedUpdateFunction((fixedDeltaTime: number) => {
-        if (Input.isMouseClicked) {
+        if (Input.isMouseClicked && false) {
             for (let i = 0; i < bodies.length; i++) {
                 let firstBody = bodies[i];
                 if (!firstBody) continue;
@@ -127,7 +135,7 @@ async function physicsPlusRive() {
 
 async function physicsTest() {
 
-    await Game.initiate(400, 400);
+    await Game.initiate(800, 800);
 
     const scene = new Scene("Box2DTest");
     Game.addScene(scene);
@@ -143,7 +151,7 @@ async function physicsTest() {
 
 
     // Create 30 random boxes
-    for(let i = 0; i < 30; i++) {
+    for(let i = 0; i < 100; i++) {
         const body = scene.world.CreateBody(Physics.dynamicBodyDef);
         
         // Random position within game resolution

@@ -37,18 +37,21 @@ def replace_in_file(file_path, renderer_type, version):
         old_pkg2 = '@rive-app/webgl2-advanced'
         new_pkg = '@rive-app/webgl-advanced'
         wasm_pkg = 'webgl-advanced'
+        is_webgl = True
 
     elif renderer_type == '-webgl2':
         old_pkg = '@rive-app/canvas-advanced'
         old_pkg2 = '@rive-app/webgl-advanced'
         new_pkg = '@rive-app/webgl2-advanced'
         wasm_pkg = 'webgl2-advanced'
+        is_webgl = True
     else: # -canvas
         # Handle both webgl and webgl2 cases
         old_pkg = '@rive-app/webgl-advanced'
         old_pkg2 = '@rive-app/webgl2-advanced'
         new_pkg = '@rive-app/canvas-advanced'
         wasm_pkg = 'canvas-advanced'
+        is_webgl = False
 
     print(f"Processing {file_path}")
     print(f"Looking to replace {old_pkg} and {old_pkg2} with {new_pkg}")
@@ -63,6 +66,14 @@ def replace_in_file(file_path, renderer_type, version):
         if re.search(version_pattern, new_content):
             new_content = re.sub(version_pattern, rf'\1"{version}"', new_content)
             print(f"Updated package version to {version} in package.json")
+    
+    # Update IS_WEBGL in Game.ts
+    if file_path.name == 'Game.ts':
+        new_content = re.sub(
+            r'const IS_WEBGL = (?:true|false);',
+            f'const IS_WEBGL = {str(is_webgl).lower()};',
+            new_content
+        )
     
     #Make sure the WASM is being downloaded remotely:
     new_content = new_content.replace(

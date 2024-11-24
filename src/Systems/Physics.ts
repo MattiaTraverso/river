@@ -7,8 +7,8 @@ export default class Physics {
     //========== SETTINGS ===========
     //================================
 
-    static readonly VELOCITY_ITERATIONS = 3;
-    static readonly POSITION_ITERATIONS = 2;
+    static readonly VELOCITY_ITERATIONS = 5;
+    static readonly POSITION_ITERATIONS = 5;
     static readonly PIXELS_PER_METER = 30;
 
     static readonly Gravity = new Vector(0, 9.81);
