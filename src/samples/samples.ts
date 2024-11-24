@@ -1,19 +1,19 @@
 import { Artboard, File } from "@rive-app/webgl-advanced";
 
-import Game from "../Game";
-import RiveStateMachineEntity from "../Rive/RiveStateMachineEntity";
-import RiveAnimatorEntity from "../Rive/RiveAnimatorEntity";
-import RiveEntity from "../Rive/RiveEntity";
-import Debug from "../Systems/Debug";
-import Input, {KeyCode } from "../Systems/Input";
-import Scene from "../Core/Scene";
-import ScriptableEntity from "../Core/ScriptableEntity";
-import RiveLoader from "../Rive/RiveLoader";
-import Tween, { LoopType } from "../Core/Tweens/Tween";
-import Vector from "../Utils/Vector";
-import { easing } from "../Core/Tweens/Easing";
+import Game from "../game";
+import RiveStateMachineEntity from "../rive/riveStateMachineEntity";
+import RiveAnimatorEntity from "../rive/riveAnimatorEntity";
+import RiveEntity from "../rive/riveEntity";
+import Debug from "../systems/debug";
+import Input, {KeyCode } from "../systems/input";
+import Scene from "../core/scene";
+import ScriptableEntity from "../core/scriptableEntity";
+import RiveLoader from "../rive/riveLoader";
+import Tween, { LoopType } from "../core/tweens/tween";
+import Vector from "../utils/vector";
+import { easing } from "../core/tweens/easing";
 import { b2Body, b2BodyType, b2FixtureDef } from "@box2d/core";
-import Physics from "../Systems/Physics";
+import Physics from "../systems/physics";
 //================================ 
 // !!HORRIBLE CODE!! !!MOSTLY FOR INTERNAL TESTING!!
 // Various Samples showing different parts of the engine at work.

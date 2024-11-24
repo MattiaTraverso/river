@@ -37,7 +37,7 @@
  * Neat Features:
  * - Debug visualization support via Mermaid diagrams (call DebugRenderStateTransitionsAsMermaidGraph() to get a string)
  */
-import { ConditionFunction, UpdateFunction } from "../Utils/Interfaces";
+import { ConditionFunction, UpdateFunction } from "../utils/interfaces";
 
 interface StateDefinition<TState extends string> {
     update: UpdateFunction;

@@ -1,9 +1,9 @@
 import { StateMachine } from "@rive-app/webgl-advanced";
 import { SMIInput } from "@rive-app/webgl-advanced";
 import { Artboard, File } from "@rive-app/webgl-advanced";
-import Game from "../Game";
-import Input, { KeyCode } from "./Input";
-import Vector from "../Utils/Vector";
+import Game from "../game";
+import Input, { KeyCode } from "./input";
+import Vector from "../utils/vector";
 /**
  * Needs refactoring.
  */

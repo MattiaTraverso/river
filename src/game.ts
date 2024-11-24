@@ -1,10 +1,10 @@
 import { WrappedRenderer } from "@rive-app/webgl-advanced";
 
-import Vector from "./Utils/Vector"; 
-import Input from "./Systems/Input";
-import Debug from "./Systems/Debug";
-import Scene from "./Core/Scene";
-import RiveLoader from "./Rive/RiveLoader";
+import Vector from "./utils/vector"; 
+import Input from "./systems/input";
+import Debug from "./systems/debug";
+import Scene from "./core/scene";
+import RiveLoader from "./rive/riveLoader";
 
 
 const CANVAS_ID = 'gameCanvas';

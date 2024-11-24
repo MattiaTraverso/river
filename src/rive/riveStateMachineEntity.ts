@@ -1,10 +1,10 @@
 import { Artboard, StateMachineInstance, SMIInput, OpenUrlEvent, RiveEvent, StateMachine } from "@rive-app/webgl-advanced";
 
-import RiveSMInput from "./Parts/RiveSMInput";
-import RiveEntity from "./RiveEntity";
-import Game from "../Game";
-import Input from "../Systems/Input";
-import RiveLoader from "./RiveLoader";
+import RiveSMInput from "./Parts/riveSMInput";
+import RiveEntity from "./riveEntity";
+import Game from "../game";
+import Input from "../systems/input";
+import RiveLoader from "./riveLoader";
 
 type RiveEventCallback = (event: RiveEvent) => void;
 type OpenUrlEventCallback = (event: OpenUrlEvent) => void;

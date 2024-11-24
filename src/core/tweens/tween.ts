@@ -1,7 +1,7 @@
-import Entity from "../Entity";
-import Vector from "../../Utils/Vector";
-import { TEasing, easing } from "./Easing";
-import { InterpolationFunction, Interpolation } from "./Interpolation";
+import Entity from "../entity";
+import Vector from "../../utils/vector";
+import { TEasing, easing } from "./easing";
+import { InterpolationFunction, Interpolation } from "./interpolation";
 
 export enum LoopType {
     Restart,

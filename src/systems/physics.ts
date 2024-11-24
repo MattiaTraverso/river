@@ -1,5 +1,5 @@
-import Game from "../Game";
-import Vector from "../Utils/Vector";
+import Game from "../game";
+import Vector from "../utils/vector";
 import { b2BodyDef, b2BodyType, b2PolygonShape, b2World, b2StepConfig, b2Vec2, b2FixtureDef, b2Body } from "@box2d/core";
 
 export default class Physics {

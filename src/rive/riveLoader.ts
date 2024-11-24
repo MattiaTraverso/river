@@ -1,5 +1,5 @@
 import Rive, { File } from "@rive-app/webgl-advanced";
-import Game from "../Game";
+import Game from "../game";
 import RiveWebGL, { RiveCanvas } from "@rive-app/webgl-advanced";
 import { Artboard, StateMachine, StateMachineInstance, SMIInput } from "@rive-app/webgl-advanced";
 import riveWasmUrl from '../../export/rive.wasm?url'

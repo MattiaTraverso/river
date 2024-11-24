@@ -42,10 +42,10 @@
  * ```
  */
 import { WrappedRenderer } from "@rive-app/webgl-advanced";
-import { Destroyable } from "../Utils/Interfaces";
+import { Destroyable } from "../utils/interfaces";
 import { b2Body, b2BodyDef, b2Shape } from "@box2d/core";
-import Vector from "../Utils/Vector";
-import { PhysicsState } from "../Systems/Physics";
+import Vector from "../utils/vector";
+import { PhysicsState } from "../systems/physics";
 
 export default class Entity implements Destroyable {
     enabled: boolean = true;

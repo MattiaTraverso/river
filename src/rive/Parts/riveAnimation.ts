@@ -1,5 +1,5 @@
 import { LinearAnimationInstance } from "@rive-app/webgl-advanced";
-import { Destroyable } from "../../Utils/Interfaces";
+import { Destroyable } from "../../utils/interfaces";
 
 export class RiveAnimation implements Destroyable {
   private instance: LinearAnimationInstance;

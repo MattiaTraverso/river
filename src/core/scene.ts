@@ -34,13 +34,13 @@
  * - Cleaning up objects when destroyed
  */
 import { WrappedRenderer } from "@rive-app/webgl-advanced";
-import Entity from "./Entity";
+import Entity from "./entity";
 import { b2Vec2, b2StepConfig, b2World, b2BodyType } from "@box2d/core";
-import Physics from "../Systems/Physics";
-import Game from "../Game";
-import Vector from "../Utils/Vector";
-import Input from "../Systems/Input";
-import RiveEntity from "../Rive/RiveEntity";
+import Physics from "../systems/physics";
+import Game from "../game";
+import Vector from "../utils/vector";
+import Input from "../systems/input";
+import RiveEntity from "../rive/riveEntity";
 
 export default class Scene {
   readonly name: string;

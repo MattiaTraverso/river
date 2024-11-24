@@ -1,5 +1,5 @@
-import Game from "../Game";
-import Vector from "../Utils/Vector";
+import Game from "../game";
+import Vector from "../utils/vector";
 
 export enum PositionMode {
     Coordinates,

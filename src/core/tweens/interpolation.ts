@@ -1,4 +1,4 @@
-import Vector from "../../Utils/Vector";
+import Vector from "../../utils/vector";
 
 export type InterpolationFunction<T> = (start: T, end: T, t: number) => T;
 

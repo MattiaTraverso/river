@@ -28,13 +28,13 @@
  */
 import { Artboard, Fit, Alignment, AABB, WrappedRenderer } from "@rive-app/webgl-advanced";
 
-import Game from "../Game";
-import Vector from "../Utils/Vector";
-import Entity from "../Core/Entity";
-import Physics from "../Systems/Physics";
+import Game from "../game";
+import Vector from "../utils/vector";
+import Entity from "../core/entity";
+import Physics from "../systems/physics";
 import { b2Vec2 } from "@box2d/core";
-import Input from "../Systems/Input";
-import RiveLoader from "./RiveLoader";
+import Input from "../systems/input";
+import RiveLoader from "./riveLoader";
 export class RiveEntity extends Entity {
     //====
   // Remember: Y positive is DOWN, Y negative is UP

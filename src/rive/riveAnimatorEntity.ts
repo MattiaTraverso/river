@@ -1,8 +1,8 @@
 import { Artboard, LinearAnimation, LinearAnimationInstance } from "@rive-app/webgl-advanced";
-import RiveEntity from "./RiveEntity";
-import RiveAnimation from "./Parts/RiveAnimation";
-import Game from "../Game";
-import RiveLoader from "./RiveLoader";
+import RiveEntity from "./riveEntity";
+import RiveAnimation from "./Parts/riveAnimation";
+import Game from "../game";
+import RiveLoader from "./riveLoader";
 
 
 export class RiveAnimatorEntity extends RiveEntity {

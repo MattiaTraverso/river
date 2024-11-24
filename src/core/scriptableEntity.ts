@@ -14,8 +14,8 @@
 * ```
 **/
 
-import Entity from "./Entity";
-import { UpdateFunction } from "../Utils/Interfaces";
+import Entity from "./entity";
+import { UpdateFunction } from "../utils/interfaces";
 
 export default class ScriptableEntity extends Entity {
 

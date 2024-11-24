@@ -1,8 +1,8 @@
 import { AABB } from "@rive-app/webgl-advanced";
-import Game from "../Game";
-import RiveEntity from "../Rive/RiveEntity";
-import RiveLoader from "../Rive/RiveLoader";
-import Vector from "../Utils/Vector";
+import Game from "../game";
+import RiveEntity from "../rive/riveEntity";
+import RiveLoader from "../rive/riveLoader";
+import Vector from "../utils/vector";
 
 //TODO: keyboard events are kind of garbage
 export default class Input {
