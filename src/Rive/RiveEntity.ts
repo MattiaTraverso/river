@@ -49,14 +49,11 @@ export class RiveEntity extends Entity {
     let aabb =  this.artboard.bounds; 
 
     aabb.minX += this.position.x;
-    aabb.maxX += this.position.x;
     aabb.minY += this.position.y;
-    aabb.maxY += this.position.y;
 
-    aabb.minX *= this.scale.x;
-    aabb.maxX *= this.scale.x;
-    aabb.minY *= this.scale.y;
-    aabb.maxY *= this.scale.y;
+    aabb.maxX = aabb.minX + this.width;
+    aabb.maxY = aabb.minY + this.height;
+
     return aabb;
   }
   get width() : number {
@@ -86,8 +83,8 @@ export class RiveEntity extends Entity {
       }
          
       let targetPos = Physics.toPixelTransform(this.physicsBody.GetPosition() as b2Vec2);
-      this.position.x = targetPos.x - this.width / this.scale.x / 2;
-      this.position.y = targetPos.y - this.height / this.scale.y / 2;
+      this.position.x = targetPos.x - this.width / 2;
+      this.position.y = targetPos.y - this.height / 2;
     }
   }
 
